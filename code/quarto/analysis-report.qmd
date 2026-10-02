@@ -1,0 +1,44 @@
+---
+title: "Analysis report: differentiated international integration in IJVs"
+subtitle: "Stage 7, estimation results and robustness"
+date: today
+format:
+  docx: default
+  html: default
+execute:
+  echo: false
+  warning: false
+---
+
+```{r setup}
+source("code/R/00_setup.R")
+models <- readRDS(file.path(paths$interim, "models-baseline.rds"))
+```
+
+## Sample
+
+The quant-analyst agent reports the panel dimensions, the cell-size
+threshold applied, and the number of exposed and unexposed IJVs.
+
+## Baseline results
+
+```{r}
+modelsummary(models, estimate = "{estimate} [{conf.low}, {conf.high}]", statistic = NULL)
+```
+
+For each hypothesis the agent states the pre-registered criterion from
+`reviews/gate-5-pre-analysis-plan.md` and whether the estimate meets it:
+supported, partially supported, or not supported.
+
+## Pre-trends and event study
+
+![](../../manuscript/figures/fig-event-study.png)
+
+## Robustness
+
+Staggered estimators, fractional response, cell thresholds, alternative
+function classifications, placebo shocks, ownership-adjusted dominance.
+
+## Surprises and exploratory findings
+
+Labelled as exploratory; not in the pre-analysis plan.

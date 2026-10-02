@@ -1,0 +1,32 @@
+# Licensed data exports (Orbis, Revelio, BoardEx) and interview transcripts.
+# Keep them out of git by default. Store them in Dropbox and record the path
+# in data/README.md. Remove the relevant line below if the repository is
+# private and the data licence permits storage on GitHub.
+data/raw/*
+data/interim/*
+data/processed/*
+data/interviews/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/interviews/.gitkeep
+!data/raw/README.md
+
+# R and Quarto build artefacts
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+renv/library/
+renv/staging/
+*_cache/
+*_files/
+/.quarto/
+manuscript/manuscript.docx
+manuscript/manuscript.pdf
+code/quarto/*.html
+code/quarto/*.docx
+
+# Local secrets (Zotero API key, Web of Science key)
+.env
+.Renviron
