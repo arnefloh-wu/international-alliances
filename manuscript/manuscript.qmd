@@ -1,0 +1,25 @@
+---
+title: "Differentiated International Integration in International Joint Ventures"
+author:
+  - name: "[Author block removed for review]"
+abstract: |
+  {{< include sections/00-abstract.qmd >}}
+keywords: [international joint ventures, integration, differentiated network, staffing, geopolitics, mixed methods]
+---
+
+{{< include sections/01-introduction.qmd >}}
+
+{{< include sections/02-theory-and-hypotheses.qmd >}}
+
+{{< include sections/03-study-1-qualitative.qmd >}}
+
+{{< include sections/04-study-2-method.qmd >}}
+
+{{< include sections/05-results.qmd >}}
+
+{{< include sections/06-discussion.qmd >}}
+
+# References
+
+::: {#refs}
+:::

@@ -1,0 +1,16 @@
+project:
+  type: default
+
+bibliography: ../literature/references.bib
+csl: csl/journal-of-international-business-studies.csl
+link-citations: true
+
+format:
+  docx:
+    toc: false
+    number-sections: false
+    # reference-doc: jibs-reference.docx   # add a Word template with JIBS fonts and margins when available
+  pdf:
+    documentclass: article
+    fontsize: 12pt
+    geometry: margin=1in

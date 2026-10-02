@@ -1,0 +1,62 @@
+---
+title: "Pilot feasibility report: Orbis-to-Revelio matching of international joint ventures"
+subtitle: "Differentiated international integration in IJVs, Stage 4"
+date: today
+format:
+  docx: default
+  html: default
+execute:
+  echo: false
+  warning: false
+---
+
+```{r setup}
+source("code/R/00_setup.R")
+s <- readRDS(file.path(paths$interim, "pilot-summary.rds"))
+```
+
+## Purpose
+
+The research design (section 12 of the research idea) requires a pilot
+before hypotheses are finalized, because the main feasibility risk is
+entity matching and workforce coverage rather than the statistical model.
+This report answers four questions. How many pilot IJVs and parents can
+be identified as distinct Revelio entities? How many observable employees
+and years does each matched IJV have? How many IJV-function-year cells
+survive the minimum cell-size thresholds? Can parent-origin staffing be
+reconstructed for a usable share of employees?
+
+## Match rates
+
+```{r}
+knitr::kable(s$match_rates, caption = "Entities matched by method")
+```
+
+## Workforce coverage per matched IJV
+
+```{r}
+knitr::kable(s$thresholds, caption = "IJVs clearing the sample thresholds")
+summary(s$cov_ijv[, .(n_emp, n_years, share_parent_origin, share_no_history)])
+```
+
+## Cell survival
+
+```{r}
+knitr::kable(s$cell_survival, caption = "IJV-function-year cells by minimum employees")
+```
+
+## Parent-origin reconstruction
+
+The share of employees whose prior employer within the origin window can
+be classified as parent A, parent B or external is reported in the
+`share_parent_origin` and `share_no_history` columns above. The
+data-engineer agent interprets these figures here, including the host
+countries and functions where coverage is weakest.
+
+## Go/no-go recommendation
+
+The agent completes this section: projected usable IJVs if the full Orbis
+population is five to ten times the pilot, whether the 200 to 800 target
+is realistic, which thresholds the pre-analysis plan should adopt, and
+whether an event-study design is feasible given the exposed dyads
+observed in the pilot.
