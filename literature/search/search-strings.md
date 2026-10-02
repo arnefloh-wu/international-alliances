@@ -1,8 +1,12 @@
 # Search strings
 
-Status: drafted 2026-10-02 by workflow setup; not yet run. The
-literature-searcher agent updates each block with the run date and the
-number of records when a search is executed or an export is ingested.
+Status: drafted 2026-10-02 by workflow setup. Consensus run on 2026-10-02
+by the literature-searcher agent (one query per stream, no filters, free
+tier, 10 records per query). Web of Science, EBSCO Business Source and
+Google Scholar have NOT been run: no agent access, and
+`literature/search/exports/` is empty. The literature-searcher agent
+updates each block with the run date and the number of records when an
+export is ingested.
 
 Syntax notes. Web of Science: `TS=` searches title, abstract, author
 keywords and Keywords Plus; `NEAR/3` is proximity; `*` wildcard. EBSCO
@@ -26,7 +30,11 @@ Google Scholar (variants)
 "differentiated network" multinational subsidiary integration
 "subsidiary autonomy" OR "subsidiary role" integration multinational function
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S1-2026-10-02.md`)
+```
+differentiated network of multinational corporation: how subsidiaries and internal units differ in integration, subsidiary roles and autonomy
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## S2 Integration-responsiveness and contingency
 
@@ -43,7 +51,11 @@ Google Scholar
 "integration-responsiveness" function OR activity multinational "value chain"
 "global integration" "local responsiveness" functional level subsidiary
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S2-2026-10-02.md`)
+```
+integration-responsiveness: global integration versus local responsiveness at the functional or activity level in multinationals and joint ventures
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## S3 IJV control, staffing and organization
 
@@ -60,7 +72,11 @@ Google Scholar
 "international joint venture" control staffing "parent" dominant OR shared management
 "international joint venture" "decision rights" OR "decision-making" structure function
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S3-2026-10-02.md`)
+```
+international joint venture control, staffing and management structure: parent dominance, shared management and decision rights
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## S4 Expatriate and parent-origin staffing, knowledge transfer
 
@@ -77,7 +93,11 @@ Google Scholar
 expatriate "subsidiary staffing" control coordination "knowledge transfer" multinational
 "parent country nationals" "host country nationals" joint venture staffing
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S4-2026-10-02.md`)
+```
+expatriate and parent-country national staffing of foreign subsidiaries and joint ventures: control, coordination and knowledge transfer
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## S5 Geopolitics, political risk and the organization of international activity
 
@@ -94,7 +114,11 @@ Google Scholar
 geopolitical tension multinational subsidiary localization OR restructuring staffing
 "political relations" OR sanctions "joint venture" staffing OR control reconfiguration
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S5-2026-10-02.md`)
+```
+geopolitical tension, political risk and sanctions: how multinational enterprises reorganize, restructure or localize foreign subsidiaries, joint ventures and alliances
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## S6 Employment-history data in management research
 
@@ -111,7 +135,11 @@ Google Scholar
 "Revelio Labs" data firm workforce
 "LinkedIn" "employment histories" measure workforce composition firm study
 ```
-Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
+Consensus (natural-language query, no filters; saved in `hits-consensus-S6-2026-10-02.md`)
+```
+LinkedIn or Revelio Labs employment histories used to measure workforce composition and organizational structure of firms in management research
+```
+Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
 ## Export instructions for manual runs
 
@@ -122,3 +150,37 @@ Run: [date] | Records: WoS [ ] EBSCO [ ] GS [ ] Consensus [ ]
 - Google Scholar: use Publish or Perish (Harzing) with the string as the
   "Keywords" query, max 200 results, export CSV; name
   `exports/gs-S<n>-<date>.csv`.
+
+## Consensus run log, 2026-10-02
+
+Tool: Consensus connector, free tier (10 results per search, no DOI field returned; the last call reported 3 searches left this month, reset on 1 November 2026). No filters were applied. The rate limiter rejected some parallel calls; rejected calls returned no records and were re-run singly. Only the successful run of each query is logged.
+
+| Purpose | Stream | Query (exact) | Records |
+|---|---|---|---|
+| Stream search | S1 | see S1 block | 10 |
+| Stream search | S2 | see S2 block | 10 |
+| Stream search | S3 | see S3 block | 10 |
+| Stream search | S4 | see S4 block | 10 |
+| Stream search | S5 | see S5 block | 10 |
+| Stream search | S6 | see S6 block | 10 |
+| Seed verification | S4 | Knowledge acquisition from foreign parents in international joint ventures: an empirical examination in the Hungarian context | 9 |
+| Seed verification | S2 | Managing DMNCs: a search for a new paradigm (Doz and Prahalad) | 10 |
+| Seed verification | S5 | The MNE and its subsidiaries at times of global disruptions: an international relations perspective | 10 |
+| Citation chase | S1 | building on Ghoshal and Nohria (1989) and Nohria and Ghoshal (1997) differentiated network: headquarters-subsidiary relationships differ by subsidiary context | 10 |
+| Citation chase | S1 | building on Bartlett and Ghoshal (1989), Birkinshaw and Hood (1998) and Birkinshaw and Morrison (1995): subsidiary roles, charter change and differentiated subsidiary management in multinationals | 10 |
+| Citation chase | S2 | building on Prahalad and Doz (1987) and Roth and Morrison (1990): integration-responsiveness pressures and strategy at business unit or functional level | 10 |
+| Citation chase | S3 | studies building on Geringer and Hebert (1989) on the scope, extent and mechanisms of parent control in international joint ventures | 10 |
+| Citation chase | S3 | building on Killing (1983), Yan and Gray (1994), Mjoen and Tallman (1997) and Choi and Beamish (2004): dominant, shared and split control of activities in international joint ventures | 10 |
+| Citation chase | S4 | building on Edstrom and Galbraith (1977), Harzing (2001), Gong (2003) and Gaur, Delios and Singh (2007): staffing of subsidiaries with parent-country nationals and its effects | 10 |
+| Citation chase | S5 | building on Witt (2019) deglobalization and Petricevic and Teece (2019) structural reshaping of globalization: effects on organization of multinational operations and joint ventures | 10 |
+| Citation chase | S6 | management or international business study using Revelio Labs or LinkedIn-based employee profiles to measure firm workforce composition, hierarchy levels, or subsidiary employees | 10 |
+
+Consensus does not return citing or cited-by lists. The chase queries therefore return semantically related papers, not verified citations; see `search-log.md` for how this limits the chase.
+
+## Manual runs still required (strings above are final unless the PI edits them)
+
+| Database | Streams | Status |
+|---|---|---|
+| Web of Science Core Collection | S1 to S6 | not yet run |
+| EBSCO Business Source | S1 to S6 | not yet run |
+| Google Scholar (Publish or Perish, max 200 per string) | S1 to S6, both variants where two are listed | not yet run |
