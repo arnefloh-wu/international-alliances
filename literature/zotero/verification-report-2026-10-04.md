@@ -373,3 +373,50 @@ Details of the implementation:
 6. `wang2026organizational` and `atanassova2026sociopolitical` are online-first without a volume; check again before submission.
 7. List the 11 failed items in the gate 1 file (`reviews/`), and note the key changes there if gate 1 materials quote keys.
 8. Turn on the Better BibTeX auto-export, limited to items tagged `verified` and screened include or seed, with `doz2017control` excluded until its version is decided.
+
+## 10. Decisions applied 2026-10-04 (versions, book reviews, proceedings)
+
+The PI made three further decisions on 2026-10-04, relayed by the coordinator: (1) cite original works, not reprints or reissues; (2) book reviews do not count as verification evidence, and neither do citing references; (3) Academy of Management Proceedings abstracts can be cited. Each change was applied by GET, then PATCH with If-Unmodified-Since-Version, sending only the fields named below. There were 8 PATCH calls, all returning 204, with no failures and no deletions. This section supersedes sections 1 to 9 where they differ.
+
+### 10.1 Versions (decision 1)
+
+| Key | Zotero | Action |
+|---|---|---|
+| `doz1990control` (was `doz2017control`) | 8V3G25M2 | Corrected to the 1990 original chapter in Bartlett, Christopher; Doz, Yves; Hedlund, Gunnar (Eds.), Managing the Global Firm, Routledge, 1990. Editor given names follow the Crossref record of the 2013 reissue. Changes: date 2017-10-23 to 1990; bookTitle "International Business" to "Managing the Global Firm"; editors added; the 2017 reprint DOI (10.4324/9781315199689-24), ISBN (9781315199689) and pages (349-375) cleared. Extra now holds `Reissue:` (2013 RLE chapter 10.4324/9780203077948-14, pp. 127-153) and `Reprint:` (the former 2017 data). Key re-pinned as doz1990control. Tags `verified` and `verified:2026-10-04` removed; `verification-failed` and `unverified` added. Reason: "1990 edition details need a catalogue record or PDF". Not in the .bib; listed in `references-unverified.bib`. |
+| `prahalad2017approach` | 49E3HS6U | Item unchanged (screened unsure; still verified as the 2017 reprint record). Extra gained a `Version to cite:` line: Prahalad, C. K., & Doz, Y. L. (1981), An approach to strategic control in MNCs, Sloan Management Review, 22(4), 5-13. This rests on citing references only and is unverified. |
+| `killing1983strategies` | 7FMHGKUS | Still failed. Extra gained a `Version to cite:` line: the 1983 Praeger edition, not the 2013 Routledge reissue (10.4324/9780203077757). |
+| `birkinshaw2009strategy` | KSPCJSEW | No change. The 2009 chapter is a revised second-edition chapter with a new co-author (Pedersen), not a reprint of the 2001 first-edition chapter (Birkinshaw alone, 10.1093/0199241821.003.0014), so it counts as its own work. It stays verified on its DOI and stays in the .bib. |
+| `surlemont1998typology`, `lenguyen2008governing`, `chen2020global` | | No change. No earlier version was found (section 5), so these chapters are the originals. |
+
+### 10.2 Book reviews and citing references (decision 2)
+
+Reverted to failed: `nohria1997differentiated` (IKZSRF37), `bartlett1989managing` (AJCDXEJ2), `lawrence1967organization` (6MCT8UKD). For each: tags `verified` and `verified:2026-10-04` removed; `verification-failed` and `unverified` added; Extra gained "Verification failed: 2026-10-04 book-review evidence not accepted; needs catalogue record or PDF". The pinned keys were kept (citationKey field and the `Citation Key:` line). All three were removed from `references.bib` and added to `references-unverified.bib`. The earlier `Verified:` lines stay in Extra as history, followed by the failure line.
+
+Check for other book-review evidence: none. The only other book-type verification, `ghoshal1993organization`, rests on the Crossref book record itself (10.1007/978-1-349-22557-6), not on a review. `doz2017control` had been verified on its 2017 reprint DOI; now that it is the 1990 original, it is failed (10.1).
+
+Check for citing-reference evidence: only `gong2003subsidiary` used one, for its first author. Re-checked against the Crossref DOI record 10.2307/30040664: the title ("Subsidiary staffing in multinational enterprises: Agency, resources, and performance"), journal (Academy of Management Journal), volume 46, issue 6, pages 728-739 and year 2003 all match the Zotero item. It therefore stays verified, on the DOI record alone. The record lists no authors, so first author Gong is not independently verified by Crossref; Extra gained a `Verification basis:` line saying so. No other verification relied on citing references: in section 3 they were used only as leads for failed items.
+
+### 10.3 Proceedings (decision 3)
+
+`heiss2024structure`, `lei2025playing` and `tang2026strategic` remain journal articles in Academy of Management Proceedings, with the article numbers added in section 9 (in `pages`). No further change. They stay in the .bib.
+
+### 10.4 Counts after decisions
+
+| Outcome | n |
+|---|---|
+| Verified | 99 (all Crossref; no book-review evidence remains) |
+| Failed | 15 (include 6, seed 6, unsure 3) |
+| Verified, screened unsure (not in the .bib) | 16 |
+| Verified include/seed held out | 0 |
+| Entries in `literature/references.bib` | 83 (include 61, seed 22) |
+| Entries in `literature/references-unverified.bib` | 15 |
+| Keys changed in this step | 1 (`doz2017control` to `doz1990control`) |
+| Failed items with a pinned key | 4 (`doz1990control`, `nohria1997differentiated`, `bartlett1989managing`, `lawrence1967organization`) |
+
+### 10.5 Still open
+
+1. The 15 failed items: seeds `prahalad1987multinational`, `killing1983strategies`, `schaan1983parent`, `nohria1997differentiated`, `bartlett1989managing`, `lawrence1967organization`; includes `doz1990control`, `ghoshal1993horses`, `reus2004interpartner`, `downes2000knowledge`, `nguyen2009foreign`, `mohedanosuanescontrol`; unsure `doz1980how`, `andersson2018integration`, `oostenfunctions`. A separate agent is searching for PDFs and catalogue records (`literature/zotero/pdf-search-2026-10-04.md`, not touched here). Once evidence arrives, the reference-manager re-verifies these items and moves them into the .bib.
+2. `gong2003subsidiary`: first author not independently verified (the DOI record lists no authors). A PDF of the article would close this.
+3. `prahalad2017approach` (unsure): if the PI includes it at gate 1, verify the 1981 SMR original first.
+4. `venaik2004new`: DOI, volume and pages still missing (section 9.4, item 5).
+5. List the failed items in the gate 1 file (`reviews/`).

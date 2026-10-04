@@ -6,6 +6,6 @@ Scope: `manuscript/sections/*.qmd` and `literature/synthesis/*.md`, searched for
 
 Result: no section has content yet. All seven files in `manuscript/sections/` (00-abstract to 06-discussion) contain only the placeholder header ("status: not drafted"), and `literature/synthesis/` has no memos. No citation keys and no `[CITE:]` markers were found, so there are no unknown keys and no search strings to suggest.
 
-`literature/references.bib` now holds 86 verified entries (screened include or seed) with keys pinned in Zotero, regenerated after the PI-approved corrections of 2026-10-04. Items that failed verification are in `literature/references-unverified.bib` and must not be cited. Details are in `literature/zotero/verification-report-2026-10-04.md`.
+`literature/references.bib` now holds 83 verified entries (screened include or seed) with keys pinned in Zotero, regenerated after the PI decisions of 2026-10-04 (corrections, print years, originals, book reviews). Items that failed verification are in `literature/references-unverified.bib` and must not be cited. Details are in `literature/zotero/verification-report-2026-10-04.md`.
 
 The scan will be repeated when the synthesis memos and section drafts exist.
