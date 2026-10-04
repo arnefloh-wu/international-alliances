@@ -34,6 +34,8 @@ each section. Agents append; they do not rewrite history.
 | 2026-10-04 | Book reviews do not count as verification evidence. Citing references in other papers are leads only. Accepted evidence: DOI record on Crossref, publisher or journal page, library or repository catalogue record, ISBN record, or a PDF of the work. | PI (book reviews); orchestrator's reading for citing references, consistent with the reference-manager rules. |
 | 2026-10-04 | Academy of Management Proceedings abstracts may be cited. | PI. |
 | 2026-10-04 | Unverified works are searched for PDFs and catalogue records on the web; results in `literature/zotero/pdf-search-2026-10-04.md`. Downloaded PDFs go to `literature/fulltext/` and are not committed. | PI. |
+| 2026-10-04 | Web-search results count as verification evidence when they come from an accepted source type (publisher, journal, library or repository record) and the URL is logged, even if the page could not be opened in this environment. Internet Archive / Open Library and ProQuest records count as catalogue records; RePEc counts as a repository record; Questia listings are supporting only. | PI, on the orchestrator's recommendation. |
+| 2026-10-04 | Record corrections from the web search approved (missing co-authors added; the "van Oosten" record replaced by Cocito et al. 2004; Mohedano-Suanes & Safón 2021 re-dated; Andersson & Forsgren as a book chapter). nguyen2009foreign dropped (moved to the Zotero trash). | PI. |
 
 ## Open
 
@@ -50,4 +52,4 @@ each section. Agents append; they do not rewrite history.
 | 2026-10-02 | Consensus free tier (10 results per query, no DOIs, 3 searches left until 2026-11-01): upgrade the plan or have the PI run the remaining citation chases manually? | Stage 1 chase, G1 | PI |
 | 2026-10-02 | Treatment of conference proceedings, working papers and dissertations in the search protocol. | G1 | PI |
 | 2026-10-04 | Shock scan (gate 5a): confirm hard-screen readings (single-dyad shocks; onsets after the Revelio panel end), admissibility of Brexit and of non-geopolitical regulatory shocks, and who verifies the shortlisted data sources, since the egress policy blocked all documentation pages and the scan rests on search snippets. See `reviews/gate-5a-shock-scan.md`. | Gate 5a | PI |
-| 2026-10-04 | References: venaik2004new as chapter (Crossref) or journal article; unverified works still unresolved after the PDF and catalogue search. See sections 9 and 10 of the verification report. | Before writing | PI |
+| 2026-10-04 | References: venaik2004new as chapter (Crossref) or journal article; pages still to confirm from the library for several originals (Reus & Ritchie 2004, Downes & Thomas 2000, Doz & Prahalad 1980, Doz, Prahalad & Hamel 1990, Prahalad & Doz 1981); Downes & Thomas 2000 still unverified. See sections 9 to 11 of the verification report. | Before writing | PI |
