@@ -20,12 +20,20 @@ each section. Agents append; they do not rewrite history.
 | 2026-10-02 | Review gates after literature synthesis, pilot feasibility, pre-analysis plan, and each major section draft. | PI. |
 | 2026-10-02 | Workflow lives in this repository as Claude Code agents and skills. | PI. |
 | 2026-10-02 | Spelling: American, applied throughout. JIBS accepts consistent usage; confirm against the current author guidelines before submission. | academic-writing skill default. |
+| 2026-10-02 | Theory hierarchy: structural contingency theory is the main theory (T1). The differentiated network (Nohria and Ghoshal) and integration-responsiveness are related IB frameworks that apply the same contingency logic (T2), not separate theories. IJV staffing and control, parent-origin and expatriate staffing, and relevant organizational-design work are supporting literatures that specify how integration is manifested and measured (T3). Geopolitics is the environmental context that creates changing contingencies (T4). Microfoundations are excluded unless the interviews show a needed individual-level mechanism. | PI, detailed answer on theoretical anchors. See `docs/theory-framework.md`. |
+| 2026-10-02 | The focal shock is not fixed in advance. The workflow generates and compares several candidate geopolitical contingencies (for example sanctions, investment-screening reform, export controls, mobility restrictions, bilateral political deterioration) on five criteria: theoretical fit, measurement quality, identification potential, sample coverage and power, and substantive interest and novelty in current IB research. | PI, detailed answer on the focal shock. |
+| 2026-10-02 | A shock fits the theory only if it alters the contingencies of different domains by different amounts (coordination requirements, local embeddedness, access to parent resources, mobility, regulatory exposure, political sensitivity), so that it implies differentiated reconfiguration. | PI. |
+| 2026-10-02 | Shock selection uses exposure counts, design properties and literature evidence only. It must not use patterns in the integration outcomes, to avoid choosing the shock by its results. | Workflow rule added when implementing the PI's answer; PI to confirm. |
+| 2026-10-02 | H4 and H5 in the research idea assume geopolitical deterioration. They are restated at the contingency level and then instantiated for the chosen shock in the pre-analysis plan. | Workflow rule added when implementing the PI's answer; PI to confirm. |
+| 2026-10-02 | Protocol version 1.1 adds three streams: S7 structural contingency theory, S8 organizational design, S9 candidate geopolitical shocks. Streams S1 to S6 keep their numbers. | Follows from the theory hierarchy. |
 
 ## Open
 
 | Raised | Question | Needed by | Owner |
 |---|---|---|---|
-| 2026-10-02 | Focal environmental shock (geopolitical deterioration vs. investment-screening reform vs. mobility restrictions) and its measure. | Stage 5 (after pilot) | PI |
+| 2026-10-02 | Which candidate shock to adopt. Approach is decided (see Decided); the choice follows the shock scan (gate 5a) and the re-scoring with pilot exposure counts (gate 5). The comparison weights default to equal and can be changed at gate 5a. | Gate 5a shortlist, gate 5 final | PI |
+| 2026-10-02 | Whether two summary contingency scores (coordination dependence, local embeddedness) suffice or a third, dependence on parent resources, is needed. | Gate 3 | PI |
+| 2026-10-02 | Seed works for the new streams S7 to S9 are listed from memory and need verification before any is cited. | Stage 1 increment | literature-searcher |
 | 2026-10-02 | Interview corpus: location, number, language, consent and anonymization constraints. | Stage 3 | PI |
 | 2026-10-02 | Section ownership among co-authors. | Stage 8 | PI |
 | 2026-10-02 | Whether raw exports may be stored in this GitHub repository (licence terms) or must stay in Dropbox. Default is Dropbox and gitignore. | Stage 4 | PI |

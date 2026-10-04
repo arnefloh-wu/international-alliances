@@ -28,13 +28,23 @@ IJVs, cell-years); two to four contrastive findings; closing implication.
    literature; one sentence on managerial and policy relevance.
 
 ## 2 Theory and hypotheses
-2.1 Integration in international alliances: the alliance-level view.
-2.2 Differentiated international integration: definition, dimensions
-    (functions, hierarchy), three measures.
-2.3 Why domains differ: coordination dependence (H1), local
-    embeddedness (H2), hierarchy (H3).
-2.4 Dynamics: environmental change as selective reconfiguration
-    (H4, H5), with the focal shock.
+Built on structural contingency theory (tier T1, `docs/theory-framework.md`).
+2.1 Structural contingency theory and the alliance: no single optimal
+    degree or form of integration; task, coordination, environmental and
+    resource contingencies; fit and structural adjustment.
+2.2 Contingency logic in international business: the differentiated
+    network and integration-responsiveness as IB applications of the same
+    logic (tier T2), and what international settings and two parents add
+    (the interorganizational twist).
+2.3 Differentiated international integration: definition, dimensions
+    (functions, hierarchy), three measures; how IJV control and staffing
+    and parent-origin staffing (tier T3) show integration in practice.
+2.4 Why domains differ: coordination dependence (H1), local embeddedness
+    (H2), hierarchy (H3).
+2.5 Dynamics: changes in the environment alter contingencies and trigger
+    selective reconfiguration (H4, H5 at the contingency level);
+    geopolitical change as the context (tier T4) and the chosen shock as
+    the instantiation, introduced once the shock is decided.
 
 ## 3 Study 1: qualitative grounding
 Sample and procedure (Saldaña coding, respondent codes), findings per

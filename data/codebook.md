@@ -30,6 +30,8 @@ the processed panels is listed here with source, construction and unit.
 
 ## Domain characteristics (from the qualitative memo, finalized at G5)
 
+Under structural contingency theory these scores summarize four contingency families (task, coordination, environmental, resource; see `docs/theory-framework.md`). Gate 3 decides whether two summary scores suffice or a third, `resource_dependence`, is added.
+
 | Variable | Definition |
 |---|---|
 | `coord_dependence` | score 1 to 5 for the function's dependence on cross-partner coordination and knowledge exchange |

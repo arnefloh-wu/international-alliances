@@ -8,7 +8,7 @@ description: "Orchestrates the agent-based research workflow for the JIBS manusc
 Usage: `/research-workflow status | next | setup | hypotheses | <stage>`
 
 Stages: `lit-search`, `lit-synthesis`, `qual-recode`, `pilot-feasibility`,
-`hypotheses`, `panel-build`, `estimate`, `write-section <section>`,
+`shock-options`, `hypotheses`, `panel-build`, `estimate`, `write-section <section>`,
 `references`, `internal-review`.
 
 ## Procedure
@@ -19,7 +19,7 @@ Stages: `lit-search`, `lit-synthesis`, `qual-recode`, `pilot-feasibility`,
    open decisions from `docs/decisions.md`. Stop.
 3. `next`: pick the lowest-numbered stage whose prerequisites in the
    workflow table are APPROVED (or have no gate) and whose own gate does
-   not exist or is REJECTED. Stages 1, 3 and 4 have no prerequisites and
+   not exist or is REJECTED. Stages 1, 3, 4 and 5a have no prerequisites and
    may be launched together as parallel Agent calls. Tell the user which
    stage you are launching and why, then run step 5.
 4. `<stage>`: check prerequisites. If a prerequisite gate is PENDING or
@@ -44,25 +44,28 @@ Verify the folder scaffold in `CLAUDE.md`, that `.gitignore` excludes
 
 ## `hypotheses` (Stage 5)
 
-Prerequisites: G2, G3, G4 approved, and the focal-shock decision in
-`docs/decisions.md` moved from Open to Decided. If the shock is still
-open, produce `reviews/shock-options.md` instead: for each candidate
-shock (geopolitical deterioration measured by a validated dyad index or
-discrete sanction events, investment-screening reform, mobility
-restrictions), the exposed dyads in the pilot sample, timing precision,
-cross-dyad variation, plausible exogeneity to IJV staffing, and the
-hypotheses it can and cannot identify. End with a recommendation and
-stop for the PI.
+The focal shock is not fixed in advance. It is chosen in two steps (see
+`docs/workflow.md`): the desk scan and shortlist (`/shock-options scan`,
+gate 5a), then re-scoring with pilot exposure counts
+(`/shock-options rescore`). Prerequisites for this stage: G2, G3, G4 and
+G5a approved, the re-scoring done, and the PI's shock decision moved from
+Open to Decided in `docs/decisions.md`. If any is missing, name it and
+stop. If only the shock decision is missing, present the re-scoring
+recommendation and stop for the PI.
 
 With the shock decided, draft `reviews/gate-5-pre-analysis-plan.md`:
-final H1 to H5 wording, construct definitions, the function
-classification scores for coordination dependence and local
-embeddedness (from the qualitative memo), DV formulas (see
-`code/R/functions/measures.R`), the shock variable, baseline and
-robustness specifications (from the quant-analyst agent), cell
-thresholds, clustering, sample restrictions, and the exact predictions
-that would count as support, partial support or no support for each
-hypothesis. Status PENDING.
+final H1 to H5 wording, with H4 and H5 stated first at the contingency
+level (which contingency changes, which domains should reconfigure in
+which direction) and then instantiated for the chosen shock; construct
+definitions; the function classification scores for coordination
+dependence and local embeddedness (and resource dependence if gate 3
+added it) from the qualitative memo; DV formulas (see
+`code/R/functions/measures.R`); the shock variable and its source;
+baseline and robustness specifications (from the quant-analyst agent);
+cell thresholds; clustering; sample restrictions; and the exact
+predictions that would count as support, partial support or no support
+for each hypothesis. Record that the shock was chosen without reference
+to outcome patterns. Status PENDING.
 
 ## Gate approval
 

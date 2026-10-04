@@ -27,6 +27,12 @@ Order of work:
    the PRISMA counts and the list of borderline screening decisions for
    the PI.
 
+Incremental runs (protocol v1.1): streams S7 to S9 were added after the
+first run. They have strings in `search-strings.md` but no Consensus
+results, and the free tier has too few searches left to run them. Treat
+them as manual-run streams, ingest their exports into the same screening
+sheet, and append to the search log.
+
 Parsing hints: RIS from Web of Science and EBSCO parse with a small
 Python script (`python3`, standard library) or R `revtools`/`synthesisr`
 locally; keep the script in `code/R/` or `literature/search/tools/`.

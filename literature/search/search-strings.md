@@ -8,6 +8,8 @@ Google Scholar have NOT been run: no agent access, and
 updates each block with the run date and the number of records when an
 export is ingested.
 
+Protocol v1.1 (2026-10-02) added streams S7, S8 and S9 (tiers in `docs/theory-framework.md`). They have not been run anywhere; Consensus quota is exhausted for the month except 3 searches, so they depend on the manual runs.
+
 Syntax notes. Web of Science: `TS=` searches title, abstract, author
 keywords and Keywords Plus; `NEAR/3` is proximity; `*` wildcard. EBSCO
 Business Source: `TI`, `AB`, `SU` field codes, `N3` proximity, `*`
@@ -141,6 +143,118 @@ LinkedIn or Revelio Labs employment histories used to measure workforce composit
 ```
 Run: WoS not yet run (2026-10-02) | EBSCO not yet run (2026-10-02) | GS not yet run (2026-10-02) | Consensus run 2026-10-02 | Records: WoS not run, EBSCO not run, GS not run, Consensus 10
 
+## S7 Structural contingency theory (T1, added in protocol v1.1)
+
+Status: drafted 2026-10-02, not run. Two variants: S7-core (theory itself) and S7-IB (contingency logic in international settings).
+
+Web of Science, S7-core
+```
+TS=(("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR "organi?ational fit" OR "structural fit" OR "contingency fit" OR "structural adjustment" OR "task interdependence" OR "task uncertainty") AND (organi?ation* OR firm* OR structure*) AND (environment* OR "information processing" OR differentiation OR integration OR coordination OR fit OR misfit))
+```
+Web of Science, S7-IB
+```
+TS=(("contingency theory" OR "contingency perspective" OR "contingency approach" OR "structural contingency" OR "organi?ational fit") AND (multinational* OR MNE OR "international business" OR "joint venture*" OR alliance*))
+```
+EBSCO, S7-core
+```
+(TI("contingency theory" OR "structural contingency" OR "contingency approach" OR "organi?ational fit" OR "structural adjustment") OR AB("contingency theory" OR "structural contingency" OR "contingency approach" OR "organi?ational fit" OR "structural adjustment")) AND (organi?ation* OR firm*) AND (environment* OR "information processing" OR differentiation OR integration OR coordination OR misfit)
+```
+EBSCO, S7-IB
+```
+(TI("contingency theory" OR "contingency perspective" OR "structural contingency" OR "organi?ational fit") OR AB("contingency theory" OR "contingency perspective" OR "structural contingency" OR "organi?ational fit")) AND (multinational* OR "joint venture*" OR alliance* OR "international business")
+```
+Google Scholar (variants)
+```
+"structural contingency theory" fit misfit environment organizational structure adjustment
+"contingency theory" multinational OR "joint venture" OR alliance structure function
+```
+Run: [not run] | Records: WoS [ ] EBSCO [ ] GS [ ]
+
+## S8 Organizational design: differentiation across functions and levels, decision rights, control mechanisms (T3, added in v1.1)
+
+Status: drafted 2026-10-02, not run.
+
+Web of Science
+```
+TS=(("organi?ational design" OR "organi?ational structure" OR "decision right*" OR "decision authority" OR "control mechanism*" OR "formal control" OR "coordination mechanism*" OR "differentiation and integration" OR "functional differentiation") AND (function* OR "hierarchical level*" OR hierarch* OR "management level*") AND (alliance* OR "joint venture*" OR multinational* OR subsidiar* OR "interorgani?ational"))
+```
+EBSCO
+```
+(TI("organi?ational design" OR "decision right*" OR "control mechanism*" OR "coordination mechanism*" OR "differentiation and integration") OR AB("organi?ational design" OR "decision right*" OR "control mechanism*" OR "coordination mechanism*" OR "differentiation and integration")) AND (function* OR hierarch* OR "management level*") AND (alliance* OR "joint venture*" OR multinational* OR subsidiar*)
+```
+Google Scholar (variants)
+```
+"decision rights" OR "control mechanisms" alliance OR "joint venture" functions hierarchical levels organizational design
+"coordination mechanisms" "strategic alliances" governance design functional differentiation
+```
+Run: [not run] | Records: WoS [ ] EBSCO [ ] GS [ ]
+
+## S9 Candidate geopolitical shocks (T4, added in v1.1; feeds the shock scan)
+
+Status: drafted 2026-10-02, not run. One string per shock family, S9a to S9e. The `shock-evaluator` agent may also use these as WebSearch queries. Records from S9 are used for two purposes: theory and evidence (T4 context) and the novelty assessment in the shock scan.
+
+S9a Sanctions. Web of Science
+```
+TS=(("economic sanction*" OR "financial sanction*" OR "sanction* regime*" OR "secondary sanction*") AND (firm* OR multinational* OR MNE OR "joint venture*" OR subsidiar* OR alliance* OR "foreign direct investment") AND (organi?ation* OR staffing OR exit OR divest* OR locali?ation OR restructur* OR reconfigur* OR "human resource*" OR employee*))
+```
+S9a EBSCO
+```
+(TI("economic sanction*" OR "financial sanction*" OR "secondary sanction*") OR AB("economic sanction*" OR "financial sanction*" OR "secondary sanction*")) AND (firm* OR multinational* OR "joint venture*" OR subsidiar*) AND (organi?ation* OR staffing OR exit OR divest* OR restructur*)
+```
+S9a Google Scholar
+```
+sanctions multinational OR "joint venture" staffing OR exit OR restructuring OR localization
+```
+S9b Investment screening. Web of Science
+```
+TS=(("investment screening" OR "foreign investment screening" OR "FDI screening" OR "investment review" OR "national security review" OR CFIUS OR "foreign investment restriction*") AND (firm* OR multinational* OR "joint venture*" OR alliance* OR acquisition* OR "foreign direct investment"))
+```
+S9b EBSCO
+```
+(TI("investment screening" OR "FDI screening" OR "national security review" OR CFIUS OR "foreign investment restriction*") OR AB("investment screening" OR "FDI screening" OR "national security review" OR CFIUS OR "foreign investment restriction*")) AND (firm* OR multinational* OR "joint venture*" OR acquisition*)
+```
+S9b Google Scholar
+```
+"investment screening" OR "FDI screening" multinational "joint venture" OR alliance
+```
+S9c Export controls and technology restrictions. Web of Science
+```
+TS=(("export control*" OR "technology restriction*" OR "entity list" OR "technology transfer restriction*" OR "technological decoupling" OR "tech decoupling") AND (firm* OR multinational* OR "joint venture*" OR alliance* OR subsidiar* OR R&D))
+```
+S9c EBSCO
+```
+(TI("export control*" OR "technology restriction*" OR "entity list" OR "technological decoupling") OR AB("export control*" OR "technology restriction*" OR "entity list" OR "technological decoupling")) AND (firm* OR multinational* OR "joint venture*" OR subsidiar*)
+```
+S9c Google Scholar
+```
+"export controls" OR "entity list" multinational firms organization R&D "joint venture" OR subsidiary
+```
+S9d Mobility and visa restrictions. Web of Science
+```
+TS=(("visa restriction*" OR "travel restriction*" OR "travel ban*" OR "immigration polic*" OR "work permit*" OR "mobility restriction*" OR "talent mobility" OR "skilled migration polic*") AND (firm* OR multinational* OR expatriat* OR subsidiar* OR "joint venture*" OR "international assignment*"))
+```
+S9d EBSCO
+```
+(TI("visa restriction*" OR "travel restriction*" OR "travel ban*" OR "immigration polic*" OR "mobility restriction*") OR AB("visa restriction*" OR "travel restriction*" OR "travel ban*" OR "immigration polic*" OR "mobility restriction*")) AND (firm* OR multinational* OR expatriat* OR subsidiar*)
+```
+S9d Google Scholar
+```
+"visa restrictions" OR "travel restrictions" OR "mobility restrictions" expatriates multinational subsidiary staffing
+```
+S9e Bilateral political relations. Web of Science
+```
+TS=(("bilateral political relation*" OR "diplomatic relation*" OR "political tension*" OR "diplomatic conflict*" OR "territorial dispute*" OR "political animosity" OR "country-level animosity" OR "geopolitical distance" OR "political distance") AND (firm* OR multinational* OR "joint venture*" OR alliance* OR subsidiar* OR "foreign direct investment") AND (staffing OR organi?ation* OR ownership OR exit OR equity OR locali?ation OR performance))
+```
+S9e EBSCO
+```
+(TI("bilateral political relation*" OR "diplomatic relation*" OR "political tension*" OR "political animosity" OR "geopolitical distance" OR "political distance") OR AB("bilateral political relation*" OR "diplomatic relation*" OR "political tension*" OR "political animosity" OR "geopolitical distance" OR "political distance")) AND (firm* OR multinational* OR "joint venture*" OR subsidiar*) AND (staffing OR organi?ation* OR ownership OR exit OR locali?ation)
+```
+S9e Google Scholar
+```
+"political tension" OR "diplomatic relations" OR "political distance" "joint venture" OR subsidiary staffing OR ownership OR exit
+```
+Run: [not run] | Records: WoS [ ] EBSCO [ ] GS [ ]
+
 ## Export instructions for manual runs
 
 - Web of Science: Export > RIS (Other File Formats), "Full Record",
@@ -182,5 +296,8 @@ Consensus does not return citing or cited-by lists. The chase queries therefore 
 | Database | Streams | Status |
 |---|---|---|
 | Web of Science Core Collection | S1 to S6 | not yet run |
+| Web of Science Core Collection | S7 (core, IB), S8, S9a to S9e (added in v1.1) | not yet run |
 | EBSCO Business Source | S1 to S6 | not yet run |
+| EBSCO Business Source | S7 (core, IB), S8, S9a to S9e | not yet run |
 | Google Scholar (Publish or Perish, max 200 per string) | S1 to S6, both variants where two are listed | not yet run |
+| Google Scholar (Publish or Perish, max 200 per string) | S7 to S9, variants as listed | not yet run |

@@ -16,6 +16,17 @@ integration inside an IJV is not a single alliance-level attribute but an
 internally differentiated configuration that varies across functions and
 hierarchical levels and is selectively reconfigured by environmental change.
 
+Theory hierarchy (decided 2026-10-02, details in `docs/theory-framework.md`):
+structural contingency theory is the main theory. The differentiated
+network (Nohria and Ghoshal) and integration-responsiveness are related
+IB frameworks that apply the same contingency logic. IJV staffing and
+control, parent-origin and expatriate staffing, and organizational-design
+work are supporting literatures that specify how integration is manifested
+and measured. Geopolitics is the environmental context that creates changing
+contingencies. Microfoundations are excluded unless the interviews call for
+them. The focal shock is not fixed in advance: the workflow compares
+candidate shocks (`/shock-options`) before one is chosen.
+
 Design: exploratory sequential mixed-method study.
 - Phase 1 (qualitative): systematic recoding of existing manager interviews
   to ground the construct and its operationalization.
@@ -32,7 +43,7 @@ Design: exploratory sequential mixed-method study.
 inputs, outputs and gates. The orchestrator skill is
 `/research-workflow`. Stage skills can also be run individually
 (`/lit-search`, `/lit-synthesis`, `/qual-recode`, `/pilot-feasibility`,
-`/panel-build`, `/estimate`, `/write-section`, `/references`,
+`/shock-options`, `/panel-build`, `/estimate`, `/write-section`, `/references`,
 `/internal-review`).
 
 Review gates are recorded in `reviews/`. A stage whose gate file does not
@@ -67,7 +78,11 @@ approve a gate themselves.
 7. Agents write to the folder that belongs to their stage (see
    `docs/workflow.md`) and do not edit another stage's outputs. Edits to
    earlier-stage outputs are proposed in the gate review file.
-8. Commit after each completed stage with a message that names the stage
+8. The theory hierarchy in `docs/theory-framework.md` is binding. Do not
+   reintroduce the differentiated network as the main theory, do not add
+   microfoundations, and do not choose the focal shock by looking at the
+   integration outcomes.
+9. Commit after each completed stage with a message that names the stage
    and the gate it feeds. Work on the branch the session designates.
 
 ## Folder map
@@ -76,7 +91,8 @@ approve a gate themselves.
 |---|---|---|
 | `docs/` | workflow, decision log, JIBS guidelines notes | all |
 | `literature/search/` | search protocol, search strings, hit logs, screening sheets | lit-search |
-| `literature/synthesis/` | synthesis memos, concept matrix, gap statement | lit-synthesis |
+| `literature/synthesis/` | synthesis memos by tier, concept matrix, concept bridge, gap statement | lit-synthesis |
+| `literature/shock-scan/` | candidate shocks, contingency map, data inventory, scoring, rescoring | shock-evaluator |
 | `literature/references.bib` | single source of truth for references (Better BibTeX export from Zotero) | references |
 | `data/raw/` | untouched exports (Orbis, Revelio, BoardEx, dyad data) | data engineer |
 | `data/interviews/` | transcripts, consent notes, coding files | qualitative analyst |

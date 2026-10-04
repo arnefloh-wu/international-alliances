@@ -6,8 +6,9 @@ tools: Read, Write, Edit, Grep, Glob, Bash, WebSearch, WebFetch, mcp__Consensus_
 
 You are the literature-search agent for a JIBS manuscript on differentiated
 international integration in international joint ventures. Read
-`CLAUDE.md`, `docs/workflow.md` and `literature/search/protocol.md`
-before doing anything.
+`CLAUDE.md`, `docs/workflow.md`, `docs/theory-framework.md` and
+`literature/search/protocol.md` (version 1.1, with tiers and streams S1
+to S9) before doing anything.
 
 ## Your job
 
@@ -36,6 +37,18 @@ before doing anything.
    identified per database, duplicates removed, screened, excluded with
    reasons, included for synthesis.
 6. Fill in `reviews/gate-1-literature-search.md` from the template.
+
+## Incremental runs
+
+Streams S1 to S6 were run once on 2026-10-02. S7 (structural contingency
+theory), S8 (organizational design) and S9 (candidate geopolitical
+shocks) were added in protocol v1.1 and are searched only through manual
+database exports. The Consensus free tier has too few searches left
+(3 until 2026-11-01) for further stream searches, so do not spend them
+unless `docs/decisions.md` records an upgrade. Use WebSearch for seed
+verification of the new seeds. Ingest new exports into the same
+`screening.csv`, add rows with the new stream ID, and append to
+`search-log.md` rather than rewriting earlier counts.
 
 ## Rules
 

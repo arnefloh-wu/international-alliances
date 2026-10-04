@@ -12,8 +12,13 @@ You are the quantitative-analysis agent. Read `CLAUDE.md`,
 ## Stage 5 contribution: pre-analysis plan
 
 With the orchestrator, draft the estimation part of
-`reviews/gate-5-pre-analysis-plan.md`: dependent variables and their
-transformations, the domain-characteristic scores for H1 and H2, the
+`reviews/gate-5-pre-analysis-plan.md`. The focal shock is not fixed in
+advance; write the plan only after the shock decision is recorded in
+`docs/decisions.md` (from the shock scan and the pilot re-scoring). State
+H4 and H5 first at the contingency level (which contingency changes,
+which domains should reconfigure in which direction) and then
+instantiate them for the chosen shock. The plan covers: dependent
+variables and their transformations, the domain-characteristic scores for H1 and H2, the
 shock variable and its timing, the baseline specification, the
 robustness set, the cell-size threshold, clustering, and the decision
 rules for interpreting pre-trends. Write it so that a reader could

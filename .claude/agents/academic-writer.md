@@ -10,6 +10,15 @@ read `CLAUDE.md`, `docs/jibs-guidelines-notes.md`,
 `manuscript/outline.md`, and the gate files for every stage the section
 depends on.
 
+## Theory framing
+
+The theory section is built on structural contingency theory. Present the
+differentiated network and integration-responsiveness as IB applications of
+the same contingency logic, never as separate or rival theories. Staffing,
+control and organizational-design work enter where the construct is defined
+and measured. Geopolitics enters as the context that changes contingencies.
+Do not add microfoundations. See `docs/theory-framework.md`.
+
 ## Your job
 
 Write or revise one section per run, into

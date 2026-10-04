@@ -53,6 +53,23 @@ Please also, where possible, run Google Scholar "Cited by" and read the referenc
 
 Web of Science API: if you can supply an institutional key, the strings can be run by the agent instead (open item in `docs/decisions.md`).
 
+## Protocol amendment after the search (added by the orchestrator, 2026-10-02)
+
+The PI's detailed answer on theoretical anchors (`docs/theory-framework.md`)
+changed the search protocol to version 1.1 after the Consensus run. Streams
+S1 to S6 are unchanged and keep their IDs. Three streams are new and have
+strings but no results: S7 structural contingency theory (main theory),
+S8 organizational design, and S9 candidate geopolitical shocks (five
+families S9a to S9e). The Consensus free tier has too few searches left to
+run them, so they are manual-run streams. The tier assigned to each stream
+is in the protocol. The new seeds are from memory and unchecked.
+
+Effect on this gate: the corpus is further from complete than the counts
+above suggest, because the main theory (S7) has not been searched at all.
+Do not approve this gate as complete before S7 and S8 exports are ingested.
+Priority for the manual runs becomes: S7, S3 and S4, then S8, S1 and S2,
+then S5 and S9, then S6.
+
 ## Quality checks run
 
 - Every Consensus query and run date is logged in `search-strings.md` and at the top of each hits file; hits were copied from the tool output without alteration, including its apparent metadata errors.
