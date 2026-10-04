@@ -420,3 +420,86 @@ Check for citing-reference evidence: only `gong2003subsidiary` used one, for its
 3. `prahalad2017approach` (unsure): if the PI includes it at gate 1, verify the 1981 SMR original first.
 4. `venaik2004new`: DOI, volume and pages still missing (section 9.4, item 5).
 5. List the failed items in the gate 1 file (`reviews/`).
+
+## 11. Web-search evidence applied 2026-10-04
+
+Source of evidence: `literature/zotero/pdf-search-2026-10-04.md`, written by a separate web-search agent; this agent did not edit it. The PI ruled on 2026-10-04 (relayed by the coordinator) on four points. (1) A web-search result counts as evidence when it comes from an accepted source type and its URL is logged, even though the page was not opened. (2) Internet Archive / Open Library and ProQuest records count as catalogue records, and RePEc counts as a repository record; the Questia listing is supporting only. (3) The record corrections listed below are approved. (4) `nguyen2009foreign` is dropped. Originals are cited throughout; fields that only a reissue confirms are left empty and marked "Pages to confirm" in Extra. This section supersedes sections 1 to 10 where they differ.
+
+How the changes were made. For each item: GET, then PATCH with If-Unmodified-Since-Version. The three type changes (Oosten item to report, Andersson to book chapter, Prahalad to journal article) were done by PUT of the full item built from the new type's template, with the same version check. That is 15 write calls plus 1 trash PATCH, all returning 204, with no failures. The only removal is `nguyen2009foreign`, moved to the trash by PATCH `{"deleted": 1}` (reversible), with the reason noted in Extra first. Each verified item's Extra gained `Verified: 2026-10-04 websearch <source type> <URL> (page not opened)` and a `Corrected: 2026-10-04 (PI decision on web-search evidence): ...` line. Afterwards I re-pulled the library and confirmed that every verified item's pinned key matches the key computed from its metadata, with no collisions.
+
+### 11.1 Per item
+
+| Key (new) | Old key | Zotero | Screen | Outcome | Change applied | Evidence (URL in Extra) |
+|---|---|---|---|---|---|---|
+| `doz1990control` | same | 8V3G25M2 | include | verified (in .bib) | verified as the 1990 original; pages to confirm | Internet Archive record of the 1990 Routledge book; Routledge RLE catalogue supporting |
+| `nohria1997differentiated` | same | IKZSRF37 | seed | verified (in .bib) | re-verified on publisher catalogue (replaces book-review evidence) | Wiley (Jossey-Bass) product page |
+| `bartlett1989managing` | same | AJCDXEJ2 | seed | verified (in .bib) | re-verified on publisher institution and catalogue records (replaces book-review evidence) | HBS faculty page (HBS Press); Internet Archive / Open Library supporting |
+| `lawrence1967organization` | same | 6MCT8UKD | seed | verified (in .bib) | re-verified on library catalogue (replaces book-review evidence) | Strathmore University Library catalogue |
+| `killing1983strategies` | same | 7FMHGKUS | seed | verified (in .bib) | verified as the 1983 Praeger edition | Internet Archive catalogue record (LCCN 83013923) |
+| `prahalad1987multinational` | same | A8TZXATM | seed | verified (in .bib) | verified on library catalogue records | WorldCat OCLC 15660416; Open Library / Internet Archive supporting |
+| `schaan1983parent` | same | GQAP8MUB | seed | verified (in .bib) | verified on the university repository record | Scholarship@Western, Digitized Theses 1252 |
+| `ghoshal1993horses` | same | 3APPWAA7 | include | verified (in .bib) | co-author Nohria added; journal, 34(2), 23-35 added | MIT SMR article page; ProQuest supporting |
+| `reus2004interpartner` | same | RM2XMUC2 | include | verified (in .bib) | co-author Ritchie added; volume 44, issue 4 added; pages left empty (conflict) | Erasmus University repository (Pure) |
+| `mohedanosuanes2021control` | `mohedanosuanescontrol` | F5UQTQEU | include | verified (in .bib) | co-author Safón added; dated 2021; journal, 26(4), ISSN added; pages left empty | IJB article PDF (journal site) |
+| `doz1980how` | same | CICN2KGP | unsure | verified | co-author Prahalad added; journal, 58(2), March 1980 added; pages left empty | HBR article page; OSTI supporting |
+| `cocito2004subsidiaries` | `oostenfunctions` | RQ6DD3F8 | unsure | verified | replaced with Cocito, Gatta, Majocchi & Onetti (2004), Insubria WP qf04011 (type journalArticle -> report) | RePEc/IDEAS series record |
+| `prahalad1981approach` | `prahalad2017approach` | 49E3HS6U | unsure | verified | replaced by the 1981 Sloan Management Review original (type bookSection -> journalArticle; 22(4), first page 5; reprint DOI, ISBN, book title, publisher cleared) | ProQuest record |
+| `andersson2018integration` | same | NZTX3AZ7 | unsure | verified | co-author Forsgren added; made a book chapter (2018 Routledge reissue, eds McNaughton & Green, pp. 369-391, DOI) | Crossref chapter DOI + Routledge catalogue (authors) |
+| `downes2000knowledge` | same | UUDXK2UH | include | still unverified | co-author Thomas added; Questia lead noted; stays unverified | Questia issue listing (supporting only) |
+| `nguyen2009foreign` | same | 5VCMDEXP | include | dropped (trash) | moved to trash | nothing found |
+
+Notes on the changes:
+- **`andersson2018integration`:** the search file found no catalogue record for the 2002 Ashgate original (its pages, 343-365, come from citing references only). Following the PI's instruction, the 2018 Routledge chapter is kept and the reason is noted in Extra. It is verified on the Crossref chapter record (title, 2018, pp. 369-391) plus the Routledge catalogue for the authors, and stays out of the .bib (unsure). The search file graded this item "partly verified" and the PI's list did not name it explicitly; if the PI wants it left unverified, revert the tags only.
+- **`prahalad1981approach`:** the item now describes the 1981 SMR original. `pages` holds the first page only ("5") and Extra says "last page to confirm". The former 2017 reprint data is kept in Extra as `Reprint:`. It stays out of the .bib (unsure).
+- **`doz1990control`:** now verified and in the .bib, with no pages.
+- **`mohedanosuanes2021control`:** pages left empty, because the search file does not mark 20-45 as confirmed (search summary only).
+- **`downes2000knowledge`:** co-author Thomas, A. S. added (approved); volume, issue and pages not added. It stays unverified, with the Questia lead in Extra, and is now the only entry in `references-unverified.bib`.
+- **`nguyen2009foreign`:** in the Zotero trash, and removed from `references-unverified.bib`. It can be restored from the trash.
+- **Fields not changed** (not covered by the approval; proposed only):
+  - `doz1980how`: title hyphen ("host-government" in the record, "host government" on the HBR page).
+  - `schaan1983parent`: university written "Univ. of Western Ontario", and the title has odd capitals ("And", "Of").
+  - `reus2004interpartner`: "Interpartner" versus "Inter-partner".
+  - `andersson2018integration`: middle initial "R." (from Consensus, unconfirmed).
+  - Place and ISBN for Killing and Prahalad & Doz 1987 are recorded in Extra only.
+
+### 11.2 Counts after this step
+
+| Outcome | n |
+|---|---|
+| Items in the active library | 113 (plus 1 in the trash) |
+| Verified | 112 (Crossref 98, websearch 13, Crossref + websearch 1) |
+| Still unverified | 1 (`downes2000knowledge`) |
+| Dropped (trash) | 1 (`nguyen2009foreign`) |
+| Verified, screened unsure (not in the .bib) | 19 |
+| Entries in `literature/references.bib` | 93 (include 65, seed 28) |
+| Entries in `literature/references-unverified.bib` | 1 |
+| Keys newly pinned | 9 (`ghoshal1993horses`, `killing1983strategies`, `reus2004interpartner`, `doz1980how`, `schaan1983parent`, `prahalad1987multinational`, `mohedanosuanes2021control`, `cocito2004subsidiaries`, `andersson2018integration`) |
+| Keys changed on items already pinned | 1 (`prahalad2017approach` to `prahalad1981approach`) |
+| Keys changed on unpinned items | 2 (`mohedanosuanescontrol` to `mohedanosuanes2021control`, `oostenfunctions` to `cocito2004subsidiaries`) |
+
+All 28 seed works are now verified and in the .bib.
+
+### 11.3 Fields still to confirm (for the PI's library request)
+
+| Key | In .bib | Field(s) to confirm | Best route |
+|---|---|---|---|
+| `doz1990control` | yes | pages of the 1990 Routledge edition (citing papers give 117-143; 2013 reissue 127-153) | library copy of Bartlett, Doz & Hedlund (Eds.) 1990 |
+| `reus2004interpartner` | yes | pages (369-395 in citing references versus 1-25 in the repository record); title spelling Interpartner / Inter-partner | JSTOR, Management International Review 44(4) |
+| `mohedanosuanes2021control` | yes | pages (20-45 per search summary) | open-access PDF https://ijb.cyut.edu.tw/var/file/10/1010/img/838/V26N4-2.pdf |
+| `ghoshal1993horses` | yes | last page (35 per SMR page summary; citing sources give 35 or 36) | SMR page or ProQuest record |
+| `gong2003subsidiary` | yes | first author (Crossref DOI record lists no authors) | AMJ article PDF or AOM page |
+| `venaik2004new` | yes | DOI, volume and pages; whether to cite as the MIR special issue or as the Gabler chapter (10.1007/978-3-322-90999-2_3, pp. 15-48) | PI decision plus a check of the MIR issue |
+| `doz1980how` | no (unsure) | pages (149-157 per search summaries) | HBR archive or library copy |
+| `prahalad1981approach` | no (unsure) | last page (citing references give 5-13) | ProQuest full text or library copy |
+| `andersson2018integration` | no (unsure) | only if the 2002 Ashgate original is wanted: catalogue record and pages (343-365 per citing references); middle initial of Andersson | library catalogue / copy of McNaughton & Green (Eds.) 2002 |
+| `downes2000knowledge` | no (unverified) | verification itself; volume 12, issue 2, pages 131-149 per citing references | JSTOR record or first-page PDF |
+
+The search agent also recommends a one-click check of each websearch URL, because the pages were seen only through search results (13 items; URLs in each item's Extra).
+
+### 11.4 Still open
+
+1. The page checks in 11.3, and the click-through of the websearch URLs.
+2. `downes2000knowledge`: verify via JSTOR, or drop.
+3. `venaik2004new`: choose the form to cite.
+4. Gate 1: decide on the 19 verified unsure items, and list `downes2000knowledge` as unverified in the gate file (`reviews/`).
+5. Better BibTeX auto-export: limit it to items tagged `verified` and screened include or seed.

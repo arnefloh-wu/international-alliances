@@ -73,17 +73,19 @@ then S5 and S9, then S6.
 ## Reference verification results (added by the orchestrator, updated 2026-10-04)
 
 The reference-manager verified the Stage 1 records imported into Zotero
-(`literature/zotero/verification-report-2026-10-04.md`, sections 9 and 10).
-After the PI's decisions (original works cited, book reviews not accepted),
-99 of 114 are verified and 83 are in `literature/references.bib`. These 15
-records are not verified and must not be cited until resolved:
-andersson2018integration, bartlett1989managing, downes2000knowledge, doz1980how, doz1990control, ghoshal1993horses, killing1983strategies, lawrence1967organization, mohedanosuanescontrol, nguyen2009foreign, nohria1997differentiated, oostenfunctions, prahalad1987multinational, reus2004interpartner, schaan1983parent. Six of them are seeds: Nohria & Ghoshal 1997, Bartlett & Ghoshal
-1989, Lawrence & Lorsch 1967, Prahalad & Doz 1987, Killing 1983 and Schaan
-1983. A web search for PDFs and catalogue records is under way
-(`literature/zotero/pdf-search-2026-10-04.md`). The report also corrects
-three Stage 1 details: Barden, Steensma & Lyles 2005 (not "Steensma et
-al."), Meyer & Li 2022 in Global Strategy Journal, and print years for
-Li et al. 2018 and Harzing et al. 2016.
+(`literature/zotero/verification-report-2026-10-04.md`, sections 9 to 11),
+using Crossref and, after the PI's rulings, web-search evidence from
+publisher, journal, library and repository records
+(`literature/zotero/pdf-search-2026-10-04.md`). 112 of 113 active records
+are verified, all 28 seeds included, and 93 are in
+`literature/references.bib`. One record is not verified and must not be
+cited until resolved: downes2000knowledge (needs the JSTOR record or PDF).
+nguyen2009foreign was dropped by the PI. 19 verified records screened unsure
+await the PI's decision at this gate. Several originals still lack pages
+(section 11.3 of the report). The report also corrects Stage 1 details,
+including Barden, Steensma & Lyles 2005, Meyer & Li 2022 in Global Strategy
+Journal, print years for Li et al. 2018 and Harzing et al. 2016, and the
+"van Oosten" record, which is Cocito et al. 2004.
 
 ## Quality checks run
 
