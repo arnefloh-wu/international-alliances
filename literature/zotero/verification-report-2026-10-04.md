@@ -270,3 +270,106 @@ JIBS references give the year of the issue. Zotero holds the online-first date f
 7. List the 13 failed items in the gate 1 file (`reviews/`). This agent does not write to `reviews/`.
 8. In Zotero, set up the Better BibTeX automatic export to `literature/references.bib` (SKILL.md, step 4) only after the corrections are applied, and exclude the url field. Until then, the .bib written here is the reference-manager's export of the verified, approved subset. A BBT export of the whole group would also include unsure and failed items unless it is limited to items tagged `verified`.
 9. Optionally log the date convention and the book-review verification rule in `docs/decisions.md`; this agent does not write there.
+
+## 9. Corrections applied 2026-10-04
+
+The PI approved the following on 2026-10-04 (relayed by the coordinator): the corrections in sections 4.1 and 4.3; the two section 3 corrections (`verlag2004new`, `palmer1993organization`), each followed by re-verification; and print-issue years for the 9 items in 4.2. The coordinator's message also settled the sub-choices: the name form "Le Nguyen, Huu" for this author; Consensus links moved out of `url`; article numbers only for the AOM abstracts; the standard DOI for Park; ASCII hyphens. Sections 1 to 8 above describe the state before these corrections; this section supersedes them where they differ.
+
+How the changes were made. For each item: GET, then PATCH with If-Unmodified-Since-Version, sending only the changed fields. There were 106 PATCH calls (104 for corrections and url clearing, 2 to mark the re-verified items as verified), all returning 204, with no failures and no deletions. Every corrected item carries a line in Extra: `Corrected: 2026-10-04 (PI-approved, Stage 9): <what changed>`. Afterwards I re-pulled the library and checked every verified item: the key computed from the corrected metadata matches the pinned `citationKey` field and the single `Citation Key:` line in Extra, with no key collisions. I re-checked all corrected items with a DOI against Crossref: title, first author and year still agree, and the new print years are the Crossref published-print years.
+
+### 9.1 Counts after corrections
+
+| Outcome | n |
+|---|---|
+| Verified | 103 (Crossref 100, Crossref book-review record 3) |
+| Failed | 11 (include 5, seed 3, unsure 3) |
+| Verified, screened unsure (not in the .bib) | 16 |
+| Verified include/seed held out | 1 (`doz2017control`) |
+| Entries in `literature/references.bib` | 86 (include 61, seed 25) |
+| Entries in `literature/references-unverified.bib` | 11 |
+| Items with substantive metadata corrections | 38 |
+| Items changed only by clearing the Consensus url | 66 |
+| Citation keys changed | 12 (2 of them first pins after re-verification) |
+
+### 9.2 Key changes
+
+| Zotero | Old key | New key | Reason |
+|---|---|---|---|
+| JPMH5KM5 | `breithaupt2024linked` | `breithaupt2025linked` | print-issue year |
+| PBT7ZJ6A | `fang2009multinational` | `fang2010multinational` | print-issue year |
+| KQUJBDGW | `palmer1993organization` | `ghoshal1993organization` | section 3 correction; re-verified and pinned |
+| QQ66GH9A | `harzing2015bridging` | `harzing2016bridging` | print-issue year |
+| 9X7W8HE8 | `lee2021cultures` | `lee2022cultures` | print-issue year |
+| NWS3NVNJ | `nguyen2009parent` | `lenguyen2009parent` | name form Le Nguyen, Huu |
+| 2HPPVPN5 | `li2017diplomatic` | `li2018diplomatic` | print-issue year |
+| XUFD6BUM | `luo2021springboard` | `luo2022springboard` | print-issue year |
+| HSI42DI8 | `marchetti2025are` | `marchetti2026are` | print-issue year |
+| IH46K4SN | `moura2025how` | `moura2026how` | print-issue year |
+| D7P5XWPU | `raziq2021multinational` | `raziq2023multinational` | print-issue year |
+| VRT67DH3 | `verlag2004new` | `venaik2004new` | section 3 correction; re-verified and pinned |
+
+All changed keys are re-pinned in Zotero. No manuscript or synthesis text uses keys yet, so nothing downstream needed updating.
+
+### 9.3 Changes per item
+
+| Key | Zotero | Change applied |
+|---|---|---|
+| `babina2023firm` | 88QXZTG6 | 4.3 report number and type |
+| `birkinshaw1998corporate` | DM4CTNIE | 4.3 DOI, vol/issue/pages |
+| `birkinshaw2009strategy` | KSPCJSEW | 4.3 editor |
+| `breithaupt2025linked` | JPMH5KM5 | 4.2 date 2024-10-30 -> 2025 (print issue); key breithaupt2024linked -> breithaupt2025linked |
+| `brock2007global` | JWIBN2WD | 4.3 DOI without trailing period |
+| `chen2020global` | T6GHCT2C | 4.3 bookTitle, series, editor |
+| `collings2009global` | JNJRZRDG | 4.3 co-author, DOI, vol/issue/pages |
+| `fang2010multinational` | PBT7ZJ6A | 4.2 date 2009-11-11 -> 2010 (print issue); U+2010 normalized in creator names; key fang2009multinational -> fang2010multinational |
+| `ghoshal1993organization` | KQUJBDGW | section 3 replaced by edited volume (editors, publisher, DOI, ISBN) |
+| `gong2003subsidiary` | JFNH8JXV | 4.3 DOI, vol/issue/pages |
+| `han2019management` | SEU9JU2A | 4.3 article number (in pages) |
+| `harzing2001whos` | 9CQ4TDZJ | U+2010 normalized in creator names |
+| `harzing2016bridging` | QQ66GH9A | 4.3 third author name split; 4.2 date 2015-01-12 -> 2016 (print issue); U+2010 normalized in creator names; key harzing2015bridging -> harzing2016bridging |
+| `heiss2024structure` | PA7CMRVE | 4.3 article number (in pages) |
+| `kostova2002adoption` | UW2MQRIP | 4.3 title case, final period |
+| `lee2022cultures` | 9X7W8HE8 | 4.2 date 2021-04-22 -> 2022 (print issue); key lee2021cultures -> lee2022cultures |
+| `lei2025playing` | Z3W2ZJNV | 4.3 article number (in pages) |
+| `lenguyen2008governing` | 4BZN688X | 4.1 bookTitle, series, editors |
+| `lenguyen2009parent` | NWS3NVNJ | 4.1 outlet, vol/issue, DOI, author name form; key nguyen2009parent -> lenguyen2009parent |
+| `li2018diplomatic` | 2HPPVPN5 | 4.2 date 2017-09-01 -> 2018 (print issue); key li2017diplomatic -> li2018diplomatic |
+| `luo2022springboard` | XUFD6BUM | 4.2 date 2021-04-22 -> 2022 (print issue); key luo2021springboard -> luo2022springboard |
+| `marchetti2026are` | HSI42DI8 | 4.2 date 2025-10 -> 2026 (print issue); key marchetti2025are -> marchetti2026are |
+| `meyer2022mne` | MME5FVKE | 4.1 add co-author, DOI, vol/issue/pages |
+| `moura2026how` | IH46K4SN | 4.3 article number (in pages); 4.2 date 2025-04-17 -> 2026 (print issue); key moura2025how -> moura2026how |
+| `nguyen2009foreign` | 5VCMDEXP | Extra: likely name form noted |
+| `nohria1994differentiated` | 25V6SJ84 | U+2010 normalized in title |
+| `park2009foreign` | K8NEN9IT | 4.3 standard DOI (Crossref gives start page only; pages unchanged) |
+| `pudelko2007countryoforigin` | 39IUDVZ6 | U+2010 normalized in title; U+2010 normalized in creator names |
+| `raziq2023multinational` | D7P5XWPU | 4.2 date 2021-12-14 -> 2023 (print issue); key raziq2021multinational -> raziq2023multinational |
+| `schlegelmilch2022balancing` | KX46549B | 4.3 bookTitle, series |
+| `surlemont1998typology` | PGN2FG2Q | 4.3 editors |
+| `tang2026strategic` | EMNMXID5 | 4.3 article number (in pages) |
+| `teece2022wideraperture` | ZK9N7IWP | U+2010 normalized in title |
+| `thompson2004empirical` | FAR2F3NV | U+2010 normalized in title |
+| `venaik2004new` | VRT67DH3 | section 3 creators corrected (Venaik, Midgley & Devinney) |
+| `wang2026organizational` | 4PI4P4WJ | 4.3 article number (in pages) |
+| `westney2021mncs` | FBGVIHMZ | 4.3 editors |
+| `yan1994bargaining` | UDSFVGB2 | 4.3 title case, author names, final period |
+| `ghoshal1993organization`, `venaik2004new` | KQUJBDGW, VRT67DH3 | Re-verified after correction. Tags `unverified` and `verification-failed` removed, `verified` and `verified:2026-10-04` added; key pinned; `Verified:` line added to Extra (the earlier `Verification failed:` line is kept as history). |
+| all items with a Consensus link (101) | | `url` cleared. In every case the link already stood in Extra as "Consensus URL: <link>" (inside the screening note), so no duplicate line was added. |
+
+Details of the implementation:
+- Article numbers went into `pages`, because the Zotero item schema served by the API has no article-number field. In the .bib they therefore appear as `pages`.
+- Dates of the 9 re-dated items hold the print year only; the earlier online-first date is in Extra as `Online first: <date>`.
+- `park2009foreign`: Crossref gives only the start page (113), so `pages` is unchanged.
+- `lenguyen2008governing`: the editor Cliquet is entered as "Gérard", the form in the Crossref book record.
+- `nguyen2009foreign` (failed) is unchanged except for an Extra line: `Likely name form: Le Nguyen, Huu (same author as NWS3NVNJ and 4BZN688X; not confirmed for this item)`.
+- `ghoshal1993organization` stays screened unsure, so it is not in the .bib. `venaik2004new` is include and is now in the .bib.
+
+### 9.4 Still open
+
+1. Version to cite for `doz2017control` (held out of the .bib) and the other check-version items (section 5): `birkinshaw2009strategy` versus the 2001 first-edition chapter, and `prahalad2017approach` versus the 1981 SMR original.
+2. Whether the Crossref book-review evidence is accepted for `bartlett1989managing`, `lawrence1967organization` and `nohria1997differentiated`. They remain verified and in the .bib, flagged here.
+3. The 11 items that still fail (section 3, minus `verlag2004new` and `palmer1993organization`): seeds `prahalad1987multinational`, `killing1983strategies`, `schaan1983parent`; includes `ghoshal1993horses`, `reus2004interpartner`, `downes2000knowledge`, `nguyen2009foreign`, `mohedanosuanescontrol`; unsure `doz1980how`, `andersson2018integration`, `oostenfunctions`.
+4. Whether AOM Proceedings abstracts (`heiss2024structure`, `lei2025playing`, `tang2026strategic`) are citable for JIBS. Article numbers were added; the item type was not changed.
+5. Not part of the approval, proposed as follow-up: `venaik2004new` has no DOI, volume or pages. Crossref holds it as a chapter (pp. 15-48, 10.1007/978-3-322-90999-2_3) in a Gabler volume titled "Management International Review" (edited by Brock and Birkinshaw), while Zotero types it as a journal article. The PI should decide whether to cite it as an MIR special issue (volume and issue to confirm) or as the Gabler chapter.
+6. `wang2026organizational` and `atanassova2026sociopolitical` are online-first without a volume; check again before submission.
+7. List the 11 failed items in the gate 1 file (`reviews/`), and note the key changes there if gate 1 materials quote keys.
+8. Turn on the Better BibTeX auto-export, limited to items tagged `verified` and screened include or seed, with `doz2017control` excluded until its version is decided.

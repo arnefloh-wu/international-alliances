@@ -70,6 +70,20 @@ Do not approve this gate as complete before S7 and S8 exports are ingested.
 Priority for the manual runs becomes: S7, S3 and S4, then S8, S1 and S2,
 then S5 and S9, then S6.
 
+## Reference verification results (added by the orchestrator, 2026-10-04)
+
+The reference-manager verified the Stage 1 records imported into Zotero
+(`literature/zotero/verification-report-2026-10-04.md`). 103 of 114 are
+verified and 86 are in `literature/references.bib`. These 11 records failed
+verification and must not be cited until resolved: andersson2018integration,
+downes2000knowledge, doz1980how, ghoshal1993horses, killing1983strategies,
+mohedanosuanescontrol, nguyen2009foreign, oostenfunctions,
+prahalad1987multinational, reus2004interpartner, schaan1983parent. Three of
+them are seeds (Prahalad & Doz 1987, Killing 1983, Schaan 1983). The report
+also corrects three Stage 1 details: Barden, Steensma & Lyles 2005 (not
+"Steensma et al."), Meyer & Li 2022 in Global Strategy Journal, and print
+years for Li et al. 2018 and Harzing et al. 2016.
+
 ## Quality checks run
 
 - Every Consensus query and run date is logged in `search-strings.md` and at the top of each hits file; hits were copied from the tool output without alteration, including its apparent metadata errors.
