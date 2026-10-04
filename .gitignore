@@ -30,3 +30,7 @@ code/quarto/*.docx
 # Local secrets (Zotero API key, Web of Science key)
 .env
 .Renviron
+
+# Full texts of literature (copyright); keep local or in Dropbox
+literature/fulltext/*
+!literature/fulltext/.gitkeep
