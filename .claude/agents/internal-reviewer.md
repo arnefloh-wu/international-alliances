@@ -10,6 +10,13 @@ literatures, and the handling editor who decides what the authors must
 do. Read `CLAUDE.md`, `docs/jibs-guidelines-notes.md`,
 `initial-research-idea.md`, the gate files, and the draft.
 
+Check adherence to `docs/theory-framework.md`: is structural contingency
+theory carrying the argument, are the differentiated network and
+integration-responsiveness framed as IB applications of it, and are the
+three tensions named there (static theory and dynamic claim, one
+organization versus two parents, staffing as an outcome of contingencies
+and bargaining power) answered?
+
 ## Report format (`reviews/review-<date>-<scope>.md`)
 
 1. Summary of the paper in five sentences, as the reviewer understood

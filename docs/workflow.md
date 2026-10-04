@@ -18,8 +18,17 @@ approved in `reviews/`, and runs the next stage.
    analyses are scripts, prose cites only verified references.
 5. The feasibility risk named in the research idea (entity matching and
    workforce coverage) is tested before hypotheses are finalized. The
-   pilot therefore precedes the panel, and the focal shock is chosen only
-   after the pilot.
+   pilot therefore precedes the panel.
+6. The theory hierarchy in `docs/theory-framework.md` binds every stage:
+   structural contingency theory is the main theory, the differentiated
+   network and integration-responsiveness are related IB frameworks,
+   staffing, control and organizational design are supporting
+   literatures, and geopolitics is the environmental context.
+7. The focal shock is not fixed in advance. It is chosen in two steps
+   (a desk scan with a shortlist, then re-scoring with pilot exposure
+   counts) on theoretical fit, measurement quality, identification
+   potential, sample coverage and substantive novelty, and never by
+   looking at the outcomes.
 
 ## Stages, agents, gates
 
@@ -27,10 +36,11 @@ approved in `reviews/`, and runs the next stage.
 |---|---|---|---|---|---|---|
 | 0 | Project setup | orchestrator | `/research-workflow setup` | research idea, PI answers | `docs/decisions.md`, folder scaffold | none |
 | 1 | Literature search | `literature-searcher` | `/lit-search` | search protocol | search strings, hit logs, screening sheet, Consensus results | G1 Literature search |
-| 2 | Literature synthesis | `literature-synthesizer` | `/lit-synthesis` | screened hit list, full texts or abstracts | concept matrix, synthesis memos per stream, gap statement, theory-section outline | G2 Synthesis |
+| 2 | Literature synthesis | `literature-synthesizer` | `/lit-synthesis` | screened hit list, full texts or abstracts | concept matrix, memos per tier (T1 contingency theory, T2 IB frameworks, T3 supporting literatures, T4 geopolitics, methods), concept bridge, gap statement, theory-section outline | G2 Synthesis |
 | 3 | Qualitative recoding | `qualitative-analyst` | `/qual-recode` | interview transcripts, consent notes | codebook, coded matrix, measurement memo, proposition memo | G3 Qualitative phase |
 | 4 | Pilot feasibility | `data-engineer` | `/pilot-feasibility` | Orbis export (approx. 100 IJVs), Revelio export | match log, coverage tables, pilot feasibility report | G4 Pilot and go/no-go |
-| 5 | Shock selection and hypotheses | orchestrator with `quant-analyst` | `/research-workflow hypotheses` | pilot report, synthesis, qualitative memo, PI decision on shock | final hypotheses, measurement specification, pre-analysis plan | G5 Pre-analysis plan |
+| 5a | Shock scan | `shock-evaluator` | `/shock-options scan` | theory framework, search block S9, web sources, interview triggers if available | candidate long list with contingency map, literature scan, data inventory, scoring on five criteria, shortlist of three to five | G5a Shock shortlist |
+| 5 | Shock re-scoring, final shock and hypotheses | `shock-evaluator`, then orchestrator with `quant-analyst` | `/shock-options rescore`, then `/research-workflow hypotheses` | pilot report, synthesis, qualitative memo, G5a shortlist, PI decision on shock | exposure counts per shortlisted shock, final shock, hypotheses (contingency level, then instantiated), measurement specification, pre-analysis plan | G5 Pre-analysis plan |
 | 6 | Panel construction | `data-engineer` | `/panel-build` | full exports, measurement spec | IJV-function-year and IJV-level-year panels, codebook | G6 Panel |
 | 7 | Estimation | `quant-analyst` | `/estimate` | panel, pre-analysis plan | model scripts, tables, figures, analysis report | G7 Results |
 | 8 | Writing | `academic-writer` | `/write-section <section>` | everything above | manuscript sections in `manuscript/sections/` | G8 per section, G9 full draft |
@@ -38,8 +48,10 @@ approved in `reviews/`, and runs the next stage.
 | 10 | Internal review | `internal-reviewer` | `/internal-review` | full draft | JIBS-style review report, revision list | G10 Submission readiness |
 
 Stages 1 to 3 can run in parallel. Stage 4 needs only the Orbis and
-Revelio exports and can run in parallel with 1 to 3. Stage 5 needs G2,
-G3 and G4. Everything after 5 is sequential.
+Revelio exports and can run in parallel with 1 to 3. Stage 5a needs no
+prerequisite and can run in parallel with 1 to 4, but it is better
+informed if the interview triggers from stage 3 exist. Stage 5 needs G2,
+G3, G4 and G5a. Everything after 5 is sequential.
 
 ## Gate files
 

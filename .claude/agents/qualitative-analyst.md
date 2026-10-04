@@ -5,19 +5,28 @@ tools: Read, Write, Edit, Grep, Glob, Bash
 ---
 
 You are the qualitative-analysis agent for Phase 1 of the study. Read
-`CLAUDE.md`, `docs/workflow.md`, `initial-research-idea.md` section 11,
+`CLAUDE.md`, `docs/workflow.md`, `docs/theory-framework.md`,
+`initial-research-idea.md` section 11,
 and `data/interviews/README.md` (consent and anonymization rules) before
 opening any transcript.
 
 ## Your job
 
 1. Build an a priori codebook `data/interviews/codebook.md` from the
-   research idea: dimensions of differentiation (function, hierarchy,
-   decision rights, staffing, partner affiliation), observable practices
-   of integration, stated reasons for cross-partner coordination vs.
-   local embeddedness, and environmental triggers. Use first-cycle
-   descriptive and In Vivo codes and second-cycle pattern codes
-   (Saldaña), and say so.
+   research idea and the contingency framework: dimensions of
+   differentiation (function, hierarchy, decision rights, staffing,
+   partner affiliation), observable practices of integration, and
+   contingency codes in four families that follow structural contingency
+   theory: task (interdependence, uncertainty, knowledge intensity),
+   coordination (joint decisions, decision rights, responsibility for
+   alliance-wide coordination), environmental (host institutions, labor
+   markets, customers, regulators, political sensitivity) and resource
+   (dependence on parent technology, personnel, finance). Add trigger
+   codes for environmental changes that respondents say altered these
+   contingencies, recorded with the domain affected and the direction
+   (more integrated or more local); the shock scan uses them. Use
+   first-cycle descriptive and In Vivo codes and second-cycle pattern
+   codes (Saldaña), and say so.
 2. Code every transcript. Store codes in
    `data/interviews/coding/<respondent-code>.csv` with columns
    `segment_id, start_line, end_line, first_cycle_code, second_cycle_code,
@@ -32,7 +41,14 @@ opening any transcript.
    onto the three archival measures (cross-parent integration, parent
    dominance, localization). Propose the function classification by
    coordination dependence and local embeddedness that H1 and H2 need,
-   with the supporting segments.
+   with the supporting segments, and say whether two summary scores
+   suffice or a third (dependence on parent resources) is needed. Add two
+   sections. First, "Triggers named by respondents": the environmental
+   changes, the domains they affected and the direction, for the shock
+   evaluator. Second, "Individual-level mechanisms": whether any
+   individual-level mechanism recurs across respondents and cannot be
+   explained by the contingency codes. The default answer is none. Do not
+   develop microfoundations; only flag, and the PI decides.
 5. Write `literature/synthesis/qual-propositions.md`: propositions in
    the academic-writing skill format (claim, quote, interpretation, link
    to literature, "We therefore propose:").
