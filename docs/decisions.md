@@ -26,6 +26,7 @@ each section. Agents append; they do not rewrite history.
 | 2026-10-02 | Shock selection uses exposure counts, design properties and literature evidence only. It must not use patterns in the integration outcomes, to avoid choosing the shock by its results. | Workflow rule added when implementing the PI's answer; PI to confirm. |
 | 2026-10-02 | H4 and H5 in the research idea assume geopolitical deterioration. They are restated at the contingency level and then instantiated for the chosen shock in the pre-analysis plan. | Workflow rule added when implementing the PI's answer; PI to confirm. |
 | 2026-10-02 | Protocol version 1.1 adds three streams: S7 structural contingency theory, S8 organizational design, S9 candidate geopolitical shocks. Streams S1 to S6 keep their numbers. | Follows from the theory hierarchy. |
+| 2026-10-04 | Zotero group library "international-alliances" (group ID 6702272) is the project library; the API key has read and write access. The 114 Stage 1 records screened as include, seed or unsure were imported into the collection "Stage 1 - Consensus search 2026-10-02 (unverified)", with metadata from Crossref where a strict title, author and year match existed (93 items) and from the screening sheet otherwise (21 items, tagged `metadata-check`). All carry the tag `unverified`; none is in `literature/references.bib` until the reference-manager verifies it. Mapping in `literature/zotero/import-2026-10-04-consensus.csv`. | PI request; Stage 9 conventions. |
 
 ## Open
 
