@@ -270,3 +270,236 @@ JIBS references give the year of the issue. Zotero holds the online-first date f
 7. List the 13 failed items in the gate 1 file (`reviews/`). This agent does not write to `reviews/`.
 8. In Zotero, set up the Better BibTeX automatic export to `literature/references.bib` (SKILL.md, step 4) only after the corrections are applied, and exclude the url field. Until then, the .bib written here is the reference-manager's export of the verified, approved subset. A BBT export of the whole group would also include unsure and failed items unless it is limited to items tagged `verified`.
 9. Optionally log the date convention and the book-review verification rule in `docs/decisions.md`; this agent does not write there.
+
+## 9. Corrections applied 2026-10-04
+
+The PI approved the following on 2026-10-04 (relayed by the coordinator): the corrections in sections 4.1 and 4.3; the two section 3 corrections (`verlag2004new`, `palmer1993organization`), each followed by re-verification; and print-issue years for the 9 items in 4.2. The coordinator's message also settled the sub-choices: the name form "Le Nguyen, Huu" for this author; Consensus links moved out of `url`; article numbers only for the AOM abstracts; the standard DOI for Park; ASCII hyphens. Sections 1 to 8 above describe the state before these corrections; this section supersedes them where they differ.
+
+How the changes were made. For each item: GET, then PATCH with If-Unmodified-Since-Version, sending only the changed fields. There were 106 PATCH calls (104 for corrections and url clearing, 2 to mark the re-verified items as verified), all returning 204, with no failures and no deletions. Every corrected item carries a line in Extra: `Corrected: 2026-10-04 (PI-approved, Stage 9): <what changed>`. Afterwards I re-pulled the library and checked every verified item: the key computed from the corrected metadata matches the pinned `citationKey` field and the single `Citation Key:` line in Extra, with no key collisions. I re-checked all corrected items with a DOI against Crossref: title, first author and year still agree, and the new print years are the Crossref published-print years.
+
+### 9.1 Counts after corrections
+
+| Outcome | n |
+|---|---|
+| Verified | 103 (Crossref 100, Crossref book-review record 3) |
+| Failed | 11 (include 5, seed 3, unsure 3) |
+| Verified, screened unsure (not in the .bib) | 16 |
+| Verified include/seed held out | 1 (`doz2017control`) |
+| Entries in `literature/references.bib` | 86 (include 61, seed 25) |
+| Entries in `literature/references-unverified.bib` | 11 |
+| Items with substantive metadata corrections | 38 |
+| Items changed only by clearing the Consensus url | 66 |
+| Citation keys changed | 12 (2 of them first pins after re-verification) |
+
+### 9.2 Key changes
+
+| Zotero | Old key | New key | Reason |
+|---|---|---|---|
+| JPMH5KM5 | `breithaupt2024linked` | `breithaupt2025linked` | print-issue year |
+| PBT7ZJ6A | `fang2009multinational` | `fang2010multinational` | print-issue year |
+| KQUJBDGW | `palmer1993organization` | `ghoshal1993organization` | section 3 correction; re-verified and pinned |
+| QQ66GH9A | `harzing2015bridging` | `harzing2016bridging` | print-issue year |
+| 9X7W8HE8 | `lee2021cultures` | `lee2022cultures` | print-issue year |
+| NWS3NVNJ | `nguyen2009parent` | `lenguyen2009parent` | name form Le Nguyen, Huu |
+| 2HPPVPN5 | `li2017diplomatic` | `li2018diplomatic` | print-issue year |
+| XUFD6BUM | `luo2021springboard` | `luo2022springboard` | print-issue year |
+| HSI42DI8 | `marchetti2025are` | `marchetti2026are` | print-issue year |
+| IH46K4SN | `moura2025how` | `moura2026how` | print-issue year |
+| D7P5XWPU | `raziq2021multinational` | `raziq2023multinational` | print-issue year |
+| VRT67DH3 | `verlag2004new` | `venaik2004new` | section 3 correction; re-verified and pinned |
+
+All changed keys are re-pinned in Zotero. No manuscript or synthesis text uses keys yet, so nothing downstream needed updating.
+
+### 9.3 Changes per item
+
+| Key | Zotero | Change applied |
+|---|---|---|
+| `babina2023firm` | 88QXZTG6 | 4.3 report number and type |
+| `birkinshaw1998corporate` | DM4CTNIE | 4.3 DOI, vol/issue/pages |
+| `birkinshaw2009strategy` | KSPCJSEW | 4.3 editor |
+| `breithaupt2025linked` | JPMH5KM5 | 4.2 date 2024-10-30 -> 2025 (print issue); key breithaupt2024linked -> breithaupt2025linked |
+| `brock2007global` | JWIBN2WD | 4.3 DOI without trailing period |
+| `chen2020global` | T6GHCT2C | 4.3 bookTitle, series, editor |
+| `collings2009global` | JNJRZRDG | 4.3 co-author, DOI, vol/issue/pages |
+| `fang2010multinational` | PBT7ZJ6A | 4.2 date 2009-11-11 -> 2010 (print issue); U+2010 normalized in creator names; key fang2009multinational -> fang2010multinational |
+| `ghoshal1993organization` | KQUJBDGW | section 3 replaced by edited volume (editors, publisher, DOI, ISBN) |
+| `gong2003subsidiary` | JFNH8JXV | 4.3 DOI, vol/issue/pages |
+| `han2019management` | SEU9JU2A | 4.3 article number (in pages) |
+| `harzing2001whos` | 9CQ4TDZJ | U+2010 normalized in creator names |
+| `harzing2016bridging` | QQ66GH9A | 4.3 third author name split; 4.2 date 2015-01-12 -> 2016 (print issue); U+2010 normalized in creator names; key harzing2015bridging -> harzing2016bridging |
+| `heiss2024structure` | PA7CMRVE | 4.3 article number (in pages) |
+| `kostova2002adoption` | UW2MQRIP | 4.3 title case, final period |
+| `lee2022cultures` | 9X7W8HE8 | 4.2 date 2021-04-22 -> 2022 (print issue); key lee2021cultures -> lee2022cultures |
+| `lei2025playing` | Z3W2ZJNV | 4.3 article number (in pages) |
+| `lenguyen2008governing` | 4BZN688X | 4.1 bookTitle, series, editors |
+| `lenguyen2009parent` | NWS3NVNJ | 4.1 outlet, vol/issue, DOI, author name form; key nguyen2009parent -> lenguyen2009parent |
+| `li2018diplomatic` | 2HPPVPN5 | 4.2 date 2017-09-01 -> 2018 (print issue); key li2017diplomatic -> li2018diplomatic |
+| `luo2022springboard` | XUFD6BUM | 4.2 date 2021-04-22 -> 2022 (print issue); key luo2021springboard -> luo2022springboard |
+| `marchetti2026are` | HSI42DI8 | 4.2 date 2025-10 -> 2026 (print issue); key marchetti2025are -> marchetti2026are |
+| `meyer2022mne` | MME5FVKE | 4.1 add co-author, DOI, vol/issue/pages |
+| `moura2026how` | IH46K4SN | 4.3 article number (in pages); 4.2 date 2025-04-17 -> 2026 (print issue); key moura2025how -> moura2026how |
+| `nguyen2009foreign` | 5VCMDEXP | Extra: likely name form noted |
+| `nohria1994differentiated` | 25V6SJ84 | U+2010 normalized in title |
+| `park2009foreign` | K8NEN9IT | 4.3 standard DOI (Crossref gives start page only; pages unchanged) |
+| `pudelko2007countryoforigin` | 39IUDVZ6 | U+2010 normalized in title; U+2010 normalized in creator names |
+| `raziq2023multinational` | D7P5XWPU | 4.2 date 2021-12-14 -> 2023 (print issue); key raziq2021multinational -> raziq2023multinational |
+| `schlegelmilch2022balancing` | KX46549B | 4.3 bookTitle, series |
+| `surlemont1998typology` | PGN2FG2Q | 4.3 editors |
+| `tang2026strategic` | EMNMXID5 | 4.3 article number (in pages) |
+| `teece2022wideraperture` | ZK9N7IWP | U+2010 normalized in title |
+| `thompson2004empirical` | FAR2F3NV | U+2010 normalized in title |
+| `venaik2004new` | VRT67DH3 | section 3 creators corrected (Venaik, Midgley & Devinney) |
+| `wang2026organizational` | 4PI4P4WJ | 4.3 article number (in pages) |
+| `westney2021mncs` | FBGVIHMZ | 4.3 editors |
+| `yan1994bargaining` | UDSFVGB2 | 4.3 title case, author names, final period |
+| `ghoshal1993organization`, `venaik2004new` | KQUJBDGW, VRT67DH3 | Re-verified after correction. Tags `unverified` and `verification-failed` removed, `verified` and `verified:2026-10-04` added; key pinned; `Verified:` line added to Extra (the earlier `Verification failed:` line is kept as history). |
+| all items with a Consensus link (101) | | `url` cleared. In every case the link already stood in Extra as "Consensus URL: <link>" (inside the screening note), so no duplicate line was added. |
+
+Details of the implementation:
+- Article numbers went into `pages`, because the Zotero item schema served by the API has no article-number field. In the .bib they therefore appear as `pages`.
+- Dates of the 9 re-dated items hold the print year only; the earlier online-first date is in Extra as `Online first: <date>`.
+- `park2009foreign`: Crossref gives only the start page (113), so `pages` is unchanged.
+- `lenguyen2008governing`: the editor Cliquet is entered as "Gérard", the form in the Crossref book record.
+- `nguyen2009foreign` (failed) is unchanged except for an Extra line: `Likely name form: Le Nguyen, Huu (same author as NWS3NVNJ and 4BZN688X; not confirmed for this item)`.
+- `ghoshal1993organization` stays screened unsure, so it is not in the .bib. `venaik2004new` is include and is now in the .bib.
+
+### 9.4 Still open
+
+1. Version to cite for `doz2017control` (held out of the .bib) and the other check-version items (section 5): `birkinshaw2009strategy` versus the 2001 first-edition chapter, and `prahalad2017approach` versus the 1981 SMR original.
+2. Whether the Crossref book-review evidence is accepted for `bartlett1989managing`, `lawrence1967organization` and `nohria1997differentiated`. They remain verified and in the .bib, flagged here.
+3. The 11 items that still fail (section 3, minus `verlag2004new` and `palmer1993organization`): seeds `prahalad1987multinational`, `killing1983strategies`, `schaan1983parent`; includes `ghoshal1993horses`, `reus2004interpartner`, `downes2000knowledge`, `nguyen2009foreign`, `mohedanosuanescontrol`; unsure `doz1980how`, `andersson2018integration`, `oostenfunctions`.
+4. Whether AOM Proceedings abstracts (`heiss2024structure`, `lei2025playing`, `tang2026strategic`) are citable for JIBS. Article numbers were added; the item type was not changed.
+5. Not part of the approval, proposed as follow-up: `venaik2004new` has no DOI, volume or pages. Crossref holds it as a chapter (pp. 15-48, 10.1007/978-3-322-90999-2_3) in a Gabler volume titled "Management International Review" (edited by Brock and Birkinshaw), while Zotero types it as a journal article. The PI should decide whether to cite it as an MIR special issue (volume and issue to confirm) or as the Gabler chapter.
+6. `wang2026organizational` and `atanassova2026sociopolitical` are online-first without a volume; check again before submission.
+7. List the 11 failed items in the gate 1 file (`reviews/`), and note the key changes there if gate 1 materials quote keys.
+8. Turn on the Better BibTeX auto-export, limited to items tagged `verified` and screened include or seed, with `doz2017control` excluded until its version is decided.
+
+## 10. Decisions applied 2026-10-04 (versions, book reviews, proceedings)
+
+The PI made three further decisions on 2026-10-04, relayed by the coordinator: (1) cite original works, not reprints or reissues; (2) book reviews do not count as verification evidence, and neither do citing references; (3) Academy of Management Proceedings abstracts can be cited. Each change was applied by GET, then PATCH with If-Unmodified-Since-Version, sending only the fields named below. There were 8 PATCH calls, all returning 204, with no failures and no deletions. This section supersedes sections 1 to 9 where they differ.
+
+### 10.1 Versions (decision 1)
+
+| Key | Zotero | Action |
+|---|---|---|
+| `doz1990control` (was `doz2017control`) | 8V3G25M2 | Corrected to the 1990 original chapter in Bartlett, Christopher; Doz, Yves; Hedlund, Gunnar (Eds.), Managing the Global Firm, Routledge, 1990. Editor given names follow the Crossref record of the 2013 reissue. Changes: date 2017-10-23 to 1990; bookTitle "International Business" to "Managing the Global Firm"; editors added; the 2017 reprint DOI (10.4324/9781315199689-24), ISBN (9781315199689) and pages (349-375) cleared. Extra now holds `Reissue:` (2013 RLE chapter 10.4324/9780203077948-14, pp. 127-153) and `Reprint:` (the former 2017 data). Key re-pinned as doz1990control. Tags `verified` and `verified:2026-10-04` removed; `verification-failed` and `unverified` added. Reason: "1990 edition details need a catalogue record or PDF". Not in the .bib; listed in `references-unverified.bib`. |
+| `prahalad2017approach` | 49E3HS6U | Item unchanged (screened unsure; still verified as the 2017 reprint record). Extra gained a `Version to cite:` line: Prahalad, C. K., & Doz, Y. L. (1981), An approach to strategic control in MNCs, Sloan Management Review, 22(4), 5-13. This rests on citing references only and is unverified. |
+| `killing1983strategies` | 7FMHGKUS | Still failed. Extra gained a `Version to cite:` line: the 1983 Praeger edition, not the 2013 Routledge reissue (10.4324/9780203077757). |
+| `birkinshaw2009strategy` | KSPCJSEW | No change. The 2009 chapter is a revised second-edition chapter with a new co-author (Pedersen), not a reprint of the 2001 first-edition chapter (Birkinshaw alone, 10.1093/0199241821.003.0014), so it counts as its own work. It stays verified on its DOI and stays in the .bib. |
+| `surlemont1998typology`, `lenguyen2008governing`, `chen2020global` | | No change. No earlier version was found (section 5), so these chapters are the originals. |
+
+### 10.2 Book reviews and citing references (decision 2)
+
+Reverted to failed: `nohria1997differentiated` (IKZSRF37), `bartlett1989managing` (AJCDXEJ2), `lawrence1967organization` (6MCT8UKD). For each: tags `verified` and `verified:2026-10-04` removed; `verification-failed` and `unverified` added; Extra gained "Verification failed: 2026-10-04 book-review evidence not accepted; needs catalogue record or PDF". The pinned keys were kept (citationKey field and the `Citation Key:` line). All three were removed from `references.bib` and added to `references-unverified.bib`. The earlier `Verified:` lines stay in Extra as history, followed by the failure line.
+
+Check for other book-review evidence: none. The only other book-type verification, `ghoshal1993organization`, rests on the Crossref book record itself (10.1007/978-1-349-22557-6), not on a review. `doz2017control` had been verified on its 2017 reprint DOI; now that it is the 1990 original, it is failed (10.1).
+
+Check for citing-reference evidence: only `gong2003subsidiary` used one, for its first author. Re-checked against the Crossref DOI record 10.2307/30040664: the title ("Subsidiary staffing in multinational enterprises: Agency, resources, and performance"), journal (Academy of Management Journal), volume 46, issue 6, pages 728-739 and year 2003 all match the Zotero item. It therefore stays verified, on the DOI record alone. The record lists no authors, so first author Gong is not independently verified by Crossref; Extra gained a `Verification basis:` line saying so. No other verification relied on citing references: in section 3 they were used only as leads for failed items.
+
+### 10.3 Proceedings (decision 3)
+
+`heiss2024structure`, `lei2025playing` and `tang2026strategic` remain journal articles in Academy of Management Proceedings, with the article numbers added in section 9 (in `pages`). No further change. They stay in the .bib.
+
+### 10.4 Counts after decisions
+
+| Outcome | n |
+|---|---|
+| Verified | 99 (all Crossref; no book-review evidence remains) |
+| Failed | 15 (include 6, seed 6, unsure 3) |
+| Verified, screened unsure (not in the .bib) | 16 |
+| Verified include/seed held out | 0 |
+| Entries in `literature/references.bib` | 83 (include 61, seed 22) |
+| Entries in `literature/references-unverified.bib` | 15 |
+| Keys changed in this step | 1 (`doz2017control` to `doz1990control`) |
+| Failed items with a pinned key | 4 (`doz1990control`, `nohria1997differentiated`, `bartlett1989managing`, `lawrence1967organization`) |
+
+### 10.5 Still open
+
+1. The 15 failed items: seeds `prahalad1987multinational`, `killing1983strategies`, `schaan1983parent`, `nohria1997differentiated`, `bartlett1989managing`, `lawrence1967organization`; includes `doz1990control`, `ghoshal1993horses`, `reus2004interpartner`, `downes2000knowledge`, `nguyen2009foreign`, `mohedanosuanescontrol`; unsure `doz1980how`, `andersson2018integration`, `oostenfunctions`. A separate agent is searching for PDFs and catalogue records (`literature/zotero/pdf-search-2026-10-04.md`, not touched here). Once evidence arrives, the reference-manager re-verifies these items and moves them into the .bib.
+2. `gong2003subsidiary`: first author not independently verified (the DOI record lists no authors). A PDF of the article would close this.
+3. `prahalad2017approach` (unsure): if the PI includes it at gate 1, verify the 1981 SMR original first.
+4. `venaik2004new`: DOI, volume and pages still missing (section 9.4, item 5).
+5. List the failed items in the gate 1 file (`reviews/`).
+
+## 11. Web-search evidence applied 2026-10-04
+
+Source of evidence: `literature/zotero/pdf-search-2026-10-04.md`, written by a separate web-search agent; this agent did not edit it. The PI ruled on 2026-10-04 (relayed by the coordinator) on four points. (1) A web-search result counts as evidence when it comes from an accepted source type and its URL is logged, even though the page was not opened. (2) Internet Archive / Open Library and ProQuest records count as catalogue records, and RePEc counts as a repository record; the Questia listing is supporting only. (3) The record corrections listed below are approved. (4) `nguyen2009foreign` is dropped. Originals are cited throughout; fields that only a reissue confirms are left empty and marked "Pages to confirm" in Extra. This section supersedes sections 1 to 10 where they differ.
+
+How the changes were made. For each item: GET, then PATCH with If-Unmodified-Since-Version. The three type changes (Oosten item to report, Andersson to book chapter, Prahalad to journal article) were done by PUT of the full item built from the new type's template, with the same version check. That is 15 write calls plus 1 trash PATCH, all returning 204, with no failures. The only removal is `nguyen2009foreign`, moved to the trash by PATCH `{"deleted": 1}` (reversible), with the reason noted in Extra first. Each verified item's Extra gained `Verified: 2026-10-04 websearch <source type> <URL> (page not opened)` and a `Corrected: 2026-10-04 (PI decision on web-search evidence): ...` line. Afterwards I re-pulled the library and confirmed that every verified item's pinned key matches the key computed from its metadata, with no collisions.
+
+### 11.1 Per item
+
+| Key (new) | Old key | Zotero | Screen | Outcome | Change applied | Evidence (URL in Extra) |
+|---|---|---|---|---|---|---|
+| `doz1990control` | same | 8V3G25M2 | include | verified (in .bib) | verified as the 1990 original; pages to confirm | Internet Archive record of the 1990 Routledge book; Routledge RLE catalogue supporting |
+| `nohria1997differentiated` | same | IKZSRF37 | seed | verified (in .bib) | re-verified on publisher catalogue (replaces book-review evidence) | Wiley (Jossey-Bass) product page |
+| `bartlett1989managing` | same | AJCDXEJ2 | seed | verified (in .bib) | re-verified on publisher institution and catalogue records (replaces book-review evidence) | HBS faculty page (HBS Press); Internet Archive / Open Library supporting |
+| `lawrence1967organization` | same | 6MCT8UKD | seed | verified (in .bib) | re-verified on library catalogue (replaces book-review evidence) | Strathmore University Library catalogue |
+| `killing1983strategies` | same | 7FMHGKUS | seed | verified (in .bib) | verified as the 1983 Praeger edition | Internet Archive catalogue record (LCCN 83013923) |
+| `prahalad1987multinational` | same | A8TZXATM | seed | verified (in .bib) | verified on library catalogue records | WorldCat OCLC 15660416; Open Library / Internet Archive supporting |
+| `schaan1983parent` | same | GQAP8MUB | seed | verified (in .bib) | verified on the university repository record | Scholarship@Western, Digitized Theses 1252 |
+| `ghoshal1993horses` | same | 3APPWAA7 | include | verified (in .bib) | co-author Nohria added; journal, 34(2), 23-35 added | MIT SMR article page; ProQuest supporting |
+| `reus2004interpartner` | same | RM2XMUC2 | include | verified (in .bib) | co-author Ritchie added; volume 44, issue 4 added; pages left empty (conflict) | Erasmus University repository (Pure) |
+| `mohedanosuanes2021control` | `mohedanosuanescontrol` | F5UQTQEU | include | verified (in .bib) | co-author Safón added; dated 2021; journal, 26(4), ISSN added; pages left empty | IJB article PDF (journal site) |
+| `doz1980how` | same | CICN2KGP | unsure | verified | co-author Prahalad added; journal, 58(2), March 1980 added; pages left empty | HBR article page; OSTI supporting |
+| `cocito2004subsidiaries` | `oostenfunctions` | RQ6DD3F8 | unsure | verified | replaced with Cocito, Gatta, Majocchi & Onetti (2004), Insubria WP qf04011 (type journalArticle -> report) | RePEc/IDEAS series record |
+| `prahalad1981approach` | `prahalad2017approach` | 49E3HS6U | unsure | verified | replaced by the 1981 Sloan Management Review original (type bookSection -> journalArticle; 22(4), first page 5; reprint DOI, ISBN, book title, publisher cleared) | ProQuest record |
+| `andersson2018integration` | same | NZTX3AZ7 | unsure | verified | co-author Forsgren added; made a book chapter (2018 Routledge reissue, eds McNaughton & Green, pp. 369-391, DOI) | Crossref chapter DOI + Routledge catalogue (authors) |
+| `downes2000knowledge` | same | UUDXK2UH | include | still unverified | co-author Thomas added; Questia lead noted; stays unverified | Questia issue listing (supporting only) |
+| `nguyen2009foreign` | same | 5VCMDEXP | include | dropped (trash) | moved to trash | nothing found |
+
+Notes on the changes:
+- **`andersson2018integration`:** the search file found no catalogue record for the 2002 Ashgate original (its pages, 343-365, come from citing references only). Following the PI's instruction, the 2018 Routledge chapter is kept and the reason is noted in Extra. It is verified on the Crossref chapter record (title, 2018, pp. 369-391) plus the Routledge catalogue for the authors, and stays out of the .bib (unsure). The search file graded this item "partly verified" and the PI's list did not name it explicitly; if the PI wants it left unverified, revert the tags only.
+- **`prahalad1981approach`:** the item now describes the 1981 SMR original. `pages` holds the first page only ("5") and Extra says "last page to confirm". The former 2017 reprint data is kept in Extra as `Reprint:`. It stays out of the .bib (unsure).
+- **`doz1990control`:** now verified and in the .bib, with no pages.
+- **`mohedanosuanes2021control`:** pages left empty, because the search file does not mark 20-45 as confirmed (search summary only).
+- **`downes2000knowledge`:** co-author Thomas, A. S. added (approved); volume, issue and pages not added. It stays unverified, with the Questia lead in Extra, and is now the only entry in `references-unverified.bib`.
+- **`nguyen2009foreign`:** in the Zotero trash, and removed from `references-unverified.bib`. It can be restored from the trash.
+- **Fields not changed** (not covered by the approval; proposed only):
+  - `doz1980how`: title hyphen ("host-government" in the record, "host government" on the HBR page).
+  - `schaan1983parent`: university written "Univ. of Western Ontario", and the title has odd capitals ("And", "Of").
+  - `reus2004interpartner`: "Interpartner" versus "Inter-partner".
+  - `andersson2018integration`: middle initial "R." (from Consensus, unconfirmed).
+  - Place and ISBN for Killing and Prahalad & Doz 1987 are recorded in Extra only.
+
+### 11.2 Counts after this step
+
+| Outcome | n |
+|---|---|
+| Items in the active library | 113 (plus 1 in the trash) |
+| Verified | 112 (Crossref 98, websearch 13, Crossref + websearch 1) |
+| Still unverified | 1 (`downes2000knowledge`) |
+| Dropped (trash) | 1 (`nguyen2009foreign`) |
+| Verified, screened unsure (not in the .bib) | 19 |
+| Entries in `literature/references.bib` | 93 (include 65, seed 28) |
+| Entries in `literature/references-unverified.bib` | 1 |
+| Keys newly pinned | 9 (`ghoshal1993horses`, `killing1983strategies`, `reus2004interpartner`, `doz1980how`, `schaan1983parent`, `prahalad1987multinational`, `mohedanosuanes2021control`, `cocito2004subsidiaries`, `andersson2018integration`) |
+| Keys changed on items already pinned | 1 (`prahalad2017approach` to `prahalad1981approach`) |
+| Keys changed on unpinned items | 2 (`mohedanosuanescontrol` to `mohedanosuanes2021control`, `oostenfunctions` to `cocito2004subsidiaries`) |
+
+All 28 seed works are now verified and in the .bib.
+
+### 11.3 Fields still to confirm (for the PI's library request)
+
+| Key | In .bib | Field(s) to confirm | Best route |
+|---|---|---|---|
+| `doz1990control` | yes | pages of the 1990 Routledge edition (citing papers give 117-143; 2013 reissue 127-153) | library copy of Bartlett, Doz & Hedlund (Eds.) 1990 |
+| `reus2004interpartner` | yes | pages (369-395 in citing references versus 1-25 in the repository record); title spelling Interpartner / Inter-partner | JSTOR, Management International Review 44(4) |
+| `mohedanosuanes2021control` | yes | pages (20-45 per search summary) | open-access PDF https://ijb.cyut.edu.tw/var/file/10/1010/img/838/V26N4-2.pdf |
+| `ghoshal1993horses` | yes | last page (35 per SMR page summary; citing sources give 35 or 36) | SMR page or ProQuest record |
+| `gong2003subsidiary` | yes | first author (Crossref DOI record lists no authors) | AMJ article PDF or AOM page |
+| `venaik2004new` | yes | DOI, volume and pages; whether to cite as the MIR special issue or as the Gabler chapter (10.1007/978-3-322-90999-2_3, pp. 15-48) | PI decision plus a check of the MIR issue |
+| `doz1980how` | no (unsure) | pages (149-157 per search summaries) | HBR archive or library copy |
+| `prahalad1981approach` | no (unsure) | last page (citing references give 5-13) | ProQuest full text or library copy |
+| `andersson2018integration` | no (unsure) | only if the 2002 Ashgate original is wanted: catalogue record and pages (343-365 per citing references); middle initial of Andersson | library catalogue / copy of McNaughton & Green (Eds.) 2002 |
+| `downes2000knowledge` | no (unverified) | verification itself; volume 12, issue 2, pages 131-149 per citing references | JSTOR record or first-page PDF |
+
+The search agent also recommends a one-click check of each websearch URL, because the pages were seen only through search results (13 items; URLs in each item's Extra).
+
+### 11.4 Still open
+
+1. The page checks in 11.3, and the click-through of the websearch URLs.
+2. `downes2000knowledge`: verify via JSTOR, or drop.
+3. `venaik2004new`: choose the form to cite.
+4. Gate 1: decide on the 19 verified unsure items, and list `downes2000knowledge` as unverified in the gate file (`reviews/`).
+5. Better BibTeX auto-export: limit it to items tagged `verified` and screened include or seed.

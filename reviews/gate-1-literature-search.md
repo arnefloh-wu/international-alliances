@@ -70,6 +70,23 @@ Do not approve this gate as complete before S7 and S8 exports are ingested.
 Priority for the manual runs becomes: S7, S3 and S4, then S8, S1 and S2,
 then S5 and S9, then S6.
 
+## Reference verification results (added by the orchestrator, updated 2026-10-04)
+
+The reference-manager verified the Stage 1 records imported into Zotero
+(`literature/zotero/verification-report-2026-10-04.md`, sections 9 to 11),
+using Crossref and, after the PI's rulings, web-search evidence from
+publisher, journal, library and repository records
+(`literature/zotero/pdf-search-2026-10-04.md`). 112 of 113 active records
+are verified, all 28 seeds included, and 93 are in
+`literature/references.bib`. One record is not verified and must not be
+cited until resolved: downes2000knowledge (needs the JSTOR record or PDF).
+nguyen2009foreign was dropped by the PI. 19 verified records screened unsure
+await the PI's decision at this gate. Several originals still lack pages
+(section 11.3 of the report). The report also corrects Stage 1 details,
+including Barden, Steensma & Lyles 2005, Meyer & Li 2022 in Global Strategy
+Journal, print years for Li et al. 2018 and Harzing et al. 2016, and the
+"van Oosten" record, which is Cocito et al. 2004.
+
 ## Quality checks run
 
 - Every Consensus query and run date is logged in `search-strings.md` and at the top of each hits file; hits were copied from the tool output without alteration, including its apparent metadata errors.
