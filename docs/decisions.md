@@ -30,3 +30,6 @@ each section. Agents append; they do not rewrite history.
 | 2026-10-02 | Section ownership among co-authors. | Stage 8 | PI |
 | 2026-10-02 | Whether raw exports may be stored in this GitHub repository (licence terms) or must stay in Dropbox. Default is Dropbox and gitignore. | Stage 4 | PI |
 | 2026-10-02 | Web of Science API access (institutional key) for agent-run searches. Without it, manual export. | Stage 1 | PI |
+| 2026-10-02 | Protocol seed corrections found at Stage 1: Witt, Lewin, Li & Gaur 2023 is in the Journal of World Business (not JIBS); Meyer & Li 2022 appears to be a Global Strategy Journal paper with co-author unconfirmed; Schaan 1983 is a dissertation. See `reviews/gate-1-literature-search.md`. | Stage 1 | PI |
+| 2026-10-02 | Consensus free tier (10 results per query, no DOIs, 3 searches left until 2026-11-01): upgrade the plan or have the PI run the remaining citation chases manually? | Stage 1 chase, G1 | PI |
+| 2026-10-02 | Treatment of conference proceedings, working papers and dissertations in the search protocol. | G1 | PI |
