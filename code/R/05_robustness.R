@@ -3,6 +3,7 @@
 # Skeleton: completed once gate 6 is approved.
 
 source("code/R/00_setup.R")
+require_pkgs(c("arrow", "fixest", "did", "modelsummary"))
 pf <- as.data.table(read_parquet(file.path(paths$processed, "panel-ijv-function-year.parquet")))
 pf <- pf[n_emp >= const$min_cell_emp]
 ctrl <- c("ijv_age", "ijv_size_log", "equity_balance")

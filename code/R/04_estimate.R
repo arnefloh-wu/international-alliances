@@ -4,6 +4,7 @@
 # Skeleton: the quant-analyst agent completes it once gate 6 is approved.
 
 source("code/R/00_setup.R")
+require_pkgs(c("arrow", "fixest", "modelsummary"))
 pf <- as.data.table(read_parquet(file.path(paths$processed, "panel-ijv-function-year.parquet")))
 pl <- as.data.table(read_parquet(file.path(paths$processed, "panel-ijv-level-year.parquet")))
 pf <- pf[n_emp >= const$min_cell_emp]
