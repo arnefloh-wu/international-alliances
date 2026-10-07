@@ -13,15 +13,26 @@ apt-get install -y -q --no-install-recommends \
   r-cran-ggplot2 r-cran-knitr r-cran-rmarkdown r-cran-renv r-cran-jsonlite \
   r-cran-httr2 r-cran-rcpp r-cran-sandwich r-cran-formula r-cran-numderiv \
   r-cran-nlme r-cran-remotes
-# CRAN-only packages (estimation and rendering), installed one at a time so a
-# failure cannot block the others, each with a 15-minute limit. arrow is left
-# out: its source build stalled the setup script on 2026-10-07. Export the
-# Revelio data as CSV instead of parquet.
-if curl -s -o /dev/null -m 10 https://cloud.r-project.org/; then
-  for p in fixest did didimputation modelsummary quarto; do
-    timeout 900 Rscript -e "install.packages('$p', repos = 'https://cloud.r-project.org', Ncpus = 4); if (!requireNamespace('$p', quietly = TRUE)) quit(status = 1)" \
-      || echo "install failed or timed out: $p"
+# CRAN-only packages (estimation and rendering). Tested in a cloud session on
+# 2026-10-07:
+# - Ubuntu's Rcpp (1.0.12) is too old to compile fastglm, which did needs, so a
+#   current Rcpp is installed from CRAN first.
+# - did is installed last with a single compile job; its dependencies fastglm
+#   and DRDID took about 10 minutes and peaked at about 4 GB of memory.
+# - arrow is left out (its source build stalled); export Revelio data as CSV.
+# Each install has a time limit and reports failure without stopping the rest.
+# Expect this block to add roughly 20 minutes to the start of a new session.
+CRAN=https://cloud.r-project.org
+install_cran() {  # $1 package, $2 timeout in seconds, $3 parallel jobs
+  MAKEFLAGS="-j$3" timeout "$2" Rscript -e "install.packages('$1', repos = '$CRAN', Ncpus = $3); if (!requireNamespace('$1', quietly = TRUE)) quit(status = 1)" \
+    || echo "install failed or timed out: $1"
+}
+if curl -s -o /dev/null -m 10 "$CRAN/"; then
+  install_cran Rcpp 600 4
+  for p in fixest didimputation modelsummary quarto; do
+    install_cran "$p" 900 4
   done
+  install_cran did 1800 1
 else
   echo "CRAN not reachable: fixest, did, didimputation, modelsummary, quarto not installed."
 fi
