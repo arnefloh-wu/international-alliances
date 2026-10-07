@@ -19,6 +19,8 @@ apt-get install -y -q --no-install-recommends \
 #   current Rcpp is installed from CRAN first.
 # - did is installed last with a single compile job; its dependencies fastglm
 #   and DRDID took about 10 minutes and peaked at about 4 GB of memory.
+# - Ubuntu's knitr (1.45) lacks a function tinytable needs, so modelsummary
+#   tables fail; current knitr and tinytable come from CRAN.
 # - arrow is left out (its source build stalled); export Revelio data as CSV.
 # Each install has a time limit and reports failure without stopping the rest.
 # Expect this block to add roughly 20 minutes to the start of a new session.
@@ -29,7 +31,8 @@ install_cran() {  # $1 package, $2 timeout in seconds, $3 parallel jobs
 }
 if curl -s -o /dev/null -m 10 "$CRAN/"; then
   install_cran Rcpp 600 4
-  for p in fixest didimputation modelsummary quarto; do
+  install_cran knitr 600 4   # Ubuntu's knitr 1.45 breaks tinytable, which modelsummary uses for tables
+  for p in fixest didimputation tinytable modelsummary quarto; do
     install_cran "$p" 900 4
   done
   install_cran did 1800 1
