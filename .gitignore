@@ -11,6 +11,8 @@ data/interviews/*
 !data/processed/.gitkeep
 !data/interviews/.gitkeep
 !data/raw/README.md
+!data/raw/extraction-spec-*.md
+!data/interviews/README.md
 
 # R and Quarto build artefacts
 .Rproj.user/
