@@ -42,3 +42,9 @@ if curl -s -o /dev/null -m 10 "$CRAN/"; then
 else
   echo "CRAN not reachable: fixest, did, didimputation, modelsummary, quarto not installed."
 fi
+
+# Quarto program (the R package "quarto" only calls it). Installed from PyPI,
+# which the cloud environment can reach; GitHub release downloads are blocked.
+pip install -q quarto-cli 2>/dev/null \
+  || pip install -q --break-system-packages quarto-cli \
+  || echo "install failed: quarto-cli"

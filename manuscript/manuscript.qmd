@@ -2,10 +2,12 @@
 title: "Differentiated International Integration in International Joint Ventures"
 author:
   - name: "[Author block removed for review]"
-abstract: |
-  {{< include sections/00-abstract.qmd >}}
 keywords: [international joint ventures, integration, differentiated network, staffing, geopolitics, mixed methods]
 ---
+
+# Abstract {.unnumbered}
+
+{{< include sections/00-abstract.qmd >}}
 
 {{< include sections/01-introduction.qmd >}}
 
