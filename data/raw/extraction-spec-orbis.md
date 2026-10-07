@@ -16,9 +16,22 @@ the matching pilot (research idea, section 12).
   regions (North America, Western Europe, Central and Eastern Europe,
   East Asia, South and Southeast Asia, Middle East and Africa, Latin
   America) and across broad industries (manufacturing, extractive,
-  services, technology). Oversample dyads likely to be exposed to the
-  candidate shocks (for example US-China, EU-Russia, EU-China,
-  Japan-Korea, India-China) so that Stage 5 has something to assess.
+  services, technology). Oversample joint ventures exposed to the
+  shortlisted shocks from the shock scan (gate 5a, pending), so that the
+  re-scoring can count exposure:
+  - UK-EU pairs: a UK parent with an EU parent, or a UK parent in an
+    EU-hosted JV and vice versa (Brexit, end of free movement 2021).
+  - Parents that appear on the US Entity List, and their partners
+    (staggered designations).
+  - JVs with a Chinese parent, or hosted in China, whose partner country
+    was a target of Chinese economic coercion (for example Australia,
+    South Korea, Japan, Norway, Lithuania, Canada).
+  - JVs hosted in OECD countries that adopted or tightened investment
+    screening after 2010.
+  - Reserve: JVs with a Russian parent or hosted in Russia (Russia 2022
+    sanctions). Revelio coverage of Russia is likely weak.
+  A rough target for the 100: about 15 to 20 per shortlisted group and the
+  rest as an unexposed comparison spread across regions and industries.
 
 ## Fields to export
 
