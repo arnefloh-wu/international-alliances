@@ -17,7 +17,7 @@ to the Dropbox path; `code/R/00_setup.R` reads it.
 | `raw/orbis-full-<date>.csv` | Orbis Crossborder Investment | PI export | full IJV population after go decision |
 | `raw/orbis-financials-<date>.csv` | Orbis / Compustat / Capital IQ | PI export | parent and JV controls |
 | `raw/revelio-companies-<date>.csv` | Revelio Labs | PI export | company master with identifiers |
-| `raw/revelio-positions-<date>.parquet` | Revelio Labs | PI export | individual position records |
+| `raw/revelio-positions-<date>.csv` | Revelio Labs | PI export | individual position records (CSV; parquet needs arrow) |
 | `raw/boardex-<date>.csv` | BoardEx | PI export, optional | senior executives |
 | `raw/dyad-<measure>-<date>.csv` | country-dyad political relations / sanctions / screening | PI or agent download | see decision on the focal shock |
 | `interviews/transcripts/<code>.txt` | existing interview study | PI | see `interviews/README.md` |
