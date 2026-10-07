@@ -17,7 +17,8 @@ apt-get install -y -q --no-install-recommends \
 # 2026-10-07:
 # - Ubuntu's Rcpp (1.0.12) is too old to compile fastglm, which did needs, so a
 #   current Rcpp is installed from CRAN first.
-# - did is installed last with a single compile job; its dependencies fastglm
+# - did is installed first with a single compile job (didimputation depends
+#   on it, so it must not be pulled in by a parallel build); fastglm
 #   and DRDID took about 10 minutes and peaked at about 4 GB of memory.
 # - Ubuntu's knitr (1.45) lacks a function tinytable needs, so modelsummary
 #   tables fail; current knitr and tinytable come from CRAN.
@@ -32,10 +33,12 @@ install_cran() {  # $1 package, $2 timeout in seconds, $3 parallel jobs
 if curl -s -o /dev/null -m 10 "$CRAN/"; then
   install_cran Rcpp 600 4
   install_cran knitr 600 4   # Ubuntu's knitr 1.45 breaks tinytable, which modelsummary uses for tables
+  # did (and its dependency fastglm) must be built with a single compile job;
+  # didimputation depends on did, so it comes after did, not before.
+  install_cran did 1800 1
   for p in fixest didimputation tinytable modelsummary quarto; do
     install_cran "$p" 900 4
   done
-  install_cran did 1800 1
 else
   echo "CRAN not reachable: fixest, did, didimputation, modelsummary, quarto not installed."
 fi
