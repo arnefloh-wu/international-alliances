@@ -37,7 +37,7 @@ exports described in `data/raw/extraction-spec-*.md`.
 
 ## Local tooling
 
-- R 4.x with the packages listed in `code/R/00_setup.R`.
+- R 4.x with the packages listed in `code/R/00_setup.R`. In the cloud environment, paste `code/setup/cloud-setup.sh` into the environment's Setup script so every session has R. Function checks: `Rscript code/R/tests/test-functions.R`.
 - Quarto for rendering reports and the manuscript to Word.
 - Zotero with Better BibTeX; API credentials in `.Renviron` (gitignored),
   see `.claude/skills/references/SKILL.md`.

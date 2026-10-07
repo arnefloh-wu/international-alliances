@@ -1,7 +1,6 @@
 # 01_pilot_matching.R
 # Stage 4: match approx. 100 pilot IJVs and their parents from Orbis to
 # Revelio, compute coverage, and write the inputs for the pilot report.
-# Not executed in the cloud session that wrote it; run locally.
 
 source("code/R/00_setup.R")
 
@@ -13,7 +12,8 @@ stopifnot(length(orbis_file) == 1, length(rev_co_file) == 1, length(rev_pos_file
 
 orbis <- fread(orbis_file)                       # one row per JV-parent pair
 rev_co <- fread(rev_co_file)
-rev_pos <- if (grepl("parquet$", rev_pos_file)) as.data.table(read_parquet(rev_pos_file)) else fread(rev_pos_file)
+if (grepl("parquet$", rev_pos_file)) require_pkgs("arrow")
+rev_pos <- if (grepl("parquet$", rev_pos_file)) as.data.table(arrow::read_parquet(rev_pos_file)) else fread(rev_pos_file)
 
 # Expected columns are documented in data/raw/extraction-spec-*.md. Rename here
 # once the real export headers are known.
@@ -69,13 +69,30 @@ origin <- cell_years[parent_rank <= 2][
   , .(parent_a = parent_bvdid[1], parent_b = parent_bvdid[2]), by = .(jv_bvdid, year, user_id)]
 origin <- merge(origin, unique(cell_years[, .(jv_bvdid, year, user_id, job_category, seniority, start_date)]),
                 by = c("jv_bvdid", "year", "user_id"))
-origin[, origin := {
-  pr <- hist[user_id == .BY$user_id & end_date <= start_date &
-             end_date >= start_date - const$origin_window * 365, ]
-  classify_origin(pr$rcid,
-                  parent_groups[parent_bvdid == parent_a, rcid],
-                  parent_groups[parent_bvdid == parent_b, rcid])
-}, by = .(user_id, jv_bvdid, year, start_date, parent_a, parent_b)]
+# Classify each JV spell once. Explicit names (jv_start, p_*) avoid data.table
+# scoping between the JV spell and the earlier positions.
+# A prior position counts if it started before the JV spell and was still
+# held within origin_window years before it; an ongoing parent position
+# (secondment) therefore counts as parent origin.
+host <- unique(orbis[, .(jv_bvdid, jv_country)])
+spells <- unique(origin[, .(user_id, jv_bvdid, jv_start = start_date, parent_a, parent_b)])
+spells <- merge(spells, host, by = "jv_bvdid", all.x = TRUE)
+prior <- hist[!rcid %in% jv_rcid$rcid,
+              .(user_id, p_rcid = rcid, p_start = start_date, p_end = end_date, p_country = country)]
+pr <- merge(spells, prior, by = "user_id", allow.cartesian = TRUE)
+pr <- pr[p_start < jv_start & p_end >= jv_start - const$origin_window * 365L]
+setorder(pr, user_id, jv_bvdid, jv_start, -p_end)
+cls <- pr[, {
+  ga <- parent_groups$rcid[parent_groups$parent_bvdid == parent_a[1]]
+  gb <- parent_groups$rcid[parent_groups$parent_bvdid == parent_b[1]]
+  .(origin = classify_origin(p_rcid, ga, gb, p_country[1], jv_country[1]))
+}, by = .(user_id, jv_bvdid, jv_start)]
+spells <- merge(spells, cls, by = c("user_id", "jv_bvdid", "jv_start"), all.x = TRUE)
+spells[is.na(origin), origin := "no_history"]
+origin <- merge(origin, spells[, .(user_id, jv_bvdid, start_date = jv_start, origin)],
+                by = c("user_id", "jv_bvdid", "start_date"), all.x = TRUE)
+# Flag JVs with more than two parents; the pilot classifies only the two largest.
+origin <- merge(origin, orbis[, .(n_parents = uniqueN(parent_bvdid)), by = jv_bvdid], by = "jv_bvdid")
 fwrite(origin, file.path(paths$interim, "pilot-origin.csv"))
 
 # ---- 4. Coverage summaries ------------------------------------------------
