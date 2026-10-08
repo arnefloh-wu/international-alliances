@@ -4,10 +4,17 @@
 
 source("code/R/00_setup.R")
 
+# Pilot: "main" (default) or "large" (second pilot, gate 4). Inputs and
+# outputs of the large pilot carry the tag "large-".
+PILOT_ID <- if (length(commandArgs(trailingOnly = TRUE))) commandArgs(trailingOnly = TRUE)[1] else "main"
+stopifnot(PILOT_ID %in% c("main", "large"))
+TAG <- if (PILOT_ID == "main") "" else paste0(PILOT_ID, "-")
+out <- function(name) file.path(paths$interim, paste0("pilot-", TAG, name))
+
 # ---- 1. Load exports ------------------------------------------------------
-orbis_file   <- tail(sort(list.files(paths$raw, "^orbis-pilot-.*\\.csv$", full.names = TRUE)), 1)
-rev_co_file  <- tail(sort(list.files(paths$raw, "^revelio-companies-.*\\.csv$", full.names = TRUE)), 1)
-rev_pos_file <- tail(sort(list.files(paths$raw, "^revelio-positions-.*\\.(parquet|csv)$", full.names = TRUE)), 1)
+orbis_file   <- tail(sort(list.files(paths$raw, paste0("^orbis-pilot-", TAG, "[0-9].*[.]csv$"), full.names = TRUE)), 1)
+rev_co_file  <- tail(sort(list.files(paths$raw, paste0("^revelio-companies-", TAG, "[0-9].*[.]csv$"), full.names = TRUE)), 1)
+rev_pos_file <- tail(sort(list.files(paths$raw, paste0("^revelio-positions-", TAG, "[0-9].*[.](parquet|csv)$"), full.names = TRUE)), 1)
 stopifnot(length(orbis_file) == 1, length(rev_co_file) == 1, length(rev_pos_file) == 1)
 
 orbis <- fread(orbis_file)                       # one row per JV-parent pair
@@ -49,8 +56,8 @@ gu_ent <- if ("guo_name" %in% names(orbis))
                .(orbis_id = guo_bvdid, orbis_name = guo_name, orbis_country = guo_country)]) else data.table()
 gu_matches <- if (nrow(gu_ent)) match_entities(gu_ent, rev_ent, const$jw_threshold)[, entity := "guo"] else data.table()
 matches <- rbindlist(list(jv_matches, pa_matches, gu_matches), fill = TRUE)
-fwrite(matches, file.path(paths$interim, "pilot-matches.csv"))
-fwrite(matches[needs_review == TRUE], file.path(paths$interim, "pilot-match-review.csv"))
+fwrite(matches, out("matches.csv"))
+fwrite(matches[needs_review == TRUE], out("match-review.csv"))
 
 # Parent groups: the parent's own Revelio entity and its GUO's entity
 # (parent_core), extended to their whole Revelio family: the Revelio ultimate
@@ -69,7 +76,7 @@ parent_groups <- merge(unique(core_up[, .(parent_bvdid, up)]),
                        by = "up", allow.cartesian = TRUE)[, .(parent_bvdid, rcid)]
 parent_groups <- unique(rbind(parent_groups, parent_core, core_up[, .(parent_bvdid, rcid = up)]))
 parent_groups <- parent_groups[!is.na(rcid)]
-fwrite(parent_groups, file.path(paths$interim, "pilot-parent-groups.csv"))
+fwrite(parent_groups, out("parent-groups.csv"))
 
 # JV matches: the JV is a host-country legal entity, so a candidate in another
 # country is rejected (a missing Revelio country is accepted), and a candidate
@@ -81,7 +88,7 @@ jv_cand <- accepted[entity == "jv"]
 jv_cand[, reject := fcase(rcid %in% parent_core$rcid, "is_parent_entity",
                           same_country %in% FALSE, "other_country",
                           default = "")]
-fwrite(jv_cand[reject != ""], file.path(paths$interim, "pilot-jv-rejected-matches.csv"))
+fwrite(jv_cand[reject != ""], out("jv-rejected-matches.csv"))
 best_jv <- jv_cand[reject == ""][order(-(same_country %in% TRUE), -score)][, .SD[1], by = orbis_id]
 best <- rbindlist(list(best_jv[, -"reject"], best_pa), use.names = TRUE)
 
@@ -92,7 +99,7 @@ jv_tab <- unique(orbis[, .(orbis_id = jv_bvdid, orbis_name = jv_name, orbis_coun
 review_jv <- if ("match_key" %in% names(rev_co_raw))
   review_tier_candidates(rev_co_raw[entity == "jv" & !orbis_id %in% best_jv$orbis_id], jv_tab, parent_groups$rcid,
                          orbis[, .(orbis_id = jv_bvdid, parent_name)]) else data.table()
-fwrite(review_jv, file.path(paths$interim, "pilot-jv-review-tier.csv"))
+fwrite(review_jv, out("jv-review-tier.csv"))
 
 # ---- 3. Workforce coverage per matched JV ---------------------------------
 # Run once per matching tier: "auto" uses the automatic name matches only;
@@ -152,7 +159,7 @@ coverage <- function(jv_rcid, tier) {
   origin <- merge(origin, spells[, .(user_id, jv_bvdid, start_date = jv_start, origin)],
                   by = c("user_id", "jv_bvdid", "start_date"), all.x = TRUE)
   origin <- merge(origin, orbis[, .(n_parents = uniqueN(parent_bvdid)), by = jv_bvdid], by = "jv_bvdid")
-  fwrite(origin, file.path(paths$interim, sprintf("pilot-origin-%s.csv", tier)))
+  fwrite(origin, out(sprintf("origin-%s.csv", tier)))
 
   # ---- 4. Coverage summaries ----------------------------------------------
   cov_ijv <- origin[, .(n_emp = uniqueN(user_id),
@@ -185,12 +192,12 @@ auto_rcid <- best_jv[, .(jv_bvdid = orbis_id, rcid)]
 tiers <- list(auto = auto_rcid,
               auto_plus_strong = rbind(auto_rcid, if (nrow(review_jv)) review_jv[strong == TRUE, .(jv_bvdid = orbis_id, rcid)]),
               auto_plus_review = rbind(auto_rcid, if (nrow(review_jv)) review_jv[, .(jv_bvdid = orbis_id, rcid)]))
-fwrite(rbindlist(tiers, idcol = "tier"), file.path(paths$interim, "pilot-jv-rcids.csv"))
+fwrite(rbindlist(tiers, idcol = "tier"), out("jv-rcids.csv"))
 by_tier <- lapply(names(tiers), function(t) coverage(tiers[[t]], t))
 names(by_tier) <- names(tiers)
 
 # Frame size for projections (eligible JVs in the WRDS ownership frame).
-frame_file <- tail(sort(list.files(paths$interim, "^wrds-ijv-frame-.*[.]csv$", full.names = TRUE)), 1)
+frame_file <- tail(sort(list.files(paths$interim, "^wrds-ijv-frame-[0-9].*[.]csv$", full.names = TRUE)), 1)
 frame_eligible <- if (length(frame_file)) {
   fr <- fread(frame_file, select = c("jv_bvdid", "excl_jv"), colClasses = "character")
   uniqueN(fr[is.na(excl_jv) | excl_jv == "", jv_bvdid])
@@ -218,5 +225,5 @@ summary_tables <- list(
   cell_survival  = by_tier$auto$cell_survival,
   thresholds     = by_tier$auto$thresholds
 )
-saveRDS(summary_tables, file.path(paths$interim, "pilot-summary.rds"))
+saveRDS(summary_tables, out("summary.rds"))
 message("Pilot matching complete. Render code/quarto/pilot-feasibility-report.qmd next.")

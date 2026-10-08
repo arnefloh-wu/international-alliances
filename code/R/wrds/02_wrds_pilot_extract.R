@@ -16,7 +16,11 @@
 #
 # Run on the PI's computer from the repository root (the cloud environment
 # cannot reach WRDS):
-#   "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/R/wrds/02_wrds_pilot_extract.R
+#   "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/R/wrds/02_wrds_pilot_extract.R [pilot]
+# pilot = "main" (default): the first, exposure-stratified pilot.
+# pilot = "large": the second pilot (gate 4), drawn from frame JVs not in the
+#   main pilot with an Orbis headcount of at least LARGE_MIN_EMP and at least
+#   two parents found in Revelio by name, directly or through their GUO.
 # Credentials: WRDS_USERNAME and WRDS_PASSWORD in ~/.Renviron.
 # Each stage writes its output once and is skipped on re-runs while the
 # file exists, so an interrupted run resumes where it stopped.
@@ -26,19 +30,25 @@ require_pkgs(c("DBI", "RPostgres", "countrycode"))
 library(DBI)
 
 EXTRACT_DATE <- "2026-10-08"
+PILOT_ID     <- if (length(commandArgs(trailingOnly = TRUE))) commandArgs(trailingOnly = TRUE)[1] else "main"
+stopifnot(PILOT_ID %in% c("main", "large"))
+TAG          <- if (PILOT_ID == "main") "" else paste0(PILOT_ID, "-")
 PILOT_N      <- 100L
-SEED         <- 20261008L
+LARGE_MIN_EMP <- 100L
+SEED         <- if (PILOT_ID == "main") 20261008L else 20261009L
 MAX_USERS_PER_JV <- 50000L   # a Revelio entity above this is almost surely a mismatch to a large firm
 set.seed(SEED)
 
 f_frame   <- file.path(paths$interim, sprintf("wrds-ijv-frame-%s.csv", EXTRACT_DATE))
-f_orbis   <- file.path(paths$raw, sprintf("orbis-pilot-%s.csv", EXTRACT_DATE))
-f_rev_co  <- file.path(paths$raw, sprintf("revelio-companies-%s.csv", EXTRACT_DATE))
-f_rev_pos <- file.path(paths$raw, sprintf("revelio-positions-%s.csv", EXTRACT_DATE))
+f_orbis   <- file.path(paths$raw, sprintf("orbis-pilot-%s%s.csv", TAG, EXTRACT_DATE))
+f_rev_co  <- file.path(paths$raw, sprintf("revelio-companies-%s%s.csv", TAG, EXTRACT_DATE))
+f_rev_pos <- file.path(paths$raw, sprintf("revelio-positions-%s%s.csv", TAG, EXTRACT_DATE))
+f_size    <- file.path(paths$interim, sprintf("wrds-ijv-frame-size-%s.csv", EXTRACT_DATE))
+f_screen  <- file.path(paths$interim, sprintf("wrds-large-screen-%s.csv", EXTRACT_DATE))
 f_log     <- file.path(paths$interim, sprintf("wrds-extract-log-%s.md", EXTRACT_DATE))
 
 log_line <- function(...) {
-  msg <- sprintf(...)
+  msg <- paste0("[", PILOT_ID, "] ", sprintf(...))
   message(format(Sys.time(), "%H:%M:%S"), " ", msg)
   cat("- ", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), " ", msg, "\n", file = f_log, append = TRUE, sep = "")
 }
@@ -50,6 +60,12 @@ con <- dbConnect(RPostgres::Postgres(), host = "wrds-pgdata.wharton.upenn.edu", 
 on.exit(dbDisconnect(con), add = TRUE)
 q <- function(sql) as.data.table(dbGetQuery(con, sql))
 sql_in <- function(x) paste(sprintf("'%s'", gsub("'", "''", x)), collapse = ", ")
+# Run a query template with an IN list in chunks; %s in the template takes the list.
+q_in <- function(template, ids, chunk = 2000L) {
+  ids <- unique(ids[!is.na(ids)])
+  if (!length(ids)) return(data.table())
+  rbindlist(lapply(split(ids, ceiling(seq_along(ids) / chunk)), function(x) q(sprintf(template, sql_in(x)))), fill = TRUE)
+}
 
 # ---- A. IJV frame from the ownership links (large and medium libraries) ----
 frame_sql <- function(lib, s) sprintf("
@@ -182,34 +198,17 @@ log_line("frame JVs eligible: %d; exposure groups: %s", nrow(jv_level),
 fwrite(jv_level[, .(jv_bvdid, jv_country, region, industry, exposure_group, n_parents, orbis_library)],
        file.path(paths$interim, sprintf("wrds-ijv-frame-groups-%s.csv", EXTRACT_DATE)))
 
-if (!file.exists(f_orbis)) {
-  targets <- c(uk_eu = 18L, china_coercion = 18L, russia = 8L, oecd_screening = 18L)
-  draw <- rbindlist(lapply(names(targets), function(g) {
-    pool <- jv_level[exposure_group == g]
-    pool[sample.int(nrow(pool), min(targets[[g]], nrow(pool)))]
-  }))
-  # Unexposed remainder: spread across region x industry cells as evenly as the pool allows.
-  n_rest <- PILOT_N - nrow(draw)
-  pool <- jv_level[exposure_group == "unexposed"]
-  pool[, cell := paste(region, industry)]
-  pool <- pool[sample.int(nrow(pool))]                      # shuffle, then round-robin over cells
-  pool[, rank_in_cell := seq_len(.N), by = cell]
-  setorder(pool, rank_in_cell)
-  draw <- rbind(draw, pool[seq_len(min(n_rest, nrow(pool)))][, -c("cell", "rank_in_cell")])
-  draw[, pilot := TRUE]
-  log_line("pilot draw: %d JVs (%s)", nrow(draw),
-           paste(sprintf("%s=%d", names(table(draw$exposure_group)), table(draw$exposure_group)), collapse = ", "))
-
-  pilot <- merge(frame, draw[, .(jv_bvdid, region, industry, exposure_group, exp_uk_eu, exp_china, exp_russia, exp_oecd_screening, exp_entity_list)], by = "jv_bvdid")
-
+# Enrichment of drawn JV-parent rows: parent GUO (50 percent definition) and
+# its name, latest financials for JVs and parents, fixed column order.
+enrich_pilot <- function(pilot) {
   # Parent GUO (50 percent definition) and latest financials for JVs and parents.
   ids <- unique(c(pilot$jv_bvdid, pilot$parent_bvdid))
   guo <- rbindlist(lapply(c("bvd_orbis_large.ob_links_current_l", "bvd_orbis_medium.ob_links_current_m"), function(t)
-    q(sprintf("SELECT DISTINCT ON (sub_bvdid) sub_bvdid, guo_50, guo_25 FROM %s WHERE sub_bvdid IN (%s) AND guo_50 IS NOT NULL", t, sql_in(ids)))))
+    q_in(paste0("SELECT DISTINCT ON (sub_bvdid) sub_bvdid, guo_50, guo_25 FROM ", t, " WHERE sub_bvdid IN (%s) AND guo_50 IS NOT NULL"), ids)))
   guo <- unique(guo, by = "sub_bvdid")
   fin <- rbindlist(lapply(c("bvd_orbis_large.ob_key_financials_usd_l", "bvd_orbis_medium.ob_key_financials_usd_m"), function(t)
-    q(sprintf("SELECT DISTINCT ON (bvdid) bvdid, closdate_year AS fin_year, empl AS employees, toas AS total_assets_usd, opre AS revenue_usd
-               FROM %s WHERE bvdid IN (%s) AND closdate_year IS NOT NULL ORDER BY bvdid, closdate DESC", t, sql_in(ids)))))
+    q_in(paste0("SELECT DISTINCT ON (bvdid) bvdid, closdate_year AS fin_year, empl AS employees, toas AS total_assets_usd, opre AS revenue_usd
+               FROM ", t, " WHERE bvdid IN (%s) AND closdate_year IS NOT NULL ORDER BY bvdid, closdate DESC"), ids)))
   fin <- unique(fin, by = "bvdid")
   pilot <- merge(pilot, guo[, .(parent_bvdid = sub_bvdid, guo_bvdid = guo_50)], by = "parent_bvdid", all.x = TRUE)
   pilot[is.na(guo_bvdid), guo_bvdid := parent_bvdid]
@@ -219,8 +218,8 @@ if (!file.exists(f_orbis)) {
   guo_ids <- unique(pilot[guo_bvdid != parent_bvdid, guo_bvdid])
   guo_nm <- if (length(guo_ids)) rbindlist(lapply(
     c("bvd_orbis_large.ob_w_company_id_table_l", "bvd_orbis_medium.ob_w_company_id_table_m"), function(t)
-      q(sprintf("SELECT DISTINCT ON (bvdid) bvdid AS guo_bvdid, name_internat AS guo_name FROM %s WHERE bvdid IN (%s) ORDER BY bvdid",
-                t, sql_in(guo_ids))))) else data.table(guo_bvdid = character(), guo_name = character())
+      q_in(paste0("SELECT DISTINCT ON (bvdid) bvdid AS guo_bvdid, name_internat AS guo_name FROM ", t, " WHERE bvdid IN (%s) ORDER BY bvdid"),
+           guo_ids))) else data.table(guo_bvdid = character(), guo_name = character())
   guo_nm <- unique(guo_nm, by = "guo_bvdid")
   pilot <- merge(pilot, guo_nm, by = "guo_bvdid", all.x = TRUE)
   pilot[guo_bvdid == parent_bvdid, guo_name := parent_name]
@@ -233,6 +232,96 @@ if (!file.exists(f_orbis)) {
                        "parent_bvdid", "parent_name", "parent_country", "equity_share_current", "guo_bvdid", "guo_name", "guo_country",
                        "parent_employees", "parent_total_assets_usd", "parent_fin_year", "n_parents", "parents_total_share",
                        "region", "industry", "exposure_group"))
+  pilot
+}
+
+# Stratified draw: exposure-group targets first, then the unexposed remainder
+# spread round-robin over region x industry cells.
+draw_stratified <- function(pool, n = PILOT_N) {
+  targets <- c(uk_eu = 18L, china_coercion = 18L, russia = 8L, oecd_screening = 18L)
+  draw <- rbindlist(lapply(names(targets), function(g) {
+    pg <- pool[exposure_group == g]
+    pg[sample.int(nrow(pg), min(targets[[g]], nrow(pg)))]
+  }))
+  n_rest <- n - nrow(draw)
+  rest <- pool[exposure_group == "unexposed"]
+  rest[, cell := paste(region, industry)]
+  rest <- rest[sample.int(nrow(rest))]
+  rest[, rank_in_cell := seq_len(.N), by = cell]
+  setorder(rest, rank_in_cell)
+  rbind(draw, rest[seq_len(min(n_rest, nrow(rest)))][, -c("cell", "rank_in_cell")])
+}
+
+if (!file.exists(f_orbis) && PILOT_ID == "main") {
+  draw <- draw_stratified(jv_level)
+  draw[, pilot := TRUE]
+  log_line("pilot draw: %d JVs (%s)", nrow(draw),
+           paste(sprintf("%s=%d", names(table(draw$exposure_group)), table(draw$exposure_group)), collapse = ", "))
+
+  pilot <- merge(frame, draw[, .(jv_bvdid, region, industry, exposure_group, exp_uk_eu, exp_china, exp_russia, exp_oecd_screening, exp_entity_list)], by = "jv_bvdid")
+
+  pilot <- enrich_pilot(pilot)
+  setorder(pilot, jv_bvdid, -equity_share_current, parent_country)
+  fwrite(pilot, f_orbis)
+  log_line("orbis pilot export written: %s (%d JV-parent rows, %d JVs)", f_orbis, nrow(pilot), uniqueN(pilot$jv_bvdid))
+} else if (!file.exists(f_orbis) && PILOT_ID == "large") {
+  # Pool: eligible frame JVs not in the main pilot.
+  f_main <- file.path(paths$raw, sprintf("orbis-pilot-%s.csv", EXTRACT_DATE))
+  main_ids <- if (file.exists(f_main)) unique(fread(f_main, select = "jv_bvdid", colClasses = "character")$jv_bvdid) else character()
+  pool <- jv_level[!jv_bvdid %in% main_ids]
+  # Size screen: latest Orbis headcount for every pool JV (cached).
+  if (!file.exists(f_size)) {
+    size <- rbindlist(lapply(c("bvd_orbis_large.ob_key_financials_usd_l", "bvd_orbis_medium.ob_key_financials_usd_m"), function(t)
+      q_in(paste0("SELECT DISTINCT ON (bvdid) bvdid AS jv_bvdid, closdate_year AS fin_year, empl AS employees
+                   FROM ", t, " WHERE bvdid IN (%s) AND closdate_year IS NOT NULL AND empl IS NOT NULL
+                   ORDER BY bvdid, closdate DESC"), jv_level$jv_bvdid)))
+    size <- unique(size[order(jv_bvdid, -fin_year)], by = "jv_bvdid")
+    fwrite(size, f_size)
+    log_line("frame headcounts: %d of %d eligible JVs report employees", nrow(size), nrow(jv_level))
+  }
+  size <- fread(f_size, colClasses = list(character = "jv_bvdid"))
+  pool <- merge(pool, size[, .(jv_bvdid, jv_employees = employees)], by = "jv_bvdid")[jv_employees >= LARGE_MIN_EMP]
+  log_line("large pool: %d JVs with at least %d employees (excluding the main pilot)", nrow(pool), LARGE_MIN_EMP)
+
+  # Revelio presence screen: a parent counts as present if its own name or its
+  # GUO's name has an exact or normalized Revelio match (any country).
+  if (!file.exists(f_screen)) {
+    rows <- enrich_pilot(merge(frame, pool[, .(jv_bvdid, region, industry, exposure_group, exp_uk_eu, exp_china, exp_russia,
+                                                exp_oecd_screening, exp_entity_list)], by = "jv_bvdid"))
+    names_tab <- unique(rbind(rows[, .(name = parent_name)], rows[!is.na(guo_name), .(name = guo_name)]))
+    names_tab[, norm := normalize_name(name)]
+    names_tab[, key := gsub("[^a-z0-9]", "", norm)]
+    keys <- unique(names_tab[nchar(key) >= 2, .(key, n = nchar(key))])
+    t0 <- Sys.time()
+    hits <- q(sprintf("
+WITH v(key, n) AS (VALUES %s)
+SELECT v.key, cm.company
+FROM revelio.company_mapping cm
+JOIN v ON left(regexp_replace(lower(cm.company), '[^a-z0-9]', '', 'g'), 2) = left(v.key, 2)
+      AND left(regexp_replace(lower(cm.company), '[^a-z0-9]', '', 'g'), v.n) = v.key",
+      paste(sprintf("('%s', %d)", keys$key, keys$n), collapse = ",")))
+    log_line("presence screen: %d Revelio prefix hits for %d name keys in %.0fs", nrow(hits), nrow(keys),
+             as.numeric(Sys.time() - t0, units = "secs"))
+    hits[, hit_norm := gsub("[^a-z0-9]", "", normalize_name(company))]
+    present_keys <- unique(hits[hit_norm == key, key])
+    names_tab[, present := key %in% present_keys]
+    rows <- merge(rows, names_tab[, .(parent_name = name, parent_present = present)], by = "parent_name", all.x = TRUE)
+    rows <- merge(rows, names_tab[, .(guo_name = name, guo_present = present)], by = "guo_name", all.x = TRUE)
+    rows[, parent_in_revelio := (parent_present %in% TRUE) | (guo_present %in% TRUE)]
+    screen <- rows[, .(parents = .N, parents_in_revelio = sum(parent_in_revelio)), by = jv_bvdid]
+    fwrite(rows, f_screen)
+    log_line("presence screen: %d of %d large JVs have at least two parents in Revelio",
+             screen[parents_in_revelio >= 2, .N], nrow(screen))
+  }
+  rows <- fread(f_screen, colClasses = list(character = c("jv_bvdid", "parent_bvdid", "guo_bvdid", "nace", "naics")))
+  screen <- rows[, .(parents_in_revelio = sum(parent_in_revelio)), by = jv_bvdid]
+  pool <- pool[jv_bvdid %in% screen[parents_in_revelio >= 2, jv_bvdid]]
+  draw <- draw_stratified(pool)
+  log_line("pilot draw: %d JVs (%s)", nrow(draw),
+           paste(sprintf("%s=%d", names(table(draw$exposure_group)), table(draw$exposure_group)), collapse = ", "))
+  pilot <- rows[jv_bvdid %in% draw$jv_bvdid]
+  pilot[, c("parent_present", "guo_present") := NULL]
+  setcolorder(pilot, c("jv_bvdid", "jv_name", "jv_country"))
   setorder(pilot, jv_bvdid, -equity_share_current, parent_country)
   fwrite(pilot, f_orbis)
   log_line("orbis pilot export written: %s (%d JV-parent rows, %d JVs)", f_orbis, nrow(pilot), uniqueN(pilot$jv_bvdid))
@@ -386,7 +475,7 @@ if (!file.exists(f_rev_pos)) {
                      paste(unique(jv_best$rcid), collapse = ",")))
   jv_best <- merge(jv_best, sizes, by = "rcid", all.x = TRUE)
   jv_best[is.na(n_users), n_users := 0L]
-  fwrite(jv_best, file.path(paths$interim, sprintf("wrds-jv-provisional-matches-%s.csv", EXTRACT_DATE)))
+  fwrite(jv_best, file.path(paths$interim, sprintf("wrds-jv-provisional-matches-%s%s.csv", TAG, EXTRACT_DATE)))
   pull <- jv_best[n_users > 0 & n_users <= MAX_USERS_PER_JV]
   skipped <- jv_best[n_users > MAX_USERS_PER_JV]
   if (nrow(skipped)) log_line("skipped %d candidate rcids above %d users: %s", nrow(skipped), MAX_USERS_PER_JV, paste(skipped$rcid, collapse = ","))
@@ -412,4 +501,4 @@ if (!file.exists(f_rev_pos)) {
 } else {
   log_line("revelio positions already present: %s", f_rev_pos)
 }
-log_line("extraction complete; next: Rscript code/R/01_pilot_matching.R")
+log_line("extraction complete; next: Rscript code/R/01_pilot_matching.R %s", PILOT_ID)

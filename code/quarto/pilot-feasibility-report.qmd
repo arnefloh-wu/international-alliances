@@ -11,19 +11,33 @@ execute:
 knitr:
   opts_knit:
     root.dir: "../.."
+params:
+  pilot: "main"
 ---
 
 ```{r setup}
 #| include: false
 source("code/R/00_setup.R")
-s  <- readRDS(file.path(paths$interim, "pilot-summary.rds"))
-orbis <- fread(tail(sort(list.files(paths$raw, "^orbis-pilot-.*[.]csv$", full.names = TRUE)), 1),
+TAG <- if (params$pilot == "main") "" else paste0(params$pilot, "-")
+pin <- function(name) file.path(paths$interim, paste0("pilot-", TAG, name))
+s  <- readRDS(pin("summary.rds"))
+orbis <- fread(tail(sort(list.files(paths$raw, paste0("^orbis-pilot-", TAG, "[0-9].*[.]csv$"), full.names = TRUE)), 1),
                colClasses = list(character = c("jv_bvdid", "parent_bvdid", "guo_bvdid")))
 frame <- fread(tail(sort(list.files(paths$interim, "^wrds-ijv-frame-2.*[.]csv$", full.names = TRUE)), 1),
                select = c("jv_bvdid", "excl_jv"), colClasses = "character")
 groups <- fread(tail(sort(list.files(paths$interim, "^wrds-ijv-frame-groups-.*[.]csv$", full.names = TRUE)), 1),
                 colClasses = list(character = "jv_bvdid"))
-review <- fread(file.path(paths$interim, "pilot-jv-review-tier.csv"))
+review <- fread(pin("jv-review-tier.csv"))
+# Population the pilot represents: the whole eligible frame for the main
+# pilot; for the large pilot, the screened pool (headcount >= 100, at least two
+# parents in Revelio, not in the main pilot).
+if (params$pilot == "large") {
+  scr <- fread(tail(sort(list.files(paths$interim, "^wrds-large-screen-.*[.]csv$", full.names = TRUE)), 1),
+               select = c("jv_bvdid", "parent_in_revelio"), colClasses = list(character = "jv_bvdid"))
+  pool_ids <- scr[, .(k = sum(parent_in_revelio)), by = jv_bvdid][k >= 2, jv_bvdid]
+  groups <- groups[jv_bvdid %in% pool_ids]
+}
+pop_n <- nrow(groups)
 tier_labels <- c(auto = "Automatic name matches",
                  auto_plus_strong = "Plus strong website matches",
                  auto_plus_review = "Plus all review-tier matches")
@@ -34,18 +48,25 @@ pct <- function(x, d = 0) paste0(format(round(100 * x, d), nsmall = d), "%")
 
 # Per-JV detail by tier, from the origin files written by 01_pilot_matching.R.
 detail <- rbindlist(lapply(names(s$by_tier), function(t) {
-  g <- fread(file.path(paths$interim, sprintf("pilot-origin-%s.csv", t)), colClasses = list(character = "jv_bvdid"))
+  g <- fread(pin(sprintf("origin-%s.csv", t)), colClasses = list(character = "jv_bvdid"))
   g[, .(n_emp = uniqueN(user_id), n_years = uniqueN(year),
         emp_parent_a = uniqueN(user_id[origin == "parent_a"]),
         emp_parent_b = uniqueN(user_id[origin == "parent_b"])), by = jv_bvdid][, tier := t]
 }))
 detail <- merge(detail, unique(orbis[, .(jv_bvdid, exposure_group, jv_country)], by = "jv_bvdid"), by = "jv_bvdid")
-detail[, usable := n_emp >= const$min_ijv_emp & n_years >= const$min_years]
+# Intra-group arrangements: all parents share one Orbis global ultimate owner.
+# They are subsidiaries split across group entities, not IJVs, and are
+# excluded from the usable counts.
+intra <- orbis[, .(intra_group = uniqueN(guo_bvdid) < 2), by = jv_bvdid]
+detail <- merge(detail, intra, by = "jv_bvdid")
+detail[, usable_any := n_emp >= const$min_ijv_emp & n_years >= const$min_years]
+detail[, usable := usable_any & !intra_group]
 usable <- detail[usable == TRUE]
 tier_tab <- rbindlist(lapply(names(s$by_tier), function(t) {
   th <- s$by_tier[[t]]$thresholds; u <- usable[tier == t]
   data.table(Tier = tier_labels[[t]], `JVs matched` = th$jvs_matched, `JVs with workforce data` = th$jvs_with_data,
-             `JVs usable` = th$jvs_usable,
+             `Usable, incl. intra-group` = detail[tier == t & usable_any == TRUE, .N],
+             `Usable IJVs` = u[, .N],
              `Usable, staff from one parent or more` = u[emp_parent_a + emp_parent_b >= 1, .N],
              `Usable, staff from both parents` = u[emp_parent_a >= 1 & emp_parent_b >= 1, .N])
 }))
@@ -59,7 +80,7 @@ proj <- rbindlist(lapply(names(s$by_tier), function(t) {
   rates[is.na(n_usable), `:=`(n_usable = 0L, n_both = 0L)]
   rates <- merge(rates, grp_n, by = "exposure_group")
   data.table(Tier = tier_labels[[t]],
-             `Usable, unweighted` = round(sum(rates$n_usable) / sum(rates$n_pilot) * s$frame_eligible),
+             `Usable, unweighted` = round(sum(rates$n_usable) / sum(rates$n_pilot) * pop_n),
              `Usable, weighted` = round(sum(rates$n_usable / rates$n_pilot * rates$N_frame)),
              `Both parents, weighted` = round(sum(rates$n_both / rates$n_pilot * rates$N_frame)))
 }))
@@ -84,9 +105,12 @@ frame comes from the current ownership links in the Orbis large and medium
 company libraries (rules in `data/codebook.md`). The ownership screen
 returned `r format(n_cand, big.mark = ",")` candidate companies. After
 excluding JVs with a non-corporate parent and financial-sector JVs,
-`r format(s$frame_eligible, big.mark = ",")` remained eligible. The pilot
-drew `r s$pilot_n` of them, oversampling JVs exposed to the shortlisted
-shocks.
+`r format(s$frame_eligible, big.mark = ",")` remained eligible.
+`r if (params$pilot == "large") paste0("This second pilot was drawn from the large-JV stratum: eligible JVs not in the first pilot with an Orbis headcount of at least 100 and at least two parents found in Revelio by name, directly or through their global ultimate owner. That stratum holds ", format(pop_n, big.mark = ","), " JVs.") else ""`
+The pilot drew `r s$pilot_n` JVs, oversampling JVs exposed to the shortlisted
+shocks. In `r intra[intra_group == TRUE, .N]` of them all parents share one
+global ultimate owner. These are subsidiaries held through two group
+entities rather than IJVs, and they are excluded from the usable counts.
 
 ```{r}
 knitr::kable(excl, col.names = c("Frame status", "JVs"), caption = "Frame exclusions")
@@ -141,17 +165,28 @@ knitr::kable(usable[tier == "auto_plus_strong", .(JV = jv_bvdid, Host = jv_count
              caption = "Usable JVs, automatic plus strong matches")
 ```
 
-Parent-origin staff are rare. Most employees of usable JVs came from outside
-both parent groups or have no earlier position on record. This holds even
-where both parents were found in Revelio, so it reflects the data rather
-than matching alone. Localization can be measured for every usable JV.
-Cross-parent integration and parent dominance need employees from both
-parents and can be computed for very few JVs in this frame.
+```{r}
+#| include: false
+us <- usable[tier == "auto_plus_strong"]
+osh <- s$by_tier$auto_plus_strong$origin_shares
+sh <- function(o) { x <- osh[origin == o, share]; if (length(x)) x else 0 }
+```
+
+In the automatic plus strong tier, `r nrow(us)` JVs are usable.
+`r us[emp_parent_a + emp_parent_b >= 1, .N]` of them have at least one
+employee from a parent, and `r us[emp_parent_a >= 1 & emp_parent_b >= 1, .N]`
+have employees from both parents. Parent-origin employees make up
+`r pct(sh("parent_a") + sh("parent_b"), 1)` of person-years, external hires
+`r pct(sh("external_host") + sh("external_intl"), 1)`, and employees with no
+earlier position on record `r pct(sh("no_history"), 1)`. Localization can be
+measured for every usable JV. Cross-parent integration and parent dominance
+need employees from both parents.
 
 ## Projection to the frame
 
 ```{r}
-knitr::kable(proj, caption = "Projected usable JVs in the frame (weighted: by exposure group)")
+knitr::kable(proj, caption = paste0("Projected usable JVs in the population the pilot represents (",
+                                    format(pop_n, big.mark = ","), " JVs; weighted: by exposure group)"))
 ```
 
 These projections rest on small pilot counts and inherit the survivor bias

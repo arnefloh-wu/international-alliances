@@ -71,6 +71,8 @@ current ownership links in `bvd_orbis_large` and `bvd_orbis_medium`
 | Parent group (Orbis) | GUO at the 50 percent definition (`guo_50`) where present, otherwise the direct parent; GUO names from `ob_w_company_id_table` (large and medium libraries) |
 | Parent group (Revelio) | the Revelio entities matched to the direct parent and to its GUO, extended to their whole Revelio family: the Revelio `ultimate_parent_rcid` of each matched entity and every company under it. A prior position anywhere in this family counts as parent origin |
 | Country | first two characters of the BvD ID (ISO 3166 alpha-2) |
+| Proposed (gate 4, not yet applied) | intra-group exclusion: at least two distinct parent GUOs; JVs whose parents share one GUO are subsidiaries held through two group entities. The pilot reports already exclude them from usable counts |
+| Large-JV stratum (pilot 2) | eligible JVs not in pilot 1 with an Orbis headcount (`empl`, latest year) of at least 100 and at least two parents whose own or GUO name has an exact or normalized Revelio match |
 
 Consequences: the frame contains only JVs alive with an unchanged
 multi-parent structure today, so JVs that were dissolved or bought out
