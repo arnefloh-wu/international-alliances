@@ -8,55 +8,156 @@ format:
 execute:
   echo: false
   warning: false
+knitr:
+  opts_knit:
+    root.dir: "../.."
 ---
 
 ```{r setup}
+#| include: false
 source("code/R/00_setup.R")
-s <- readRDS(file.path(paths$interim, "pilot-summary.rds"))
+s  <- readRDS(file.path(paths$interim, "pilot-summary.rds"))
+orbis <- fread(tail(sort(list.files(paths$raw, "^orbis-pilot-.*[.]csv$", full.names = TRUE)), 1),
+               colClasses = list(character = c("jv_bvdid", "parent_bvdid", "guo_bvdid")))
+frame <- fread(tail(sort(list.files(paths$interim, "^wrds-ijv-frame-2.*[.]csv$", full.names = TRUE)), 1),
+               select = c("jv_bvdid", "excl_jv"), colClasses = "character")
+groups <- fread(tail(sort(list.files(paths$interim, "^wrds-ijv-frame-groups-.*[.]csv$", full.names = TRUE)), 1),
+                colClasses = list(character = "jv_bvdid"))
+review <- fread(file.path(paths$interim, "pilot-jv-review-tier.csv"))
+tier_labels <- c(auto = "Automatic name matches",
+                 auto_plus_strong = "Plus strong website matches",
+                 auto_plus_review = "Plus all review-tier matches")
+jv_frame <- unique(frame, by = "jv_bvdid")
+n_cand <- nrow(jv_frame)
+excl <- jv_frame[, .N, by = .(reason = fifelse(is.na(excl_jv) | excl_jv == "", "eligible", excl_jv))][order(-N)]
+pct <- function(x, d = 0) paste0(format(round(100 * x, d), nsmall = d), "%")
+
+# Per-JV detail by tier, from the origin files written by 01_pilot_matching.R.
+detail <- rbindlist(lapply(names(s$by_tier), function(t) {
+  g <- fread(file.path(paths$interim, sprintf("pilot-origin-%s.csv", t)), colClasses = list(character = "jv_bvdid"))
+  g[, .(n_emp = uniqueN(user_id), n_years = uniqueN(year),
+        emp_parent_a = uniqueN(user_id[origin == "parent_a"]),
+        emp_parent_b = uniqueN(user_id[origin == "parent_b"])), by = jv_bvdid][, tier := t]
+}))
+detail <- merge(detail, unique(orbis[, .(jv_bvdid, exposure_group, jv_country)], by = "jv_bvdid"), by = "jv_bvdid")
+detail[, usable := n_emp >= const$min_ijv_emp & n_years >= const$min_years]
+usable <- detail[usable == TRUE]
+tier_tab <- rbindlist(lapply(names(s$by_tier), function(t) {
+  th <- s$by_tier[[t]]$thresholds; u <- usable[tier == t]
+  data.table(Tier = tier_labels[[t]], `JVs matched` = th$jvs_matched, `JVs with workforce data` = th$jvs_with_data,
+             `JVs usable` = th$jvs_usable,
+             `Usable, staff from one parent or more` = u[emp_parent_a + emp_parent_b >= 1, .N],
+             `Usable, staff from both parents` = u[emp_parent_a >= 1 & emp_parent_b >= 1, .N])
+}))
+# Projection to the frame: unweighted, and weighted by exposure group because
+# the pilot oversamples exposed JVs.
+grp_n <- groups[, .(N_frame = .N), by = exposure_group]
+proj <- rbindlist(lapply(names(s$by_tier), function(t) {
+  rates <- merge(orbis[, .(n_pilot = uniqueN(jv_bvdid)), by = exposure_group],
+                 usable[tier == t, .(n_usable = .N, n_both = sum(emp_parent_a >= 1 & emp_parent_b >= 1)), by = exposure_group],
+                 by = "exposure_group", all.x = TRUE)
+  rates[is.na(n_usable), `:=`(n_usable = 0L, n_both = 0L)]
+  rates <- merge(rates, grp_n, by = "exposure_group")
+  data.table(Tier = tier_labels[[t]],
+             `Usable, unweighted` = round(sum(rates$n_usable) / sum(rates$n_pilot) * s$frame_eligible),
+             `Usable, weighted` = round(sum(rates$n_usable / rates$n_pilot * rates$N_frame)),
+             `Both parents, weighted` = round(sum(rates$n_both / rates$n_pilot * rates$N_frame)))
+}))
+pg <- s$parents_in_group
 ```
 
 ## Purpose
 
-The research design (section 12 of the research idea) requires a pilot
-before hypotheses are finalized, because the main feasibility risk is
-entity matching and workforce coverage rather than the statistical model.
-This report answers four questions. How many pilot IJVs and parents can
-be identified as distinct Revelio entities? How many observable employees
-and years does each matched IJV have? How many IJV-function-year cells
-survive the minimum cell-size thresholds? Can parent-origin staffing be
-reconstructed for a usable share of employees?
+The research design requires a pilot before the hypotheses are finalized,
+because the main feasibility risk is entity matching and workforce coverage
+rather than the statistical model. This report answers four questions. How
+many pilot IJVs and parents can be identified as distinct Revelio entities?
+How many observable employees and years does each matched IJV have? How many
+IJV-function-year and IJV-seniority-year cells survive the minimum cell
+sizes? Can parent-origin staffing be reconstructed for a usable share of
+employees?
+
+## Sample frame
+
+Orbis Crossborder Investment is not part of the WRDS subscription, so the
+frame comes from the current ownership links in the Orbis large and medium
+company libraries (rules in `data/codebook.md`). The ownership screen
+returned `r format(n_cand, big.mark = ",")` candidate companies. After
+excluding JVs with a non-corporate parent and financial-sector JVs,
+`r format(s$frame_eligible, big.mark = ",")` remained eligible. The pilot
+drew `r s$pilot_n` of them, oversampling JVs exposed to the shortlisted
+shocks.
+
+```{r}
+knitr::kable(excl, col.names = c("Frame status", "JVs"), caption = "Frame exclusions")
+knitr::kable(orbis[, .(JVs = uniqueN(jv_bvdid)), by = .(`Exposure group` = exposure_group)][order(-JVs)],
+             caption = "Pilot JVs by exposure group")
+```
+
+The frame contains only JVs that are active today and still have a
+multi-parent structure, and it uses the incorporation date and the current
+equity share in place of the formation date and formation share.
 
 ## Match rates
 
 ```{r}
-knitr::kable(s$match_rates, caption = "Entities matched by method")
+knitr::kable(s$match_totals, caption = "Pilot entities with a Revelio candidate and an accepted match (guo = global ultimate owner of a parent)")
+knitr::kable(s$match_rates, caption = "Accepted automatic matches by method")
+knitr::kable(s$jv_rejected, caption = "JV candidates rejected by the guards")
 ```
 
-## Workforce coverage per matched IJV
+The guards reject a JV candidate in another country and a candidate that is
+the parent's own Revelio entity. Without them, several JVs matched their
+parent and would have inherited the parent's workforce. A second, review tier
+searches by the JV's website and by the first two name tokens in the host
+country. It produced `r nrow(review)` candidates, of which
+`r review[strong == TRUE, .N]` come from the website and have a close name.
+They are listed in `data/interim/pilot-jv-review-tier.csv` for review.
+
+## Workforce coverage and cell survival
+
+A JV is usable if it has at least `r const$min_ijv_emp` observable employees
+and at least `r const$min_years` observed years from its formation year
+onward.
 
 ```{r}
-knitr::kable(s$thresholds, caption = "IJVs clearing the sample thresholds")
-summary(s$cov_ijv[, .(n_emp, n_years, share_parent_origin, share_no_history)])
-```
-
-## Cell survival
-
-```{r}
-knitr::kable(s$cell_survival, caption = "IJV-function-year cells by minimum employees")
+knitr::kable(tier_tab, caption = "Coverage by matching tier")
+cs <- rbindlist(lapply(names(s$by_tier), function(t) s$by_tier[[t]]$cell_survival[, tier := tier_labels[[t]]]))
+knitr::kable(dcast(cs, tier + dimension ~ threshold, value.var = "cells_surviving"),
+             caption = "Cells (JV x function or seniority x year) with at least 3, 5 and 10 employees")
 ```
 
 ## Parent-origin reconstruction
 
-The share of employees whose prior employer within the origin window can
-be classified as parent A, parent B or external is reported in the
-`share_parent_origin` and `share_no_history` columns above. The
-data-engineer agent interprets these figures here, including the host
-countries and functions where coverage is weakest.
+```{r}
+os <- rbindlist(lapply(names(s$by_tier), function(t) s$by_tier[[t]]$origin_shares[, tier := tier_labels[[t]]]))
+knitr::kable(dcast(os, origin ~ tier, value.var = "share")[, lapply(.SD, function(x) if (is.numeric(x)) round(x, 3) else x)],
+             caption = "Share of JV person-years by origin of the employee")
+knitr::kable(pg[, .N, by = .(Parents = parents, `Parents with a Revelio group` = parents_with_group)][order(Parents, `Parents with a Revelio group`)],
+             caption = "Pilot JVs by number of parents found in Revelio")
+knitr::kable(usable[tier == "auto_plus_strong", .(JV = jv_bvdid, Host = jv_country, Employees = n_emp, Years = n_years,
+                                                 `From parent A` = emp_parent_a, `From parent B` = emp_parent_b,
+                                                 Exposure = exposure_group)][order(-Employees)],
+             caption = "Usable JVs, automatic plus strong matches")
+```
+
+Parent-origin staff are rare. Most employees of usable JVs came from outside
+both parent groups or have no earlier position on record. This holds even
+where both parents were found in Revelio, so it reflects the data rather
+than matching alone. Localization can be measured for every usable JV.
+Cross-parent integration and parent dominance need employees from both
+parents and can be computed for very few JVs in this frame.
+
+## Projection to the frame
+
+```{r}
+knitr::kable(proj, caption = "Projected usable JVs in the frame (weighted: by exposure group)")
+```
+
+These projections rest on small pilot counts and inherit the survivor bias
+of the frame. They are an order of magnitude, not an estimate.
 
 ## Go/no-go recommendation
 
-The agent completes this section: projected usable IJVs if the full Orbis
-population is five to ten times the pilot, whether the 200 to 800 target
-is realistic, which thresholds the pre-analysis plan should adopt, and
-whether an event-study design is feasible given the exposed dyads
-observed in the pilot.
+The data-engineer agent's recommendation and its reasons are recorded in
+`reviews/gate-4-pilot.md`. The PI decides.

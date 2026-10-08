@@ -1,5 +1,16 @@
 # Extraction specification: Orbis Crossborder Investment (pilot)
 
+> **Superseded for the pilot, 2026-10-08.** Orbis Crossborder Investment is
+> not part of the WRDS subscription. The pilot frame is drawn from the
+> Orbis ownership tables on WRDS by `code/R/wrds/02_wrds_pilot_extract.R`,
+> which writes `orbis-pilot-2026-10-08.csv` with the fields below except
+> deal ID, announcement and completion dates, deal value, rationale text
+> and equity share at formation. Incorporation date and current equity
+> share stand in for formation date and formation share. Frame rules are
+> in `data/codebook.md`; the decision is in `docs/decisions.md`. The
+> oversampling targets below are kept, except that US Entity List exposure
+> needs a name match against the list and is not drawn in this run.
+
 Purpose: draw approximately 100 international equity joint ventures for
 the matching pilot (research idea, section 12).
 
