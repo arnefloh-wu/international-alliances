@@ -79,6 +79,23 @@ multi-parent structure today, so JVs that were dissolved or bought out
 are missing (survivor bias), and ownership changes since formation are
 not observed.
 
+## Full-frame sample (2026-10-09)
+
+Table `data/processed/sample-ijv-2026-10-09.csv`, one row per eligible IJV, from `code/R/wrds/03_wrds_full_sample.R`.
+
+| Variable | Definition |
+|---|---|
+| `tier` | `auto` (accepted name, LEI, ISIN or native-name match with the pilot guards), `strong` (website route with a close name), `review` (other review-tier route), `shared_entity_dropped` (another JV took the same Revelio entity), `unmatched` |
+| `usable` | at least 20 employees and 3 observed years from the formation year at the matched entity |
+| `core` | usable, tier `auto` or `strong`, and no size mismatch |
+| `flag_size_mismatch` | Orbis headcount of 10 or more and Revelio employees more than 20 times that headcount |
+| `flag_pre_formation_10y` | the matched entity's first position starts more than 10 years before the JV's incorporation year; the incorporation date then probably does not mark the JV's formation |
+| `flag_holding_vehicle` | JV name contains "holding" and Orbis headcount is 5 or fewer or missing; the match is to the operating company |
+| `operating_parents` | parents that are operating firms: the parent or its GUO has at least 50 employees in Orbis, or the parent's or GUO's matched Revelio entity has at least 50 people |
+| `strategic` | at least two operating-firm parents; separates JVs between operating companies from companies co-owned by founders' holding companies and investment vehicles |
+
+Additional matching routes in the full run: the JV's previous and also-known-as names (Orbis `prevname`, `akaname`), and its native-script name (exact match after removing spaces and punctuation). GUOs that are states or government bodies do not define parent families. Each Revelio entity counts for one JV only.
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).
