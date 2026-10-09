@@ -96,6 +96,21 @@ Table `data/processed/sample-ijv-2026-10-09.csv`, one row per eligible IJV, from
 
 Additional matching routes in the full run: the JV's previous and also-known-as names (Orbis `prevname`, `akaname`), and its native-script name (exact match after removing spaces and punctuation). GUOs that are states or government bodies do not define parent families. Each Revelio entity counts for one JV only.
 
+## Frame v2 (2026-10-09)
+
+Built by `code/R/wrds/05_wrds_frame_v2.R`; matched by `code/R/wrds/03_wrds_full_sample.R v2`; sample table `data/processed/sample-ijv-v2-2026-10-09.csv`.
+
+| Variable | Definition |
+|---|---|
+| `source` | `orbis` (Orbis ownership links) or `ciq` (Capital IQ ownership relations); Capital IQ JVs with the same normalized name and country as an Orbis JV are dropped |
+| `admitted_by` | `base` if the JV meets the base rules; otherwise the relaxations that admit it: `stake_10_20` (a parent holds 10 to 20 percent), `four_parents`, `formed_before_2005`, `not_active` (company status not active), `guo_country` (two-country rule met only at the GUO level; not yet run), and `ciq` for Capital IQ JVs |
+| Capital IQ IJV | a company (public or private) with two to four owners that are public or private companies, each holding 10 to 90 percent through a current investment or current subsidiary relation, together at least 50 percent, owners in at least two countries and at least one foreign to the company; financial-sector companies excluded |
+| Capital IQ groups | an owner's group is its majority parent (current subsidiary relation above 50 percent) or the owner itself; this one-level check misses deeper common ownership |
+| `formation_year` (Capital IQ) | `yearfounded`; where missing, 1990 and `formation_year_missing = TRUE` |
+| Industry pick | the Orbis industry table can hold several rows per company; the v1 frame and the v2 frame used for the 2026-10-09 run took one without a fixed order, which moves a few hundred JVs in or out of the financial-sector exclusion between runs. `05_wrds_frame_v2.R` now orders the rows; the next rebuild is deterministic |
+
+Matching changes in the v2 run: name keys are searched in cached batches; when an Orbis JV and a Capital IQ JV of the same tier pick the same Revelio entity, the Orbis JV keeps it; positions at JV entities and career histories are shared with v1 and pulled incrementally.
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).

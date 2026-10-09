@@ -8,7 +8,11 @@
 # Input: the frame written by 02_wrds_pilot_extract.R (including step A2, the
 # intra-group exclusion) and its exposure-group file.
 # Run on the PI's computer from the repository root:
-#   "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/R/wrds/03_wrds_full_sample.R
+#   "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/R/wrds/03_wrds_full_sample.R [v1|v2]
+# v1 (default): the base frame of 02_wrds_pilot_extract.R. v2: the expanded
+# frame of 05_wrds_frame_v2.R (relaxed Orbis rules and Capital IQ). Outputs of
+# v2 carry "v2-" in their names; positions at JV entities and career
+# histories are shared between versions and pulled incrementally.
 # Every stage writes its output once and is skipped while the file exists.
 #
 # Matching follows the pilot rules (01_pilot_matching.R, data/codebook.md)
@@ -25,34 +29,38 @@ library(DBI)
 
 FRAME_DATE <- "2026-10-08"
 RUN_DATE   <- "2026-10-09"
+VERSION    <- if (length(commandArgs(trailingOnly = TRUE))) commandArgs(trailingOnly = TRUE)[1] else "v1"
+stopifnot(VERSION %in% c("v1", "v2"))
+RUN        <- if (VERSION == "v1") RUN_DATE else paste0("v2-", RUN_DATE)
 MAX_USERS_PER_JV <- 50000L
 RN_MAX     <- 20L          # name candidates kept per entity and name source
 YEAR_MAX   <- 2026L
 
-f_frame   <- file.path(paths$interim, sprintf("wrds-ijv-frame-%s.csv", FRAME_DATE))
+f_frame   <- if (VERSION == "v1") file.path(paths$interim, sprintf("wrds-ijv-frame-%s.csv", FRAME_DATE)) else
+               file.path(paths$interim, sprintf("wrds-ijv-frame-v2-%s.csv", RUN_DATE))
 f_groups  <- file.path(paths$interim, sprintf("wrds-ijv-frame-groups-%s.csv", FRAME_DATE))
 f_size    <- file.path(paths$interim, sprintf("wrds-ijv-frame-size-%s.csv", FRAME_DATE))
-f_orbis   <- file.path(paths$raw, sprintf("orbis-full-%s.csv", RUN_DATE))
-f_cand    <- file.path(paths$raw, sprintf("revelio-companies-full-%s.csv.gz", RUN_DATE))
+f_orbis   <- file.path(paths$raw, sprintf("orbis-full-%s.csv", RUN))
+f_cand    <- file.path(paths$raw, sprintf("revelio-companies-full-%s.csv.gz", RUN))
 f_jvpos   <- file.path(paths$raw, sprintf("revelio-jv-positions-full-%s.parquet", RUN_DATE))
 d_hist    <- file.path(paths$raw, sprintf("revelio-histories-full-%s", RUN_DATE))
-f_matches <- file.path(paths$interim, sprintf("full-matches-%s.csv.gz", RUN_DATE))
-f_rcids   <- file.path(paths$interim, sprintf("full-jv-rcids-%s.csv", RUN_DATE))
-f_review  <- file.path(paths$interim, sprintf("full-jv-review-tier-%s.csv", RUN_DATE))
-f_pgroups <- file.path(paths$interim, sprintf("full-parent-groups-%s.csv", RUN_DATE))
-f_sample  <- file.path(paths$processed, sprintf("sample-ijv-%s.csv", RUN_DATE))
-f_constr  <- file.path(paths$processed, "sample-construction-log.md")
-f_psize   <- file.path(paths$interim, sprintf("full-parent-size-%s.csv", RUN_DATE))
-f_prsize  <- file.path(paths$interim, sprintf("full-parent-revelio-size-%s.csv", RUN_DATE))
+f_matches <- file.path(paths$interim, sprintf("full-matches-%s.csv.gz", RUN))
+f_rcids   <- file.path(paths$interim, sprintf("full-jv-rcids-%s.csv", RUN))
+f_review  <- file.path(paths$interim, sprintf("full-jv-review-tier-%s.csv", RUN))
+f_pgroups <- file.path(paths$interim, sprintf("full-parent-groups-%s.csv", RUN))
+f_sample  <- file.path(paths$processed, sprintf("sample-ijv-%s.csv", RUN))
+f_constr  <- file.path(paths$processed, if (VERSION == "v1") "sample-construction-log.md" else "sample-construction-log-v2.md")
+f_psize   <- file.path(paths$interim, sprintf("full-parent-size-%s.csv", RUN))
+f_prsize  <- file.path(paths$interim, sprintf("full-parent-revelio-size-%s.csv", RUN))
 OPERATING_MIN_EMP <- 50L   # a parent counts as an operating firm if it or its GUO has at least this many employees
-f_log     <- file.path(paths$interim, sprintf("wrds-full-log-%s.md", RUN_DATE))
+f_log     <- file.path(paths$interim, sprintf("wrds-full-log-%s.md", RUN))
 
 log_line <- function(...) {
   msg <- sprintf(...)
   message(format(Sys.time(), "%H:%M:%S"), " ", msg)
   cat("- ", format(Sys.time(), "%Y-%m-%d %H:%M:%S"), " ", msg, "\n", file = f_log, append = TRUE, sep = "")
 }
-if (!file.exists(f_log)) cat("# WRDS full-sample extraction log, ", RUN_DATE, "\n\n", file = f_log, sep = "")
+if (!file.exists(f_log)) cat("# WRDS full-sample extraction log, ", RUN, "\n\n", file = f_log, sep = "")
 secs <- function(t0) as.numeric(Sys.time() - t0, units = "secs")
 
 con <- dbConnect(RPostgres::Postgres(), host = "wrds-pgdata.wharton.upenn.edu", port = 9737,
@@ -77,7 +85,7 @@ native_key <- function(x) gsub(NATIVE_CLASS, "", tolower(x))
 if (!file.exists(f_orbis)) {
   frame <- fread(f_frame, colClasses = list(character = c("jv_bvdid", "parent_bvdid", "parent_guo", "nace", "naics")))
   stopifnot("parent_guo" %in% names(frame))   # step A2 of 02_wrds_pilot_extract.R must have run
-  orb <- frame[excl_jv == ""]
+  orb <- frame[is.na(excl_jv) | as.character(excl_jv) == ""]
   ids <- unique(orb$jv_bvdid)
   t0 <- Sys.time()
   nm <- rbindlist(lapply(c("bvd_orbis_large.ob_w_company_id_table_l", "bvd_orbis_medium.ob_w_company_id_table_m"), function(t)
@@ -92,23 +100,32 @@ if (!file.exists(f_orbis)) {
   gn <- unique(gn, by = "parent_guo")
   orb <- merge(orb, nm, by = "jv_bvdid", all.x = TRUE)
   orb <- merge(orb, gn, by = "parent_guo", all.x = TRUE)
+  if ("guo_name_pre" %in% names(orb)) orb[is.na(guo_name) & !is.na(guo_name_pre), guo_name := guo_name_pre]
   orb[parent_guo == parent_bvdid, guo_name := parent_name]
   orb[, guo_country := substr(parent_guo, 1, 2)]
-  grp <- fread(f_groups, colClasses = list(character = "jv_bvdid"))[, .(jv_bvdid, region, industry, exposure_group)]
-  orb <- merge(orb, grp, by = "jv_bvdid", all.x = TRUE)
-  if (file.exists(f_size)) {
-    sz <- fread(f_size, colClasses = list(character = "jv_bvdid"))
-    orb <- merge(orb, sz[, .(jv_bvdid, jv_employees = employees, jv_fin_year = fin_year)], by = "jv_bvdid", all.x = TRUE)
+  if (!"exposure_group" %in% names(orb)) {
+    grp <- fread(f_groups, colClasses = list(character = "jv_bvdid"))[, .(jv_bvdid, region, industry, exposure_group)]
+    orb <- merge(orb, grp, by = "jv_bvdid", all.x = TRUE)
   }
+  sz <- if (file.exists(f_size)) fread(f_size, colClasses = list(character = "jv_bvdid")) else data.table(jv_bvdid = character(), employees = numeric(), fin_year = integer())
+  miss <- setdiff(orb[!grepl("^CIQ", jv_bvdid), unique(jv_bvdid)], sz$jv_bvdid)
+  if (length(miss)) {
+    add <- rbindlist(lapply(c("bvd_orbis_large.ob_key_financials_usd_l", "bvd_orbis_medium.ob_key_financials_usd_m"), function(t)
+      q_in(paste0("SELECT DISTINCT ON (bvdid) bvdid AS jv_bvdid, closdate_year AS fin_year, empl AS employees FROM ", t,
+                  " WHERE bvdid IN (%s) AND closdate_year IS NOT NULL AND empl IS NOT NULL ORDER BY bvdid, closdate DESC"), miss)))
+    sz <- unique(rbind(sz, add[order(jv_bvdid, -fin_year)], fill = TRUE), by = "jv_bvdid")
+  }
+  orb <- merge(orb, sz[, .(jv_bvdid, jv_employees = employees, jv_fin_year = fin_year)], by = "jv_bvdid", all.x = TRUE)
   setorder(orb, jv_bvdid, -equity_share_current, parent_country)
   fwrite(orb, f_orbis)
   log_line("F1 orbis extract: %d JV-parent rows, %d JVs, %d distinct GUOs differing from the parent (%d named) in %.0fs",
            nrow(orb), uniqueN(orb$jv_bvdid), length(guo_ids), nrow(gn), secs(t0))
 }
 orb <- fread(f_orbis, colClasses = list(character = c("jv_bvdid", "parent_bvdid", "parent_guo", "nace", "naics")))
-jv  <- unique(orb, by = "jv_bvdid")[, .(jv_bvdid, jv_name, jv_country, jv_name_native, jv_prevname, jv_akaname,
-                                        jv_lei, jv_isin, jv_website, formation_year, exposure_group, region, industry,
-                                        jv_employees, n_parents)]
+jv  <- unique(orb, by = "jv_bvdid")[, intersect(c("jv_bvdid", "jv_name", "jv_country", "jv_name_native", "jv_prevname", "jv_akaname",
+                                                   "jv_lei", "jv_isin", "jv_website", "formation_year", "exposure_group", "region", "industry",
+                                                   "jv_employees", "n_parents", "source", "admitted_by", "formation_year_missing"),
+                                                 names(orb)), with = FALSE]
 
 # ---- F2. Revelio candidates ------------------------------------------------
 # Name keys for JVs (main, previous and alias names), parents and GUOs.
@@ -131,7 +148,7 @@ if (!file.exists(f_cand)) {
   ), use.names = TRUE)
   ents[, key := name_key(oname)]
   ents <- unique(ents[nchar(key) >= 2], by = c("orbis_id", "entity", "src"))
-  fwrite(ents, file.path(paths$interim, sprintf("full-name-keys-%s.csv", RUN_DATE)))
+  fwrite(ents, file.path(paths$interim, sprintf("full-name-keys-%s.csv", RUN)))
 
   cm_cols <- "cm.rcid, cm.company, cm.hq_country, cm.ultimate_parent_rcid, cm.lei, cm.isin, cm.url, cm.linkedin_url"
   vals <- function(d) paste(sprintf("('%s', %d, '%s', '%s', '%s')", d$key, nchar(d$key), esc(d$orbis_id), d$entity, d$src), collapse = ",\n")
@@ -146,7 +163,24 @@ hits AS (
 SELECT orbis_id, entity, src, rcid, company, hq_country, ultimate_parent_rcid, lei, isin, url, linkedin_url
 FROM hits WHERE rn <= %d", vals(d), cm_cols, k, k, RN_MAX)
   t0 <- Sys.time()
-  cand <- rbindlist(list(q(name_sql(ents[nchar(key) >= 6], 6L)), q(name_sql(ents[nchar(key) < 6], 2L))), use.names = TRUE)
+  # Name keys are searched in batches; each batch is cached so that a dropped
+  # connection resumes from the last finished batch.
+  d_batches <- file.path(paths$interim, sprintf("full-name-batches-%s", RUN))
+  dir.create(d_batches, showWarnings = FALSE)
+  batch_run <- function(d, k, size, tag) {
+    idx <- split(seq_len(nrow(d)), ceiling(seq_len(nrow(d)) / size))
+    rbindlist(lapply(seq_along(idx), function(i) {
+      f <- file.path(d_batches, sprintf("%s-%03d.csv.gz", tag, i))
+      if (!file.exists(f)) {
+        t1 <- Sys.time()
+        fwrite(q(name_sql(d[idx[[i]]], k)), f)
+        log_line("F2 name batch %s %d of %d done in %.0fs", tag, i, length(idx), secs(t1))
+      }
+      fread(f, colClasses = list(character = c("orbis_id", "entity", "src")))
+    }), use.names = TRUE)
+  }
+  cand <- rbindlist(list(batch_run(ents[nchar(key) >= 6], 6L, 40000L, "long"),
+                         batch_run(ents[nchar(key) < 6], 2L, 4000L, "short")), use.names = TRUE)
   log_line("F2 name candidates: %d rows for %d of %d entity keys in %.0fs", nrow(cand),
            uniqueN(cand[, paste(orbis_id, entity)]), uniqueN(ents[, paste(orbis_id, entity)]), secs(t0))
 
@@ -216,7 +250,7 @@ JOIN d ON regexp_replace(lower(cm.url), '^(https?://)?(www[.])?', '') = d.domain
   log_line("F2 candidates written: %s (%d rows)", f_cand, nrow(cand))
 }
 cand <- fread(f_cand, colClasses = list(character = c("orbis_id", "src", "entity")))
-ents <- fread(file.path(paths$interim, sprintf("full-name-keys-%s.csv", RUN_DATE)), colClasses = list(character = c("orbis_id", "src", "entity")))
+ents <- fread(file.path(paths$interim, sprintf("full-name-keys-%s.csv", RUN)), colClasses = list(character = c("orbis_id", "src", "entity")))
 
 # ---- F3. Matching -----------------------------------------------------------
 STATE_RX <- "government|ministry|state[- ]owned assets|sasac|republic of|kingdom of|municipal people|people's government|state of |commonwealth of|federal government|emirate of|sultanate"
@@ -337,11 +371,14 @@ cov_for <- function(pk) {
 # best tier keeps it (automatic, then strong, then review); a tie within the
 # best tier drops all of them as ambiguous.
 tier_rank <- c(auto = 1L, strong = 2L, review = 3L)
-picks[, tr := tier_rank[tier]]
+# Within a tier, an Orbis JV is preferred over a Capital IQ JV on the same
+# entity: the two are almost surely the same company recorded twice.
+picks[, src := if ("source" %in% names(jv)) jv$source[match(jv_bvdid, jv$jv_bvdid)] else "orbis"]
+picks[, tr := tier_rank[tier] * 10L + (src %chin% "ciq")]
 picks[, best_tr := min(tr), by = rcid]
 picks[, n_best := sum(tr == best_tr), by = rcid]
 shared_drop <- picks[tr > best_tr | n_best > 1, jv_bvdid]
-picks_u <- picks[!jv_bvdid %in% shared_drop][, c("tr", "best_tr", "n_best") := NULL]
+picks_u <- picks[!jv_bvdid %in% shared_drop][, c("tr", "best_tr", "n_best", "src") := NULL]
 cov <- cov_for(picks_u)
 sample <- merge(jv, picks_u, by = "jv_bvdid", all.x = TRUE)
 sample <- merge(sample, cov, by = "jv_bvdid", all.x = TRUE)
@@ -427,7 +464,7 @@ by_reg <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), co
                  by = region][order(-eligible)]
 mtab <- function(d) paste(c(paste("|", paste(names(d), collapse = " | "), "|"), paste("|", paste(rep("---", ncol(d)), collapse = " | "), "|"),
                             apply(d, 1, function(r) paste("|", paste(trimws(r), collapse = " | "), "|"))), collapse = "\n")
-writeLines(c(sprintf("# Sample construction log (full frame, %s)", RUN_DATE), "",
+writeLines(c(sprintf("# Sample construction log (full frame, %s)", RUN), "",
              "Produced by `code/R/wrds/03_wrds_full_sample.R`. Usable: at least 20 employees and 3 years observed from the formation year.",
              "Core: usable, automatic or strong match, and Revelio employees not more than 20 times the Orbis headcount where Orbis reports 10 or more.",
              sprintf("Strategic: at least two parents are operating firms (the parent or its GUO has at least %d employees in Orbis).", OPERATING_MIN_EMP), "",

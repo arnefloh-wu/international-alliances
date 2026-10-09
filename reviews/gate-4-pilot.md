@@ -98,6 +98,44 @@ Counts from `code/R/wrds/04_wrds_route_sizing.R` (`data/interim/route-sizing-202
 | Targeted manual matching of strategic JVs without an accepted match | 1,664 strategic JVs (592 in East Asia, 373 in South and Southeast Asia, 356 in Western Europe) | unknown | Research-assistant search of Revelio and LinkedIn; highest value per case. |
 | SDC joint-ventures module (library licence) | not sized | unknown | Formation dates and dissolved JVs; would replace the incorporation-date proxy. |
 
+## Upper-bound sample from frame v2 (PI decision, 2026-10-09)
+
+The PI chose the upper bound as the analysis sample and asked for the sample to be maximized. Frame v2 relaxes the Orbis rules and adds Capital IQ (`code/R/wrds/05_wrds_frame_v2.R`; log in `data/processed/sample-construction-log-v2.md`).
+
+| Step | IJVs |
+|---|---|
+| Eligible in frame v2 (Orbis 23,765, Capital IQ 9,180) | 32,945 |
+| Any Revelio candidate | 21,329 |
+| Automatic / strong review / other review match | 9,988 / 1,474 / 3,068 |
+| Usable, automatic plus strong | 6,192 |
+| Core sample (upper bound) | 6,139 |
+| Strategic core | 1,681 |
+
+| Route | Eligible | Core | Strategic core |
+|---|---|---|---|
+| Orbis, base rules | 10,414 | 1,498 | 421 |
+| Orbis, relaxed rules | 13,351 | 3,168 | 960 |
+| Capital IQ | 9,180 | 1,473 | 300 |
+
+Within the relaxed Orbis rules (a JV can carry several): incorporated before 2005, 2,258 core; a 10 to 20 percent parent, 1,667 core; four parents, 250 core; not active, 113 core. Core by exposure group: unexposed 2,842, OECD screening 2,802, UK-EU 388, China coercion 69, Russia 38. North America rises from 12 to 255 core IJVs through Capital IQ.
+
+Quality (random audit of 25 Capital IQ and 25 relaxed-Orbis core IJVs): about 48 of 50 matched the right company. Incorporation before 2005 adds established IJVs (for example Timet Savoie, Osram China Lighting, Brose Sitech, Webmotors). The 10 to 20 percent stake rule mostly adds start-ups with investor shareholders, not IJVs. Capital IQ adds large IJVs that Orbis lacks (for example Sadara Chemical, Tata Teleservices Maharashtra, Saudi Steel Pipes, Sollers Ford), but also intra-group cases its one-level group check misses (Lotte Chemical) and listed companies with blockholders (Ambuja Cements, Octopus Energy). The `source`, `admitted_by` and `strategic` columns allow these subsets to be dropped in robustness checks.
+
+## Data sources for further enlargement
+
+| Source | Status | What it adds |
+|---|---|---|
+| Orbis ownership links (WRDS) | licensed, used | Frame v1 and v2. The GUO-level two-country rule is implemented but not yet run (about 7,600 extra candidates before checks, estimated). |
+| Revelio (WRDS) | licensed, used | Workforce data; coverage of China-hosted JVs is the weakest link. |
+| Capital IQ ownership relations (WRDS) | licensed, used | Second frame; 9,180 JVs not in Orbis. Prior co-ownership relations (59,454 companies) could add dissolved JVs but record no stakes. |
+| BoardEx (WRDS) | licensed, not used | Senior executives and directors with prior employers; a source for parent-origin staffing at the top, not for sample size. |
+| FactSet entity data (WRDS) | licensed, small edition | 624,000 entities with LEIs only; little gain for matching. |
+| SDC joint ventures and alliances (WRDS schema `tr_sdc_joint_ventures`) | not licensed | JV records with participants, announcement and status, from 1988 according to library guides; would give formation dates and dissolved JVs. Alliance databases each capture only part of announced alliances (Schilling 2009, as summarized in library sources). |
+| FactSet Revere relationships (WRDS `factset_revere_*`) | not licensed | Relationship type "Partner - Joint Venture" exists in FactSet's readable type map; Revelio carries `factset_entity_id` for 5.4 million companies, so FactSet JV partners link to workforce data without name matching. |
+| Orbis M&A (formerly Zephyr) | not on WRDS; Moody's / BvD subscription | Deal records including the joint-venture deal type, no minimum deal value; formation dates and parents for JVs formed by deal. |
+| fDi Markets (Financial Times) | not licensed | Greenfield projects from 2003, including JVs that create a new physical operation; announcement dates and partners. |
+| PitchBook, Preqin (WRDS) | schemas visible, not licensed | Not assessed further. |
+
 ## Recommendation (agent's view; the PI decides)
 
 Go for a localization-based design; no-go for cross-parent integration as a primary measure.
@@ -135,7 +173,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 3. Country basis: direct shareholder country (current) or GUO country for the two-country rule and the exposure groups.
 4. Review tier: check `data/interim/pilot-jv-review-tier.csv` and `pilot-large-jv-review-tier.csv`, and decide whether the strong website tier counts as accepted.
 5. Deal data: whether to ask the library about the SDC joint-ventures module, which would give formation dates and dissolved JVs.
-6. Sample definition: the strategic core (421 IJVs, two operating-firm parents) or the full core (1,530) as the analysis sample, and the usability threshold (20 employees by default).
+6. Sample definition: decided 2026-10-09, the upper bound (core sample of frame v2, 6,139 IJVs) with the strategic, source and admission flags for robustness checks. Open: the usability threshold (20 employees by default).
 7. Enlargement routes: which of the routes listed above to run. The agent's order of value for cost: incorporation from 1990, the 10% stake threshold, PI review of the review tier, the GUO-level two-country rule, targeted manual matching of strategic JVs, then Capital IQ as a second frame.
 
 ## Proposed changes to earlier stages
