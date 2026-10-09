@@ -8,16 +8,18 @@ a vendor, library or WRDS page on 2026-10-09; anything else is marked
 
 ## 1. Read this first
 
-Where the 32,945 joint ventures of frame v2 are lost (`code/R/wrds/03_wrds_full_sample.R v2`):
+Where the 55,590 joint ventures of frame v3 are lost (`code/R/wrds/03_wrds_full_sample.R v3`):
 
 | Stage | IJVs | Share |
 |---|---|---|
-| No accepted Revelio entity | 18,976 | 57.6% |
-| Matched, but no employee observed after formation | 1,490 | 4.5% |
-| Matched, under 20 employees observed | 5,211 | 15.8% |
-| Usable, but review tier only | 1,075 | 3.3% |
-| Usable, size mismatch (dropped) | 53 | 0.2% |
-| Core sample | 6,139 | 18.6% |
+| No accepted Revelio entity | 32,656 | 58.7% |
+| Matched, but no employee observed after formation | 2,899 | 5.2% |
+| Matched, under 20 employees observed | 8,877 | 16.0% |
+| Usable, but review tier only | 1,584 | 2.8% |
+| Usable, size mismatch (dropped) | 69 | 0.1% |
+| Core sample (upper bound) | 9,504 | 17.1% |
+
+The recommended main sample removes two routes that audits showed are mostly not joint ventures (Capital IQ prior co-ownership and the small-library sample) and has 7,354 IJVs, of which 2,127 are strategic.
 
 Three consequences.
 
@@ -26,8 +28,8 @@ Three consequences.
    face the same 58 percent loss. Deal lists add the most where their JVs are
    larger or better documented than Orbis ownership records, and where they
    reach back before 2005 or cover JVs that no longer exist.
-2. **Manual matching has the best yield per case.** 3,985 strategic IJVs (two
-   operating-firm parents) have no accepted Revelio entity, and 1,075 usable
+2. **Manual matching has the best yield per case.** Many strategic IJVs (two
+   operating-firm parents) have no accepted Revelio entity, and 1,584 usable
    IJVs wait on review of a candidate. Section 5 gives the worklist.
 3. **Revelio coverage is the hard limit in East Asia.** Only 7.9 percent of
    East Asian IJVs reach the core, against 23.6 percent in Western Europe.
@@ -38,7 +40,7 @@ Three consequences.
 
 | # | Source | Adds | Access | Effort | Priority |
 |---|---|---|---|---|---|
-| 1 | Manual matching of the worklist (section 5) | up to 1,075 usable IJVs already found, plus part of 3,985 strategic IJVs | you or a research assistant, with LinkedIn | days of RA time | highest |
+| 1 | Manual matching of the worklist (section 5) | up to 1,584 usable IJVs already found, plus part of the 1,847 larger strategic IJVs without a candidate | you or a research assistant, with LinkedIn | days of RA time | highest |
 | 2 | SDC joint ventures and alliances | JVs since 1988 with participants, nations, status, equity stakes; dissolved JVs | enable on WRDS (schema exists) or LSEG Workspace | an email, then an export | high |
 | 3 | Orbis M&A (formerly Zephyr), deal type joint venture | JV deals with participant and target BvD ids | Moody's / Bureau van Dijk subscription of your institution | export, 10 to 40 minutes per run | high |
 | 4 | fDi Markets | greenfield JVs from 2003 that create a new physical operation | FT subscription | demo or institutional request | low to medium |
@@ -95,7 +97,7 @@ Dealogic, Mergermarket and Crunchbase deal records; national registers (for Chin
 
 ## 5. Manual matching worklist
 
-The worklist `data/interim/manual-match-list-v3-2026-10-09.csv` (written by `code/R/wrds/07_manual_match_list.R v3` once frame v3 is matched) holds, in priority order: (1) strategic IJVs with a review-tier candidate to confirm; (2) strategic IJVs with no candidate; (3) other review-tier IJVs that would be usable. Each row gives the JV, its parents, website, Orbis headcount and up to three Revelio candidates with LinkedIn pages. It opens in Excel.
+The worklist `data/interim/manual-match-list-v3-2026-10-09.csv` (written by `code/R/wrds/07_manual_match_list.R v3`; it exists now) has 9,285 rows. In priority order: (1) 976 strategic IJVs with a review-tier candidate to confirm; (2) 1,847 strategic IJVs with at least 50 Orbis employees and no candidate; (3) 1,210 other IJVs with a review-tier candidate; (4) 5,252 smaller or unknown-size strategic IJVs with no candidate. Do priorities 1 and 2 first (2,823 rows); priority 4 is unlikely to pay back. Each row gives the JV, its parents, website, Orbis headcount and up to three Revelio candidates with LinkedIn pages. It opens in Excel.
 
 For each row, fill in three columns:
 

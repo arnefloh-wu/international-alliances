@@ -3,8 +3,10 @@
 # research assistant). The list holds, in priority order:
 #   1. strategic IJVs (two operating-firm parents) with an unverified
 #      review-tier candidate: confirm or reject it;
-#   2. strategic IJVs without any accepted candidate: find the Revelio entity;
-#   3. other IJVs with a review-tier candidate that would be usable: confirm.
+#   2. strategic IJVs without any accepted candidate and at least 50 Orbis
+#      employees: find the Revelio entity;
+#   3. other IJVs with a review-tier candidate that would be usable: confirm;
+#   4. the remaining strategic IJVs without a candidate (smaller or unknown size).
 # Each row shows the JV, its parents, Orbis headcount and up to three Revelio
 # candidates with their LinkedIn pages, and leaves three columns to fill in.
 # Output: data/interim/manual-match-list-<version>-2026-10-09.csv (UTF-8 with
@@ -33,7 +35,10 @@ par <- o[order(-equity_share_current), .(parents = paste0(parent_name, " (", par
 s[, status := fcase(tier == "review", "review_candidate", tier %chin% c("unmatched", "shared_entity_dropped"), "no_candidate", default = "other")]
 w <- s[(strategic == TRUE & status %in% c("review_candidate", "no_candidate")) |
          (tier == "review" & usable == TRUE)]
-w[, priority := fcase(strategic & status == "review_candidate", 1L, strategic & status == "no_candidate", 2L, default = 3L)]
+w[, priority := fcase(strategic & status == "review_candidate", 1L,
+                      strategic & status == "no_candidate" & !is.na(jv_employees) & jv_employees >= 50, 2L,
+                      status == "review_candidate", 3L,
+                      default = 4L)]
 
 # Up to three Revelio candidates per JV: the picked one first, then the best
 # other host-country candidates by name similarity.
@@ -58,5 +63,5 @@ out <- w[order(priority, -operating_parents, -jv_employees),
            decision, rcid_manual, linkedin_url, notes)]
 con <- file(f_out, "wb"); writeBin(as.raw(c(0xEF, 0xBB, 0xBF)), con); close(con)
 fwrite(out, f_out, append = TRUE, col.names = TRUE, bom = FALSE)
-message(sprintf("manual worklist written: %s; %d JVs (priority 1: %d, 2: %d, 3: %d)", f_out, nrow(out),
-                out[priority == 1, .N], out[priority == 2, .N], out[priority == 3, .N]))
+message(sprintf("manual worklist written: %s; %d JVs (priority 1: %d, 2: %d, 3: %d, 4: %d)", f_out, nrow(out),
+                out[priority == 1, .N], out[priority == 2, .N], out[priority == 3, .N], out[priority == 4, .N]))

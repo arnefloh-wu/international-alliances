@@ -431,6 +431,20 @@ sample[, flag_pre_formation_10y := !is.na(first_start) & year(first_start) < for
 sample[, flag_holding_vehicle := grepl("holding", jv_name, ignore.case = TRUE) & (is.na(jv_employees) | jv_employees <= 5)]
 sample[, flag_size_mismatch := !is.na(jv_employees) & jv_employees >= 10 & !is.na(n_emp) & n_emp / jv_employees > 20]
 sample[, core := usable & (tier == "manual" | (tier %chin% c("auto", "strong") & !flag_size_mismatch))]
+# Route and main-sample flags. Random audits on 2026-10-09 showed that Capital
+# IQ prior co-ownership is mostly companies acquired in sequence, and that the
+# Orbis small-library sample is mostly investor-owned start-ups. Neither is
+# counted in the main sample; `core` stays as the upper bound.
+if (!"admitted_by" %in% names(sample)) sample[, admitted_by := "base"]
+if (!"source" %in% names(sample)) sample[, source := "orbis"]
+sample[, route := fcase(grepl("ciq_prior", admitted_by), "capital_iq_prior",
+                        source == "ciq", "capital_iq_current",
+                        grepl("^ext_", source), "external",
+                        grepl("small_library_sample", admitted_by), "orbis_small_sample",
+                        grepl("guo_country", admitted_by), "orbis_owner_level",
+                        admitted_by == "base", "orbis_base",
+                        default = "orbis_relaxed")]
+sample[, core_main := core & !route %chin% c("capital_iq_prior", "orbis_small_sample")]
 # Strategic IJV: at least two parents are operating firms (the parent or its
 # GUO has at least OPERATING_MIN_EMP employees in Orbis, latest year, or the
 # parent's or GUO's matched Revelio entity has at least that many people). This
@@ -468,9 +482,9 @@ sample <- merge(sample, op, by = "jv_bvdid", all.x = TRUE)
 sample[is.na(operating_parents), operating_parents := 0L]
 sample[, strategic := operating_parents >= 2]
 fwrite(sample, f_sample)
-log_line("F5 sample table: %s; usable IJVs: auto %d, strong %d, review %d; core %d; core strategic %d", f_sample,
+log_line("F5 sample table: %s; usable IJVs: auto %d, strong %d, review %d; core %d; core strategic %d; main %d; main strategic %d", f_sample,
          sample[usable & tier == "auto", .N], sample[usable & tier == "strong", .N], sample[usable & tier == "review", .N],
-         sample[core == TRUE, .N], sample[core & strategic, .N])
+         sample[core == TRUE, .N], sample[core & strategic, .N], sample[core_main == TRUE, .N], sample[core_main & strategic, .N])
 
 # Sample-construction log with counts at every step.
 n_any <- uniqueN(cand[entity == "jv", orbis_id])
@@ -487,24 +501,29 @@ funnel <- data.table(
            "  of which flagged: Revelio history starts more than 10 years before incorporation",
            "  of which flagged: holding vehicle matched to an operating company",
            "Eligible IJVs with at least two operating-firm parents (strategic)",
-           "Core sample, strategic IJVs only"),
+           "Core sample, strategic IJVs only",
+           "Main sample: core without Capital IQ prior co-ownership and the small-library sample",
+           "Main sample, strategic IJVs only"),
   n = c(nrow(jv), n_any, picks[tier == "auto", .N], picks[tier == "strong", .N], picks[tier == "review", .N], picks[tier == "manual", .N],
         length(unique(shared_drop)),
         sample[!is.na(n_emp), .N], sample[usable & tier == "auto", .N], sample[usable & tier %chin% c("manual", "auto", "strong"), .N],
         sample[usable & tier %chin% matched_tiers, .N], sample[core == TRUE, .N],
         sample[core & flag_pre_formation_10y, .N], sample[core & flag_holding_vehicle, .N],
-        sample[strategic == TRUE, .N], sample[core & strategic, .N]))
-by_grp <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), core = sum(core), core_strategic = sum(core & strategic)),
-                 by = exposure_group][order(-eligible)]
-by_reg <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), core = sum(core), core_strategic = sum(core & strategic)),
-                 by = region][order(-eligible)]
+        sample[strategic == TRUE, .N], sample[core & strategic, .N], sample[core_main == TRUE, .N], sample[core_main & strategic, .N]))
+by_grp <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), core = sum(core), core_main = sum(core_main),
+                     main_strategic = sum(core_main & strategic)), by = exposure_group][order(-eligible)]
+by_reg <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), core = sum(core), core_main = sum(core_main),
+                     main_strategic = sum(core_main & strategic)), by = region][order(-eligible)]
+by_route <- sample[, .(eligible = .N, matched = sum(tier %chin% matched_tiers), core = sum(core), core_main = sum(core_main),
+                       main_strategic = sum(core_main & strategic)), by = route][order(-eligible)]
 mtab <- function(d) paste(c(paste("|", paste(names(d), collapse = " | "), "|"), paste("|", paste(rep("---", ncol(d)), collapse = " | "), "|"),
                             apply(d, 1, function(r) paste("|", paste(trimws(r), collapse = " | "), "|"))), collapse = "\n")
 writeLines(c(sprintf("# Sample construction log (full frame, %s)", RUN), "",
              "Produced by `code/R/wrds/03_wrds_full_sample.R`. Usable: at least 20 employees and 3 years observed from the formation year.",
              "Core: usable, automatic or strong match, and Revelio employees not more than 20 times the Orbis headcount where Orbis reports 10 or more.",
              sprintf("Strategic: at least two parents are operating firms (the parent or its GUO has at least %d employees in Orbis).", OPERATING_MIN_EMP), "",
-             mtab(funnel), "", "## By exposure group", "", mtab(by_grp), "", "## By host region", "", mtab(by_reg)), f_constr)
+             "Main: core, excluding Capital IQ prior co-ownership (mostly sequential acquisitions) and the Orbis small-library sample (mostly investor-owned start-ups), by random audit on 2026-10-09.", "",
+             mtab(funnel), "", "## By route", "", mtab(by_route), "", "## By exposure group", "", mtab(by_grp), "", "## By host region", "", mtab(by_reg)), f_constr)
 log_line("F5 construction log written: %s", f_constr)
 
 # ---- F6. Full position histories of employees of usable JVs -----------------
@@ -512,7 +531,7 @@ log_line("F5 construction log written: %s", f_constr)
 # overlapping 30 June of a year from the formation year onward, in usable JVs
 # of the automatic and strong tiers. Written as a parquet dataset in chunks.
 f_hist_users <- file.path(paths$interim, sprintf("full-history-users-%s.csv", RUN_DATE))
-use <- sample[core == TRUE, .(jv_bvdid, rcid)]
+use <- sample[core_main == TRUE, .(jv_bvdid, rcid)]
 {
   x <- merge(jp, use, by = "rcid", allow.cartesian = TRUE)
   x <- merge(x, jv[, .(jv_bvdid, formation_year)], by = "jv_bvdid")

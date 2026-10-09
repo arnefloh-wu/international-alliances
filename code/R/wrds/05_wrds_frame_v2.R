@@ -78,31 +78,47 @@ q_in <- function(template, ids, chunk = 2000L) {
 # `scope` = "dom": all direct parents in one country, GUO-level two-country
 #   rule applied in SQL (prefilter) and again in R;
 # `scope` = "small": the small library, intl rules, 1-in-SMALL_SAMPLE sample.
-orbis_sql <- function(lib, s, scope) {
-  samp <- if (scope == "small") sprintf("AND abs(hashtext(sub_bvdid)) %% %d = 0", SMALL_SAMPLE) else ""
-  jv_ctes <- if (scope == "dom") sprintf("
+#
+# The "dom" scope runs in two steps because the combined statement was too
+# slow: dom_ids() returns the ids of companies that pass the GUO-level rule
+# (seconds), and orbis_sql() then runs the ordinary detail query for exactly
+# those ids.
+dom_ids <- function(lib, s) {
+  x <- q(sprintf("
+WITH shh AS MATERIALIZED (
+  SELECT sub_bvdid, shh_bvdid, left(sub_bvdid, 2) AS sub_ctry, left(shh_bvdid, 2) AS shh_ctry, dir_pct_onlyfigures::numeric AS dir_pct
+  FROM %1$s.ob_links_current_%2$s
+  WHERE type_of_relation = 'SHH' AND active_or_archived = 'active'
+    AND shh_bvdid !~ '[*]' AND shh_bvdid ~ '^[A-Z]{2}' AND dir_pct_onlyfigures ~ '^[0-9.]+$'
+    AND dir_pct_onlyfigures::numeric BETWEEN 10 AND 90
+),
 jv_pre AS MATERIALIZED (
   SELECT sub_bvdid FROM shh GROUP BY sub_bvdid
   HAVING count(*) BETWEEN 2 AND 4 AND sum(dir_pct) >= 50 AND count(DISTINCT shh_ctry) = 1
 ),
 g AS MATERIALIZED (
-  SELECT DISTINCT ON (sub_bvdid) sub_bvdid AS shh_bvdid, guo_50 AS guo
+  -- one dedicated row per company holds its GUO (50 percent definition); reading
+  -- all relation rows and de-duplicating took over 40 minutes
+  SELECT sub_bvdid AS shh_bvdid, guo_50 AS guo
   FROM %1$s.ob_links_current_%2$s
-  WHERE guo_50 IS NOT NULL AND sub_bvdid IN (SELECT shh_bvdid FROM shh WHERE sub_bvdid IN (SELECT sub_bvdid FROM jv_pre))
-  ORDER BY sub_bvdid
-),
-y AS MATERIALIZED (
-  SELECT s.sub_bvdid FROM shh s JOIN jv_pre USING (sub_bvdid) LEFT JOIN g ON g.shh_bvdid = s.shh_bvdid
-  GROUP BY s.sub_bvdid
-  HAVING count(DISTINCT coalesce(left(g.guo, 2), s.shh_ctry)) >= 2
-     AND count(DISTINCT coalesce(g.guo, s.shh_bvdid)) >= 2
-     AND bool_or(coalesce(left(g.guo, 2), s.shh_ctry) <> s.sub_ctry)
-),
+  WHERE type_of_relation = 'GUO 50' AND guo_50 IS NOT NULL
+)
+SELECT s.sub_bvdid FROM shh s JOIN jv_pre USING (sub_bvdid) LEFT JOIN g ON g.shh_bvdid = s.shh_bvdid
+GROUP BY s.sub_bvdid
+HAVING count(DISTINCT coalesce(left(g.guo, 2), s.shh_ctry)) >= 2
+   AND count(DISTINCT coalesce(g.guo, s.shh_bvdid)) >= 2
+   AND bool_or(coalesce(left(g.guo, 2), s.shh_ctry) <> s.sub_ctry)", lib, s))
+  x$sub_bvdid
+}
+
+orbis_sql <- function(lib, s, scope, ids = NULL) {
+  samp <- if (scope == "small") sprintf("AND abs(hashtext(sub_bvdid)) %% %d = 0", SMALL_SAMPLE) else ""
+  jv_ctes <- if (scope == "dom") paste0("
 jv AS MATERIALIZED (
   SELECT sub_bvdid, count(*) AS n_parents, sum(dir_pct) AS sum_pct, min(dir_pct) AS min_pct,
          count(DISTINCT shh_ctry) AS n_ctry, bool_or(shh_ctry <> sub_ctry) AS any_foreign
-  FROM shh WHERE sub_bvdid IN (SELECT sub_bvdid FROM y) GROUP BY sub_bvdid
-)", lib, s) else "
+  FROM shh WHERE sub_bvdid IN (", sql_in(ids), ") GROUP BY sub_bvdid
+)") else "
 jv AS MATERIALIZED (
   SELECT sub_bvdid, count(*) AS n_parents, sum(dir_pct) AS sum_pct, min(dir_pct) AS min_pct,
          count(DISTINCT shh_ctry) AS n_ctry, bool_or(shh_ctry <> sub_ctry) AS any_foreign
@@ -163,7 +179,12 @@ for (scope in names(scope_libs)) for (ls in scope_libs[[scope]]) {
   f <- cache(sprintf("orbis-%s-%s", scope, ls[2]))
   if (file.exists(f)) next
   t0 <- Sys.time()
-  x <- q(orbis_sql(ls[1], ls[2], scope))
+  ids <- NULL
+  if (scope == "dom") {
+    ids <- dom_ids(ls[1], ls[2])
+    log_line("orbis dom %s: %d companies pass the GUO-level two-country rule in %.0fs", ls[2], length(ids), secs(t0))
+  }
+  x <- q(orbis_sql(ls[1], ls[2], scope, ids))
   fwrite(x, f)
   log_line("orbis %s %s: %d JV-parent rows, %d JVs in %.0fs", scope, ls[2], nrow(x), uniqueN(x$jv_bvdid), secs(t0))
 }

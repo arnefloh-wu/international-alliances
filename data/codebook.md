@@ -109,6 +109,16 @@ Built by `code/R/wrds/05_wrds_frame_v2.R`; matched by `code/R/wrds/03_wrds_full_
 | `formation_year` (Capital IQ) | `yearfounded`; where missing, 1990 and `formation_year_missing = TRUE` |
 | Industry pick | the Orbis industry table can hold several rows per company; the v1 frame and the v2 frame used for the 2026-10-09 run took one without a fixed order, which moves a few hundred JVs in or out of the financial-sector exclusion between runs. `05_wrds_frame_v2.R` now orders the rows; the next rebuild is deterministic |
 
+Frame v3 (2026-10-09) adds three routes, selected with arguments to `05_wrds_frame_v2.R`:
+
+| Route (`admitted_by`) | Definition |
+|---|---|
+| `guo_country` | direct parents sit in one country, but their GUOs sit in at least two countries and two groups, one foreign to the host. Ids are found first with the single `GUO 50` relation row per company, then the detail query runs for those ids |
+| `small_library_sample` | Orbis small-company library, restricted to a 1-in-20 hash sample of companies (hash of the BvD id); counts scale by 20 |
+| `ciq_prior` | Capital IQ company with two to four prior corporate owners (relation types prior investment and prior subsidiary) in at least two countries and no current corporate owner. Prior relations have no stakes or dates, so sequential owners cannot be told from joint owners; low confidence |
+
+Sample table columns added in the v3 run: `route` (`orbis_base`, `orbis_relaxed`, `orbis_owner_level`, `orbis_small_sample`, `capital_iq_current`, `capital_iq_prior`, `external`) and `core_main` (`core` without `capital_iq_prior` and `orbis_small_sample`). Tier `manual` marks matches confirmed or set by a person (decisions in `data/raw/manual/manual-matches-*.csv`: columns `jv_bvdid`, `decision` accept, reject or replace, and `rcid_manual` or `linkedin_url`); manual matches rank above automatic ones and are not subject to the size-mismatch check. Frame v4 adds external deal lists (`06_ingest_external_jvs.R`, format in `docs/data-acquisition-guide.md`); their `source` is `ext_<name>`. Career histories are stored as parquet parts in `data/raw/revelio-histories-full-2026-10-09/`; the parts are the only record of users already pulled, and readers should de-duplicate on `position_id`.
+
 Matching changes in the v2 run: name keys are searched in cached batches; when an Orbis JV and a Capital IQ JV of the same tier pick the same Revelio entity, the Orbis JV keeps it; positions at JV entities and career histories are shared with v1 and pulled incrementally.
 
 ## Revelio field assumptions

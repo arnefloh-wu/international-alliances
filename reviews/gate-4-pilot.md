@@ -121,13 +121,37 @@ Within the relaxed Orbis rules (a JV can carry several): incorporated before 200
 
 Quality (random audit of 25 Capital IQ and 25 relaxed-Orbis core IJVs): about 48 of 50 matched the right company. Incorporation before 2005 adds established IJVs (for example Timet Savoie, Osram China Lighting, Brose Sitech, Webmotors). The 10 to 20 percent stake rule mostly adds start-ups with investor shareholders, not IJVs. Capital IQ adds large IJVs that Orbis lacks (for example Sadara Chemical, Tata Teleservices Maharashtra, Saudi Steel Pipes, Sollers Ford), but also intra-group cases its one-level group check misses (Lotte Chemical) and listed companies with blockholders (Ambuja Cements, Octopus Energy). The `source`, `admitted_by` and `strategic` columns allow these subsets to be dropped in robustness checks.
 
+## All routes run (frame v3, PI instruction 2026-10-09)
+
+The PI asked for all routes to be run. Frame v3 adds the GUO-level two-country rule, a 1-in-20 sample of the Orbis small-company library and Capital IQ prior co-ownership (`data/processed/sample-construction-log-v3.md`).
+
+| Route | Eligible | Core | Strategic core |
+|---|---|---|---|
+| Orbis, relaxed rules (v2) | 13,351 | 3,122 | 948 |
+| Orbis, base rules | 10,414 | 1,487 | 414 |
+| Capital IQ, current owners | 9,050 | 1,395 | 283 |
+| Orbis, GUO-level two-country rule | 10,425 | 1,350 | 482 |
+| Capital IQ, prior co-ownership | 11,581 | 2,114 | 557 |
+| Orbis small library, 5% sample | 769 | 36 | 7 |
+| **Total** | **55,590** | **9,504** | **2,691** |
+
+Random audits of core IJVs by route:
+
+- **Capital IQ prior co-ownership (25 audited):** mostly companies acquired in sequence, not joint ventures (Lucite International by Mitsubishi Chemical, Cardiff Software by Autonomy then Adobe, Omnipoint by Deutsche Telekom, Nadella by NTN-SNR and Timken). Hitachi Solutions Germany has two Hitachi entities as owners. About 5 of 25 look like real JVs (Sondel, SAE Institute Dubai). The high core rate (18%) reflects that established operating companies match Revelio easily, not that they are IJVs. Excluded from the main sample.
+- **GUO-level rule (20 audited):** about 8 of 20 are real JVs between operating firms (Shell North China Petroleum, Yanchang and Shell, Recyfuel, Ace Hardware Philippines, Jj-Lapp); the rest are investor holding structures. The strategic flag separates them; the 482 strategic core IJVs are the reliable part.
+- **Small library, 5% sample (12 audited):** nearly all investor-owned start-ups (Rushfiles, Balanco Accounting, Wunderfish). The full library would add about 720 core IJVs of this kind and is not run.
+
+`core` (9,504) stays the upper bound. The recommended analysis sample is `core_main`: **7,354 IJVs, of which 2,127 are strategic**. Main sample by exposure group (strategic in brackets): see the construction log; China coercion and Russia stay thin (about 100 and 57 in `core`).
+
+Where the 55,590 are lost: no accepted Revelio entity 58.7%, matched but under 20 employees 16.0%, matched with no employee after formation 5.2%, review tier only 2.8%, core 17.1%. The frame is not the binding constraint; matching and Revelio coverage are.
+
 ## Data sources for further enlargement
 
 | Source | Status | What it adds |
 |---|---|---|
-| Orbis ownership links (WRDS) | licensed, used | Frame v1 and v2. The GUO-level two-country rule is implemented but not yet run (about 7,600 extra candidates before checks, estimated). |
+| Orbis ownership links (WRDS) | licensed, used | Frames v1 to v3, including the GUO-level two-country rule (10,425 JVs). The small-company library was run on a 5% sample only. |
 | Revelio (WRDS) | licensed, used | Workforce data; coverage of China-hosted JVs is the weakest link. |
-| Capital IQ ownership relations (WRDS) | licensed, used | Second frame; 9,180 JVs not in Orbis. Prior co-ownership relations (59,454 companies) could add dissolved JVs but record no stakes. |
+| Capital IQ ownership relations (WRDS) | licensed, used | Second frame; 9,050 current-owner JVs not in Orbis. Prior co-ownership relations were run (11,581 JVs) and audited: mostly sequential acquisitions, so excluded from the main sample. |
 | BoardEx (WRDS) | licensed, not used | Senior executives and directors with prior employers; a source for parent-origin staffing at the top, not for sample size. |
 | FactSet entity data (WRDS) | licensed, small edition | 624,000 entities with LEIs only; little gain for matching. |
 | SDC joint ventures and alliances (WRDS schema `tr_sdc_joint_ventures`) | not licensed | JV records with participants, announcement and status, from 1988 according to library guides; would give formation dates and dissolved JVs. Alliance databases each capture only part of announced alliances (Schilling 2009, as summarized in library sources). |
@@ -173,7 +197,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 3. Country basis: direct shareholder country (current) or GUO country for the two-country rule and the exposure groups.
 4. Review tier: check `data/interim/pilot-jv-review-tier.csv` and `pilot-large-jv-review-tier.csv`, and decide whether the strong website tier counts as accepted.
 5. Deal data: whether to ask the library about the SDC joint-ventures module, which would give formation dates and dissolved JVs.
-6. Sample definition: decided 2026-10-09, the upper bound (core sample of frame v2, 6,139 IJVs) with the strategic, source and admission flags for robustness checks. Open: the usability threshold (20 employees by default).
+6. Sample definition: the PI chose the upper bound on 2026-10-09. After the audits of frame v3 the data-engineer recommends `core_main` (7,354 IJVs) as the analysis sample and `core` (9,504) as the upper bound for robustness checks; confirm or choose. Open: the usability threshold (20 employees by default).
 7. Enlargement routes: which of the routes listed above to run. The agent's order of value for cost: incorporation from 1990, the 10% stake threshold, PI review of the review tier, the GUO-level two-country rule, targeted manual matching of strategic JVs, then Capital IQ as a second frame.
 
 ## Proposed changes to earlier stages
