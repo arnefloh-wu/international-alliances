@@ -47,3 +47,10 @@ ok(!"J2" %in% rt$orbis_id, "route with two look-alike companies gives no pick")
 ok(!"J3" %in% rt$orbis_id, "parent entity rejected")
 ok(!"J4" %in% rt$orbis_id, "candidate resembling the JV's own parent rejected")
 ok(isTRUE(rt[orbis_id == "J1", strong]), "close-name domain match flagged strong")
+# wide_to_long (external deal lists)
+source("code/R/functions/external.R")
+w <- data.table(id = c("D1", "D2"), venture = c("Nova Co", "Gamma Ltd"), host = c("PL", "IN"),
+                p1 = c("Alfa SA", "Delta Inc"), c1 = c("FR", "US"), p2 = c("Beta GmbH", "Eps KK"), c2 = c("DE", "JP"),
+                p3 = c(NA, ""), c3 = c(NA, ""))
+l <- wide_to_long(w, c(ext_id = "id", jv_name = "venture", jv_country = "host"), c("p1", "p2", "p3"), c("c1", "c2", "c3"))
+ok(nrow(l) == 4 && l[ext_id == "D1", .N] == 2, "wide export reshaped to one row per JV-parent pair")
