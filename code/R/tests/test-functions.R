@@ -31,3 +31,26 @@ mm <- match_entities(orb, rev, jw_threshold = 0.85)
 print(mm[, .(orbis_id, orbis_name, rcid, method, score = round(score, 3), needs_review)])
 ok(mm[orbis_id == "O1", method][1] == "exact", "exact match found")
 ok(!"O3" %in% mm$orbis_id, "no spurious match for unknown venture")
+# web_domains
+ok(identical(web_domains("www.nova-pack.com|nova-pack.com|https://www.a.de/x"), c("nova-pack.com", "a.de")), "website domains parsed and de-duplicated")
+# review_tier_candidates
+cand <- data.table(orbis_id = c("J1","J1","J2","J2","J3","J4"),
+                   rcid = c(10, 11, 20, 21, 30, 40),
+                   company_name = c("Nova-Pack", "Nova Pack Holding", "Alpha One", "Alpha Two", "Parent Group", "Beta Ltd"),
+                   country = c("DK", "SE", "IT", "IT", "ES", "GB"),
+                   match_key = c("domain", "domain", "stem2", "stem2", "domain", "web_stem"))
+jvt <- data.table(orbis_id = c("J1","J2","J3","J4"), orbis_name = c("Nova-Pack A/S", "Alpha Srl", "Gamma SL", "Beta Limited"),
+                  orbis_country = c("DK", "IT", "ES", "GB"))
+rt <- review_tier_candidates(cand, jvt, parent_rcids = 30, parent_names = data.table(orbis_id = "J4", parent_name = "BETA LTD"))
+ok(rt[orbis_id == "J1", rcid] == 10, "host-country domain candidate kept, foreign one dropped")
+ok(!"J2" %in% rt$orbis_id, "route with two look-alike companies gives no pick")
+ok(!"J3" %in% rt$orbis_id, "parent entity rejected")
+ok(!"J4" %in% rt$orbis_id, "candidate resembling the JV's own parent rejected")
+ok(isTRUE(rt[orbis_id == "J1", strong]), "close-name domain match flagged strong")
+# wide_to_long (external deal lists)
+source("code/R/functions/external.R")
+w <- data.table(id = c("D1", "D2"), venture = c("Nova Co", "Gamma Ltd"), host = c("PL", "IN"),
+                p1 = c("Alfa SA", "Delta Inc"), c1 = c("FR", "US"), p2 = c("Beta GmbH", "Eps KK"), c2 = c("DE", "JP"),
+                p3 = c(NA, ""), c3 = c(NA, ""))
+l <- wide_to_long(w, c(ext_id = "id", jv_name = "venture", jv_country = "host"), c("p1", "p2", "p3"), c("c1", "c2", "c3"))
+ok(nrow(l) == 4 && l[ext_id == "D1", .N] == 2, "wide export reshaped to one row per JV-parent pair")
