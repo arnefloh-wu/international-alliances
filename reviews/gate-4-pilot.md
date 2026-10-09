@@ -4,7 +4,7 @@ Status: PENDING
 Approved by:
 Stage: 4 Pilot feasibility
 Agent: data-engineer (run by the orchestrator in the PI's local session, WRDS access)
-Date produced: 2026-10-08 (pilot 1 and, at the PI's request, pilot 2 on large JVs)
+Date produced: 2026-10-08 (pilot 1 and, at the PI's request, pilot 2 on large JVs); updated 2026-10-09 with the full-frame runs (frames v1 to v3)
 
 ## Deliverables
 
@@ -12,20 +12,24 @@ Date produced: 2026-10-08 (pilot 1 and, at the PI's request, pilot 2 on large JV
 |---|---|---|
 | WRDS extraction script | `code/R/wrds/02_wrds_pilot_extract.R [main\|large]` | Builds the IJV frame from Orbis ownership links, draws a pilot (main: seed 20261008; large: seed 20261009), pulls Revelio candidates and position histories. Resumes from cached stages. |
 | Matching and coverage script | `code/R/01_pilot_matching.R [main\|large]` | Name matching with guards, review tier, GUO-level parent families, coverage per matching tier. |
-| Matching helpers and tests | `code/R/functions/matching.R`, `code/R/tests/test-functions.R` | `web_domains()` and `review_tier_candidates()`; 22 of 22 checks pass. |
+| Matching and frame helpers, tests | `code/R/functions/matching.R`, `frame.R`, `external.R`, `code/R/tests/test-functions.R` | `web_domains()`, `review_tier_candidates()`, region/industry/exposure classification, `wide_to_long()`; 23 of 23 checks pass. |
 | Pilot feasibility report | `code/quarto/pilot-feasibility-report.qmd`, rendered with `-P pilot:main` and `-P pilot:large` to `pilot-feasibility-report(.html/.docx)` and `pilot-feasibility-report-large(.html/.docx)` (renders not committed) | Every figure is computed from the files below. |
 | Frame exports (gitignored) | `data/interim/wrds-ijv-frame-2026-10-08.csv`, `wrds-ijv-frame-groups-2026-10-08.csv`, `wrds-ijv-frame-size-2026-10-08.csv`, `wrds-large-screen-2026-10-08.csv` | Licensed data, local only. |
 | Pilot exports (gitignored) | `data/raw/orbis-pilot-[large-]2026-10-08.csv`, `revelio-companies-[large-]2026-10-08.csv`, `revelio-positions-[large-]2026-10-08.csv` | Licensed data, local only. |
 | Match logs for review (gitignored) | `data/interim/pilot-[large-]matches.csv`, `match-review.csv`, `jv-rejected-matches.csv`, `jv-review-tier.csv`, `parent-groups.csv`, `jv-rcids.csv`, `origin-<tier>.csv` | The review-tier files need the PI's check (24 rows in pilot 1, 21 in pilot 2). |
 | Extraction log | `data/interim/wrds-extract-log-2026-10-08.md` | Timings and counts for every stage, tagged by pilot. |
-| Full-frame sample script | `code/R/wrds/03_wrds_full_sample.R` | All eligible IJVs: Orbis extract, Revelio matching, positions at matched JVs, sample table with flags, career histories of employees of usable JVs. Log in `data/interim/wrds-full-log-2026-10-09.md`. |
-| Full-frame outputs (gitignored) | `data/processed/sample-ijv-2026-10-09.csv`, `data/processed/sample-construction-log.md`, `data/raw/orbis-full-2026-10-09.csv`, `data/raw/revelio-companies-full-2026-10-09.csv.gz`, `data/raw/revelio-jv-positions-full-2026-10-09.parquet`, `data/raw/revelio-histories-full-2026-10-09/` | Licensed data, local only. |
+| Full-frame sample script | `code/R/wrds/03_wrds_full_sample.R [v1\|v2\|v3\|v4]` | All eligible IJVs: Orbis extract, Revelio matching, manual decisions, positions at matched JVs, sample table with flags, career histories of employees of the main sample. Logs `data/interim/wrds-full-log-<version>-2026-10-09.md`. |
+| Expanded frame script | `code/R/wrds/05_wrds_frame_v2.R [with_dom] [with_small] [with_prior]` | Frame v2 (relaxed Orbis rules plus Capital IQ) and v3 (plus the GUO-level rule, a 5% sample of the small library, Capital IQ prior co-ownership). |
+| External-data importer | `code/R/wrds/06_ingest_external_jvs.R` | Reads deal lists from `data/raw/external/` and builds frame v4. Tested on a synthetic file. |
+| Manual worklist | `code/R/wrds/07_manual_match_list.R [version]` | Builds `data/interim/manual-match-list-v3-2026-10-09.csv` (9,285 rows in four priorities). Decisions go in `data/raw/manual/` and are read by the full-sample script. |
 | Route sizing script | `code/R/wrds/04_wrds_route_sizing.R` | Counts for each way of enlarging the frame; output `data/interim/route-sizing-2026-10-09.csv`. |
-| Codebook | `data/codebook.md` | Frame rules, Revelio field assumptions, parent families, matching tiers, proposed intra-group rule. |
+| Acquisition guide | `docs/data-acquisition-guide.md` | Where the sample is lost, outside sources ranked, access and export steps, file format for hand-back. |
+| Full-frame outputs (gitignored) | `data/processed/sample-ijv-[v2-\|v3-]2026-10-09.csv`, `data/processed/sample-construction-log[-v2\|-v3].md`, `data/raw/orbis-full-[v2-\|v3-]2026-10-09.csv`, `data/raw/revelio-companies-full-[v2-\|v3-]2026-10-09.csv.gz`, `data/raw/revelio-jv-positions-full-2026-10-09.parquet`, `data/raw/revelio-histories-full-2026-10-09/` | Licensed data, local only. The history store holds 5,109,806 distinct users in 1,023 parts, audited with no duplicates. |
+| Codebook | `data/codebook.md` | Frame rules (including the applied intra-group rule), Revelio field assumptions, parent families, matching tiers, frame v2 and v3 routes, sample table columns. |
 
 ## Frame
 
-83,907 companies passed the ownership screen. 10,431 remain eligible after excluding JVs with a non-corporate parent (69,722), financial-sector JVs (2,111) and, since 2026-10-09, intra-group arrangements (1,643). Both pilots oversample JVs exposed to the shortlisted shocks.
+83,907 companies passed the ownership screen. 10,431 remain eligible after excluding JVs with a non-corporate parent (69,722), financial-sector JVs (2,111) and, since 2026-10-09, intra-group arrangements (1,643). Both pilots oversample JVs exposed to the shortlisted shocks. This section describes the base frame (v1); the expanded frames v2 and v3 are described in later sections.
 
 A JV whose parents share one Orbis global ultimate owner (GUO) is an intra-group arrangement, not an IJV. Examples are Balenciaga Logistica (Kering Italia and Kering Holland) and KPIT Technologies GmbH (two KPIT entities). The PI added this exclusion to the frame on 2026-10-09. Both pilots were drawn before that and contain such cases (5 of 100 in pilot 1, 32 of 100 in pilot 2). They are excluded from all usable counts below.
 
@@ -72,7 +76,7 @@ All 10,431 eligible IJVs were extracted and matched (`code/R/wrds/03_wrds_full_s
 | Core sample (usable, automatic or strong, no size mismatch) | 1,530 |
 | Strategic core (at least two operating-firm parents) | 421 |
 
-Core IJVs by exposure group: OECD screening 719, unexposed 681, UK-EU 114, China coercion 9, Russia 7. Strategic core: unexposed 233, OECD screening 157, UK-EU 24, China coercion 6, Russia 1. Full career histories were pulled for the 660,211 employees of usable IJVs.
+Core IJVs by exposure group: OECD screening 719, unexposed 681, UK-EU 114, China coercion 9, Russia 7. Strategic core: unexposed 233, OECD screening 157, UK-EU 24, China coercion 6, Russia 1. In the first run, full career histories were pulled for the 660,211 employees of usable IJVs; the final history store is larger (see the frame v3 section).
 
 Quality: in a random audit of 40 core IJVs, about 37 matched the right company, but only about half were joint ventures between operating companies. The rest were start-ups and small firms co-owned by founders' holding companies and investors, which Orbis also types as "Corporate". In a random audit of 30 strategic core IJVs, about 28 were joint ventures between operating companies matched to the right company (for example Maaden Barrick Copper, NEOM Green Hydrogen, Junghans Microtec, Ericsson-LG). 518 core IJVs show positions more than ten years before incorporation, so the incorporation date often does not mark the JV's formation. The strategic core is the defensible sample; the full core is the upper bound.
 
@@ -80,7 +84,21 @@ Usability threshold sensitivity (core / strategic core): at least 10 employees 1
 
 ## Routes for enlarging the sample
 
-Counts from `code/R/wrds/04_wrds_route_sizing.R` (`data/interim/route-sizing-2026-10-09.csv`). The baseline reproduces the 12,074 JVs before the intra-group rule (12,072). Expected yields apply the full run's rates (core 14.7% and strategic core 4.0% of eligible JVs, 13.6% intra-group); they are rough.
+The table below sets the pre-run estimates against what the runs found. Every route that can be run through WRDS has been run (frames v2 and v3). The routes still open need the PI or outside data.
+
+| Route | Pre-run estimate (extra core IJVs) | Outcome |
+|---|---|---|
+| Orbis relaxations (incorporation before 2005, 10% stake, up to four parents, any status) | about 2,100 | Run in v2: 3,168 core IJVs from the relaxed rules (3,122 in v3 after de-duplication) |
+| GUO-level two-country rule | not estimable (about 7,600 candidates) | Run in v3: 10,425 JVs, 1,350 core, 482 strategic |
+| Capital IQ, current owners | unknown | Run in v2: 9,050 JVs not in Orbis, 1,395 core |
+| Capital IQ, prior co-ownership | unknown | Run in v3: 11,581 JVs, 2,114 core, but mostly sequential acquisitions; excluded from the main sample |
+| Orbis small-company library | low per JV | Run as a 5% sample: 769 JVs, 36 core, mostly investor-owned start-ups; the full library is not run |
+| Lower the usability threshold to 10 employees | 374 (base frame) | Not applied; the sensitivity was computed on the base frame only |
+| PI review of the review tier | up to 403 (base frame) | Open: 1,584 usable IJVs in frame v3 rest on review-tier matches |
+| Manual matching of strategic JVs without a match | unknown | Open: worklist built (9,285 rows; do the first 2,823 first) |
+| External sources (SDC, Orbis M&A, fDi Markets, registries) | unknown | Open: need licences or exports; steps in `docs/data-acquisition-guide.md` |
+
+Pre-run sizing from `code/R/wrds/04_wrds_route_sizing.R` (`data/interim/route-sizing-2026-10-09.csv`) follows. The baseline reproduces the 12,074 JVs before the intra-group rule (12,072). Expected yields apply the full run's rates (core 14.7% and strategic core 4.0% of eligible JVs, 13.6% intra-group); they are rough.
 
 | Route | Extra JVs at the ownership screen | Expected extra core / strategic core | Cost and caveats |
 |---|---|---|---|
@@ -145,6 +163,10 @@ Random audits of core IJVs by route:
 
 Where the 55,590 are lost: no accepted Revelio entity 58.7%, matched but under 20 employees 16.0%, matched with no employee after formation 5.2%, review tier only 2.8%, core 17.1%. The frame is not the binding constraint; matching and Revelio coverage are.
 
+Career histories (all positions before and after the JV spell) were downloaded for the employees of the main sample and of the earlier v1 and v2 core samples: 5,109,806 distinct users in 1,023 parquet parts.
+
+Formation dates: of the 7,354 main-sample IJVs, 1,464 (19.9%) were incorporated before 1990 and 3,946 (54%) before 2005, and 194 Capital IQ JVs have no founding year (set to 1990 and flagged). For these the incorporation date does not mark the start of the joint venture, so panels begin mid-life, not at formation.
+
 ## Data sources for further enlargement
 
 | Source | Status | What it adds |
@@ -166,12 +188,15 @@ Go for a localization-based design; no-go for cross-parent integration as a prim
 
 The second pilot settles the open question from pilot 1. Large JVs match far better: nearly all have both parents in Revelio, and in the strong tier usable IJVs per 100 drawn rise from 14 to 20. Yet not one of them shows employees from both parents, and parent-origin staff fall to 2.3% of person-years. The scarcity of parent-origin staff is therefore a property of the data, not of matching or JV size. A plausible reason is that seconded managers list the parent, not the JV, as their employer, so Revelio files them under the parent. That cannot be verified with these data. Cross-parent integration and parent dominance (research idea sections 6.1 and 6.2; H1, H3 and H5) cannot be measured at scale.
 
-Localization can. Function and seniority cells survive at the baseline threshold of 5 in both pilots. The whole frame projects to roughly 840 to 2,740 usable IJVs, above the 300 to 800 target, while the large stratum alone projects to only 80 to 100. The full sample should therefore come from the whole frame, with the intra-group exclusion added. Hypotheses H2 and H4, and hierarchy contrasts in localization, are feasible. H1, H3 and H5 would need a restatement in localization terms, or a different source for parent staffing, such as BoardEx for senior executives.
+Localization can. Function and seniority cells survive at the baseline threshold of 5 in both pilots. The full runs bear this out: the base frame gives 1,530 core IJVs, frame v2 gives 6,139 and frame v3 gives 9,504, with 7,354 in the recommended main sample, all above the 300 to 800 target. The large stratum alone would give only 80 to 100. The sample therefore comes from the whole frame, with the intra-group exclusion applied. Hypotheses H2 and H4, and hierarchy contrasts in localization, are feasible. H1, H3 and H5 would need a restatement in localization terms, or a different source for parent staffing, such as BoardEx for senior executives.
 
 ## Quality checks run
 
 - All scripts run top to bottom from `code/R/00_setup.R` with no manual steps. Re-running the extraction regenerates an identical pilot 1 draw, and pilot 1's summary is identical after the refactor that added pilot 2 (`all.equal` on the saved summary).
-- Function checks: `Rscript code/R/tests/test-functions.R`, 22 of 22 pass.
+- Function checks: `Rscript code/R/tests/test-functions.R`, 23 of 23 pass.
+- Regression after the last pipeline patch: the v1 and v2 reruns give 1,530 and 6,139 core IJVs and identical shared columns against the saved references; v1 gained two columns (`route`, `core_main`).
+- The career-history store was audited after the full download (all parts scanned for repeated users): 1,023 parts, 5,109,806 distinct users, none duplicated. Two earlier duplicate downloads were removed and their cause fixed.
+- Manual decisions (accept, reject, LinkedIn replace) and the external importer were tested on synthetic files and the test files removed.
 - Every accepted JV match in both pilots was inspected by name, country, Orbis headcount and first Revelio start date. This led to the host-country and parent-entity guards (pilot 1) and to the intra-group finding (pilot 2).
 - Cell-years before the JV's incorporation year are excluded and counted separately.
 - Parent-origin absence was checked without the three-year origin window: for most usable JVs, no employee was ever at either parent family at any time.
@@ -180,7 +205,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 ## Known weaknesses and uncertainties
 
 - Survivor bias: the frame contains only JVs active today with an unchanged multi-parent structure.
-- Proxies: incorporation date stands in for formation date and the current equity share for the share at formation.
+- Proxies: incorporation date stands in for formation date and the current equity share for the share at formation. In the main sample 19.9% of IJVs were incorporated before 1990 and 54% before 2005, so for many the observed ownership structure is much younger than the company.
 - The intra-group rule uses the Orbis GUO only. It misses groups recorded under two GUO identifiers (for example VNV Global and VNV Cyprus), and the frame still contains listed companies with two corporate blockholders (for example Kolon Industries) and private-equity-backed firms.
 - Exposure groups and the two-country rule use the direct shareholder's country, not the GUO's.
 - Pilot 1 has no North American JVs, and 41 of its 100 JVs have no NACE code.
@@ -195,10 +220,10 @@ Localization can. Function and seniority cells survive at the baseline threshold
 1. Design: accept go for localization with cross-parent integration dropped as a primary measure, reject, or ask for changes. If accepted, decide how H1, H3 and H5 are restated, or whether BoardEx is used for senior parent staffing.
 2. Frame rules: approve the corporate parent types, the 20 to 90 percent share band, two or three parents, active status and incorporation 2005 to 2023, and decide whether to exclude listed JVs. The intra-group exclusion was added on 2026-10-09.
 3. Country basis: direct shareholder country (current) or GUO country for the two-country rule and the exposure groups.
-4. Review tier: check `data/interim/pilot-jv-review-tier.csv` and `pilot-large-jv-review-tier.csv`, and decide whether the strong website tier counts as accepted.
+4. Review tier: check `data/interim/pilot-jv-review-tier.csv` and `pilot-large-jv-review-tier.csv` for the pilots, and work through the manual worklist `data/interim/manual-match-list-v3-2026-10-09.csv` for the full frame (priorities 1 and 2 first). Decide whether the strong website tier counts as accepted.
 5. Deal data: whether to ask the library about the SDC joint-ventures module, which would give formation dates and dissolved JVs.
 6. Sample definition: the PI chose the upper bound on 2026-10-09. After the audits of frame v3 the data-engineer recommends `core_main` (7,354 IJVs) as the analysis sample and `core` (9,504) as the upper bound for robustness checks; confirm or choose. Open: the usability threshold (20 employees by default).
-7. Enlargement routes: which of the routes listed above to run. The agent's order of value for cost: incorporation from 1990, the 10% stake threshold, PI review of the review tier, the GUO-level two-country rule, targeted manual matching of strategic JVs, then Capital IQ as a second frame.
+7. Enlargement routes still open (all WRDS routes have been run): manual matching and review-tier checking (the worklist is built), the SDC licence, an Orbis M&A export, and other outside lists through the importer. The agent's order of value for cost: manual matching and review-tier checking first, then SDC and Orbis M&A. It does not recommend running the full small-company library.
 
 ## Proposed changes to earlier stages
 
