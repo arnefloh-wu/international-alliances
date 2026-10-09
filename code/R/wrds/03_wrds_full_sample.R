@@ -10,7 +10,9 @@
 # Run on the PI's computer from the repository root:
 #   "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/R/wrds/03_wrds_full_sample.R [v1|v2]
 # v1 (default): the base frame of 02_wrds_pilot_extract.R. v2: the expanded
-# frame of 05_wrds_frame_v2.R (relaxed Orbis rules and Capital IQ). Outputs of
+# frame of 05_wrds_frame_v2.R (relaxed Orbis rules and Capital IQ). v3: v2 plus
+# the extra WRDS routes (05 with_dom with_small with_prior). v4: v3 plus
+# external deal lists (06_ingest_external_jvs.R). Outputs of
 # v2 carry "v2-" in their names; positions at JV entities and career
 # histories are shared between versions and pulled incrementally.
 # Every stage writes its output once and is skipped while the file exists.
@@ -30,14 +32,14 @@ library(DBI)
 FRAME_DATE <- "2026-10-08"
 RUN_DATE   <- "2026-10-09"
 VERSION    <- if (length(commandArgs(trailingOnly = TRUE))) commandArgs(trailingOnly = TRUE)[1] else "v1"
-stopifnot(VERSION %in% c("v1", "v2"))
-RUN        <- if (VERSION == "v1") RUN_DATE else paste0("v2-", RUN_DATE)
+stopifnot(VERSION %in% c("v1", "v2", "v3", "v4"))
+RUN        <- if (VERSION == "v1") RUN_DATE else paste0(VERSION, "-", RUN_DATE)
 MAX_USERS_PER_JV <- 50000L
 RN_MAX     <- 20L          # name candidates kept per entity and name source
 YEAR_MAX   <- 2026L
 
 f_frame   <- if (VERSION == "v1") file.path(paths$interim, sprintf("wrds-ijv-frame-%s.csv", FRAME_DATE)) else
-               file.path(paths$interim, sprintf("wrds-ijv-frame-v2-%s.csv", RUN_DATE))
+               file.path(paths$interim, sprintf("wrds-ijv-frame-%s-%s.csv", VERSION, RUN_DATE))
 f_groups  <- file.path(paths$interim, sprintf("wrds-ijv-frame-groups-%s.csv", FRAME_DATE))
 f_size    <- file.path(paths$interim, sprintf("wrds-ijv-frame-size-%s.csv", FRAME_DATE))
 f_orbis   <- file.path(paths$raw, sprintf("orbis-full-%s.csv", RUN))
@@ -49,7 +51,7 @@ f_rcids   <- file.path(paths$interim, sprintf("full-jv-rcids-%s.csv", RUN))
 f_review  <- file.path(paths$interim, sprintf("full-jv-review-tier-%s.csv", RUN))
 f_pgroups <- file.path(paths$interim, sprintf("full-parent-groups-%s.csv", RUN))
 f_sample  <- file.path(paths$processed, sprintf("sample-ijv-%s.csv", RUN))
-f_constr  <- file.path(paths$processed, if (VERSION == "v1") "sample-construction-log.md" else "sample-construction-log-v2.md")
+f_constr  <- file.path(paths$processed, if (VERSION == "v1") "sample-construction-log.md" else sprintf("sample-construction-log-%s.md", VERSION))
 f_psize   <- file.path(paths$interim, sprintf("full-parent-size-%s.csv", RUN))
 f_prsize  <- file.path(paths$interim, sprintf("full-parent-revelio-size-%s.csv", RUN))
 OPERATING_MIN_EMP <- 50L   # a parent counts as an operating firm if it or its GUO has at least this many employees
@@ -320,6 +322,40 @@ fwrite(review_jv, f_review)
 picks <- rbindlist(list(
   best_jv[, .(jv_bvdid = orbis_id, rcid, tier = "auto", method, score)],
   if (nrow(review_jv)) review_jv[, .(jv_bvdid = orbis_id, rcid, tier = fifelse(strong, "strong", "review"), method, score)]))
+# Manual decisions (PI or research assistant), files
+# data/raw/manual/manual-matches-*.csv with columns jv_bvdid and decision
+# (accept, reject or replace), and for replace either rcid_manual or
+# linkedin_url. accept confirms the existing candidate, reject removes the JV
+# from the matched set, replace sets the Revelio entity. Later files and later
+# rows win. Manual picks have tier "manual" and rank above automatic ones.
+f_man <- list.files(file.path(paths$raw, "manual"), "^manual-matches-.*[.]csv$", full.names = TRUE)
+if (length(f_man)) {
+  man <- rbindlist(lapply(f_man, function(f) fread(f, colClasses = "character")), fill = TRUE)
+  for (cc in c("decision", "rcid_manual", "linkedin_url")) if (!cc %in% names(man)) man[, (cc) := NA_character_]
+  man[, decision := tolower(trimws(decision))]
+  man <- man[jv_bvdid %in% jv$jv_bvdid & decision %chin% c("accept", "reject", "replace")]
+  man <- man[, .SD[.N], by = jv_bvdid]
+  # LinkedIn company pages to Revelio ids: Revelio stores http://linkedin.com/company/<slug>.
+  need <- man[decision == "replace" & (is.na(rcid_manual) | rcid_manual == "") & !is.na(linkedin_url) & linkedin_url != ""]
+  if (nrow(need)) {
+    need[, slug := sub("^.*linkedin[.]com/(company|school)/([^/?#]+).*$", "\\2", linkedin_url, ignore.case = TRUE)]
+    slugs <- unique(c(need$slug, tolower(need$slug)))
+    li <- q_in("SELECT rcid, linkedin_url FROM revelio.company_mapping WHERE linkedin_url IN (%s)",
+               paste0("http://linkedin.com/company/", slugs))
+    li[, slug := tolower(sub("^.*/company/", "", linkedin_url))]
+    li <- unique(li, by = "slug")
+    man[need, on = "jv_bvdid", rcid_manual := as.character(li$rcid[match(tolower(i.slug), li$slug)])]
+    log_line("F3 manual: resolved %d of %d LinkedIn pages to Revelio ids", man[jv_bvdid %in% need$jv_bvdid & !is.na(rcid_manual), .N], nrow(need))
+  }
+  rej <- man[decision == "reject", jv_bvdid]
+  acc <- man[decision == "accept", jv_bvdid]
+  rep <- man[decision == "replace" & !is.na(rcid_manual) & rcid_manual != ""][, .(jv_bvdid, rcid = as.integer(rcid_manual))]
+  picks <- picks[!jv_bvdid %in% c(rej, rep$jv_bvdid)]
+  picks[jv_bvdid %in% acc, `:=`(tier = "manual", method = "manual_accept")]
+  if (nrow(rep)) picks <- rbind(picks, rep[, .(jv_bvdid, rcid, tier = "manual", method = "manual_replace", score = 1)], fill = TRUE)
+  log_line("F3 manual decisions: %d accepted (matched a candidate: %d), %d rejected, %d replaced", length(acc), picks[method == "manual_accept", .N],
+           length(rej), nrow(rep))
+}
 fwrite(picks, f_rcids)
 log_line("F3 JV picks: %d automatic, %d strong review, %d other review; %d JV candidates rejected by the guards",
          picks[tier == "auto", .N], picks[tier == "strong", .N], picks[tier == "review", .N], jv_acc[reject != "", uniqueN(orbis_id)])
@@ -370,11 +406,11 @@ cov_for <- function(pk) {
 # One JV per Revelio entity: where several JVs picked the same entity, the
 # best tier keeps it (automatic, then strong, then review); a tie within the
 # best tier drops all of them as ambiguous.
-tier_rank <- c(auto = 1L, strong = 2L, review = 3L)
+tier_rank <- c(manual = 0L, auto = 1L, strong = 2L, review = 3L)
 # Within a tier, an Orbis JV is preferred over a Capital IQ JV on the same
 # entity: the two are almost surely the same company recorded twice.
 picks[, src := if ("source" %in% names(jv)) jv$source[match(jv_bvdid, jv$jv_bvdid)] else "orbis"]
-picks[, tr := tier_rank[tier] * 10L + (src %chin% "ciq")]
+picks[, tr := tier_rank[tier] * 10L + (src != "orbis")]
 picks[, best_tr := min(tr), by = rcid]
 picks[, n_best := sum(tr == best_tr), by = rcid]
 shared_drop <- picks[tr > best_tr | n_best > 1, jv_bvdid]
@@ -394,7 +430,7 @@ sample <- merge(sample, first_start, by = "rcid", all.x = TRUE)
 sample[, flag_pre_formation_10y := !is.na(first_start) & year(first_start) < formation_year - 10]
 sample[, flag_holding_vehicle := grepl("holding", jv_name, ignore.case = TRUE) & (is.na(jv_employees) | jv_employees <= 5)]
 sample[, flag_size_mismatch := !is.na(jv_employees) & jv_employees >= 10 & !is.na(n_emp) & n_emp / jv_employees > 20]
-sample[, core := usable & tier %chin% c("auto", "strong") & !flag_size_mismatch]
+sample[, core := usable & (tier == "manual" | (tier %chin% c("auto", "strong") & !flag_size_mismatch))]
 # Strategic IJV: at least two parents are operating firms (the parent or its
 # GUO has at least OPERATING_MIN_EMP employees in Orbis, latest year, or the
 # parent's or GUO's matched Revelio entity has at least that many people). This
@@ -438,12 +474,12 @@ log_line("F5 sample table: %s; usable IJVs: auto %d, strong %d, review %d; core 
 
 # Sample-construction log with counts at every step.
 n_any <- uniqueN(cand[entity == "jv", orbis_id])
-matched_tiers <- c("auto", "strong", "review")
+matched_tiers <- c("manual", "auto", "strong", "review")
 funnel <- data.table(
   step = c("Eligible IJVs in the frame (after the intra-group rule)",
            "JVs with any Revelio candidate (all routes)",
            "JVs with an automatic match", "JVs with a strong review match (website route, close name)",
-           "JVs with another review-tier match",
+           "JVs with another review-tier match", "JVs with a manual (verified) match",
            "JVs dropped because another JV took the same Revelio entity",
            "Matched JVs with workforce data after formation",
            "Usable IJVs, automatic", "Usable IJVs, automatic plus strong", "Usable IJVs, all tiers",
@@ -452,9 +488,9 @@ funnel <- data.table(
            "  of which flagged: holding vehicle matched to an operating company",
            "Eligible IJVs with at least two operating-firm parents (strategic)",
            "Core sample, strategic IJVs only"),
-  n = c(nrow(jv), n_any, picks[tier == "auto", .N], picks[tier == "strong", .N], picks[tier == "review", .N],
+  n = c(nrow(jv), n_any, picks[tier == "auto", .N], picks[tier == "strong", .N], picks[tier == "review", .N], picks[tier == "manual", .N],
         length(unique(shared_drop)),
-        sample[!is.na(n_emp), .N], sample[usable & tier == "auto", .N], sample[usable & tier %chin% c("auto", "strong"), .N],
+        sample[!is.na(n_emp), .N], sample[usable & tier == "auto", .N], sample[usable & tier %chin% c("manual", "auto", "strong"), .N],
         sample[usable & tier %chin% matched_tiers, .N], sample[core == TRUE, .N],
         sample[core & flag_pre_formation_10y, .N], sample[core & flag_holding_vehicle, .N],
         sample[strategic == TRUE, .N], sample[core & strategic, .N]))
@@ -482,20 +518,22 @@ use <- sample[core == TRUE, .(jv_bvdid, rcid)]
   x <- merge(x, jv[, .(jv_bvdid, formation_year)], by = "jv_bvdid")
   users <- unique(x[e >= as.IDate(sprintf("%d-%s", formation_year, const$reference_date)), user_id])
   dir.create(d_hist, recursive = TRUE, showWarnings = FALSE)
-  done <- if (file.exists(f_hist_users)) fread(f_hist_users)$user_id else
-    unique(unlist(lapply(list.files(d_hist, full.names = TRUE), function(f) arrow::read_parquet(f, col_select = "user_id")$user_id)))
-  users <- setdiff(users, done)
+  # Users already pulled: the saved parts are the only record. Ids are compared
+  # as plain numbers, because fread reads large ids as integer64 and arrow as
+  # double, and a mixed comparison silently matches nothing.
+  done <- unique(unlist(lapply(list.files(d_hist, full.names = TRUE, pattern = "parquet$"),
+                               function(f) as.numeric(arrow::read_parquet(f, col_select = "user_id")$user_id))))
+  users <- setdiff(as.numeric(users), done)
   t0 <- Sys.time()
   chunks <- split(users, ceiling(seq_along(users) / 5000L))
-  start_i <- length(list.files(d_hist))
+  start_i <- max(0L, as.integer(gsub("[^0-9]", "", list.files(d_hist, pattern = "^part-[0-9]+[.]parquet$"))), na.rm = TRUE)
   for (i in seq_along(chunks)) {
     h <- q(sprintf("SELECT p.user_id, p.position_id, p.rcid, p.ultimate_parent_rcid, p.startdate AS start_date, p.enddate AS end_date,
                            p.country, p.seniority, p.role_k17000_v3, r.role_k10_v3 AS job_category
                     FROM revelio.individual_positions p
                     LEFT JOIN revelio.individual_role_lookup_v3 r USING (role_k17000_v3)
-                    WHERE p.user_id IN (%s)", paste(chunks[[i]], collapse = ",")))
+                    WHERE p.user_id IN (%s)", paste(sprintf("%.0f", chunks[[i]]), collapse = ",")))
     arrow::write_parquet(h, file.path(d_hist, sprintf("part-%04d.parquet", start_i + i)))
-    fwrite(data.table(user_id = chunks[[i]]), f_hist_users, append = file.exists(f_hist_users))
     if (i %% 10 == 0 || i == length(chunks)) log_line("F6 histories: chunk %d of %d, %.0fs", i, length(chunks), secs(t0))
   }
   log_line("F6 histories: %d new users pulled into %s", length(users), d_hist)
