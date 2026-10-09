@@ -104,7 +104,8 @@ Orbis Crossborder Investment is not part of the WRDS subscription, so the
 frame comes from the current ownership links in the Orbis large and medium
 company libraries (rules in `data/codebook.md`). The ownership screen
 returned `r format(n_cand, big.mark = ",")` candidate companies. After
-excluding JVs with a non-corporate parent and financial-sector JVs,
+excluding JVs with a non-corporate parent, financial-sector JVs and
+intra-group arrangements whose parents share one global ultimate owner,
 `r format(s$frame_eligible, big.mark = ",")` remained eligible.
 `r if (params$pilot == "large") paste0("This second pilot was drawn from the large-JV stratum: eligible JVs not in the first pilot with an Orbis headcount of at least 100 and at least two parents found in Revelio by name, directly or through their global ultimate owner. That stratum holds ", format(pop_n, big.mark = ","), " JVs.") else ""`
 The pilot drew `r s$pilot_n` JVs, oversampling JVs exposed to the shortlisted

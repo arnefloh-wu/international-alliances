@@ -10,7 +10,9 @@
 # the current shareholder structure: an active company with two or three
 # corporate shareholders from at least two countries, each holding 20 to 90
 # percent directly, together at least 50 percent, and at least one of them
-# foreign to the host country. Incorporation date stands in for the
+# foreign to the host country, and with parents that belong to at least two
+# different groups (distinct Orbis GUOs; decision 2026-10-09). Incorporation
+# date stands in for the
 # formation date; the current equity share stands in for the share at
 # formation. Both substitutions are recorded in data/codebook.md.
 #
@@ -155,6 +157,34 @@ if (!file.exists(f_frame)) {
 } else {
   frame <- fread(f_frame, colClasses = list(character = c("jv_bvdid", "parent_bvdid", "nace", "naics")))
   log_line("frame loaded from %s", f_frame)
+}
+
+# ---- A2. Intra-group exclusion (decision 2026-10-09) ----------------------
+# A JV whose parents all belong to one group (same Orbis GUO, 50 percent
+# definition) is a subsidiary held through two group entities, not an IJV.
+# Each parent of an otherwise eligible JV gets its GUO from the ownership links
+# of the large, medium and small libraries; a parent without a GUO record is
+# its own GUO. The step runs once and saves the result into the frame file.
+# The two pilots of 2026-10-08 were drawn before this rule; their exports are
+# kept and their reports exclude intra-group JVs from the usable counts.
+if (!"parent_guo" %in% names(frame)) {
+  elig_parents <- unique(frame[excl_jv == "", parent_bvdid])
+  t0 <- Sys.time()
+  pg <- rbindlist(lapply(c("bvd_orbis_large.ob_links_current_l", "bvd_orbis_medium.ob_links_current_m",
+                           "bvd_orbis_small.ob_links_current_s"), function(t)
+    q_in(paste0("SELECT DISTINCT ON (sub_bvdid) sub_bvdid AS parent_bvdid, guo_50 AS parent_guo FROM ", t,
+                " WHERE sub_bvdid IN (%s) AND guo_50 IS NOT NULL"), elig_parents)))
+  pg <- unique(pg, by = "parent_bvdid")
+  frame <- merge(frame, pg, by = "parent_bvdid", all.x = TRUE)
+  frame[, parent_guo_found := !is.na(parent_guo)]
+  frame[is.na(parent_guo), parent_guo := parent_bvdid]
+  intra <- frame[excl_jv == "", .(n_groups = uniqueN(parent_guo)), by = jv_bvdid][n_groups < 2, jv_bvdid]
+  frame[jv_bvdid %in% intra, excl_jv := "intra_group"]
+  setorder(frame, jv_bvdid, parent_bvdid)
+  fwrite(frame, f_frame)
+  log_line("intra-group rule: GUO found for %d of %d parents of eligible JVs in %.0fs; %d JVs excluded as intra-group; %d remain eligible",
+           frame[parent_bvdid %in% elig_parents & parent_guo_found == TRUE, uniqueN(parent_bvdid)], length(elig_parents),
+           as.numeric(Sys.time() - t0, units = "secs"), length(intra), uniqueN(frame[excl_jv == "", jv_bvdid]))
 }
 
 # ---- B. Stratified pilot draw --------------------------------------------

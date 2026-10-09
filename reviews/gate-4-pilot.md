@@ -22,9 +22,9 @@ Date produced: 2026-10-08 (pilot 1 and, at the PI's request, pilot 2 on large JV
 
 ## Frame
 
-83,907 companies passed the ownership screen. 12,074 remained eligible after excluding JVs with a non-corporate parent (69,722) and financial-sector JVs (2,111). Both pilots oversample JVs exposed to the shortlisted shocks.
+83,907 companies passed the ownership screen. 10,431 remain eligible after excluding JVs with a non-corporate parent (69,722), financial-sector JVs (2,111) and, since 2026-10-09, intra-group arrangements (1,643). Both pilots oversample JVs exposed to the shortlisted shocks.
 
-A JV whose parents share one Orbis global ultimate owner (GUO) is an intra-group arrangement, not an IJV. Examples are Balenciaga Logistica (Kering Italia and Kering Holland) and KPIT Technologies GmbH (two KPIT entities). The current frame rules do not exclude these. They are excluded from all usable counts below: 5 of 100 JVs in pilot 1 and 32 of 100 in pilot 2.
+A JV whose parents share one Orbis global ultimate owner (GUO) is an intra-group arrangement, not an IJV. Examples are Balenciaga Logistica (Kering Italia and Kering Holland) and KPIT Technologies GmbH (two KPIT entities). The PI added this exclusion to the frame on 2026-10-09. Both pilots were drawn before that and contain such cases (5 of 100 in pilot 1, 32 of 100 in pilot 2). They are excluded from all usable counts below.
 
 ## Pilot 1: whole frame
 
@@ -38,11 +38,11 @@ A JV whose parents share one Orbis global ultimate owner (GUO) is an intra-group
 
 Person-years by origin (strong tier): no prior position on record 47.0%, external host-country hire 36.0%, external international hire 12.7%, parent A 3.5%, parent B 0.9%. Cells with at least 5 employees: 625 function-year and 475 seniority-year cells. Usable IJVs by exposure group (automatic / strong / all review): UK-EU 1 / 3 / 3, OECD screening 1 / 4 / 7, China coercion 1 / 1 / 1, Russia 0 / 0 / 0, unexposed 4 / 6 / 8.
 
-Projection to the 12,074-JV frame, weighted by exposure group: about 1,000 usable IJVs (automatic) to 2,100 (strong) to 3,100 (all review). IJVs with staff from both parents project to about 170, a figure that rests on one pilot JV (Chery Jaguar Land Rover).
+Projection to the 10,431-JV frame, weighted by exposure group: about 840 usable IJVs (automatic) to 1,830 (strong) to 2,740 (all review). IJVs with staff from both parents project to about 145, a figure that rests on one pilot JV (Chery Jaguar Land Rover).
 
 ## Pilot 2: large-JV stratum
 
-The stratum holds eligible JVs not in pilot 1 with an Orbis headcount of at least 100 and at least two parents found in Revelio by name, directly or through their GUO: 608 of the 2,171 JVs with 100 or more employees. The median Orbis headcount of the drawn JVs is 342.
+The stratum holds eligible JVs not in pilot 1 with an Orbis headcount of at least 100 and at least two parents found in Revelio by name, directly or through their GUO: 608 of the 2,171 JVs with 100 or more employees when drawn, 370 after the intra-group rule. The median Orbis headcount of the drawn JVs is 342.
 
 44 of 100 JVs had any name candidate, and 30 were accepted automatically. Of 205 parents, 161 matched, and 55 of 61 distinct GUOs matched. 97 of 100 JVs have two or more parents with a Revelio group.
 
@@ -54,7 +54,7 @@ The stratum holds eligible JVs not in pilot 1 with an Orbis headcount of at leas
 
 Person-years by origin (strong tier): no prior position on record 49.4%, external host-country hire 37.0%, external international hire 11.2%, parent A 2.3%, parent B below 0.1%. Cells with at least 5 employees: 1,398 function-year and 1,113 seniority-year cells. Usable IJVs by exposure group (automatic / strong / all review): UK-EU 4 / 4 / 5, OECD screening 4 / 5 / 5, China coercion 0 / 0 / 1, Russia 0 / 0 / 1, unexposed 11 / 11 / 13.
 
-Projection to the 608-JV stratum, weighted by exposure group: about 130 to 170 usable IJVs, and none with staff from both parents.
+Projection to the 370-JV stratum (after the intra-group rule), weighted by exposure group: about 80 to 100 usable IJVs, and none with staff from both parents.
 
 ## Recommendation (agent's view; the PI decides)
 
@@ -62,7 +62,7 @@ Go for a localization-based design; no-go for cross-parent integration as a prim
 
 The second pilot settles the open question from pilot 1. Large JVs match far better: nearly all have both parents in Revelio, and in the strong tier usable IJVs per 100 drawn rise from 14 to 20. Yet not one of them shows employees from both parents, and parent-origin staff fall to 2.3% of person-years. The scarcity of parent-origin staff is therefore a property of the data, not of matching or JV size. A plausible reason is that seconded managers list the parent, not the JV, as their employer, so Revelio files them under the parent. That cannot be verified with these data. Cross-parent integration and parent dominance (research idea sections 6.1 and 6.2; H1, H3 and H5) cannot be measured at scale.
 
-Localization can. Function and seniority cells survive at the baseline threshold of 5 in both pilots. The whole frame projects to roughly 1,000 to 3,100 usable IJVs, above the 300 to 800 target, while the large stratum alone projects to only 130 to 170. The full sample should therefore come from the whole frame, with the intra-group exclusion added. Hypotheses H2 and H4, and hierarchy contrasts in localization, are feasible. H1, H3 and H5 would need a restatement in localization terms, or a different source for parent staffing, such as BoardEx for senior executives.
+Localization can. Function and seniority cells survive at the baseline threshold of 5 in both pilots. The whole frame projects to roughly 840 to 2,740 usable IJVs, above the 300 to 800 target, while the large stratum alone projects to only 80 to 100. The full sample should therefore come from the whole frame, with the intra-group exclusion added. Hypotheses H2 and H4, and hierarchy contrasts in localization, are feasible. H1, H3 and H5 would need a restatement in localization terms, or a different source for parent staffing, such as BoardEx for senior executives.
 
 ## Quality checks run
 
@@ -89,7 +89,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 ## Decisions required from the PI
 
 1. Design: accept go for localization with cross-parent integration dropped as a primary measure, reject, or ask for changes. If accepted, decide how H1, H3 and H5 are restated, or whether BoardEx is used for senior parent staffing.
-2. Frame rules: approve the corporate parent types, the 20 to 90 percent share band, two or three parents, active status and incorporation 2005 to 2023. Add the proposed intra-group exclusion (two or more distinct GUOs required), and decide whether to exclude listed JVs.
+2. Frame rules: approve the corporate parent types, the 20 to 90 percent share band, two or three parents, active status and incorporation 2005 to 2023, and decide whether to exclude listed JVs. The intra-group exclusion was added on 2026-10-09.
 3. Country basis: direct shareholder country (current) or GUO country for the two-country rule and the exposure groups.
 4. Review tier: check `data/interim/pilot-jv-review-tier.csv` and `pilot-large-jv-review-tier.csv`, and decide whether the strong website tier counts as accepted.
 5. Deal data: whether to ask the library about the SDC joint-ventures module, which would give formation dates and dissolved JVs.
