@@ -12,14 +12,17 @@ Where the 55,590 joint ventures of frame v3 are lost (`code/R/wrds/03_wrds_full_
 
 | Stage | IJVs | Share |
 |---|---|---|
-| No accepted Revelio entity | 32,656 | 58.7% |
-| Matched, but no employee observed after formation | 2,899 | 5.2% |
-| Matched, under 20 employees observed | 8,877 | 16.0% |
-| Usable, but review tier only | 1,584 | 2.8% |
-| Usable, size mismatch (dropped) | 69 | 0.1% |
-| Core sample (upper bound) | 9,504 | 17.1% |
+| No accepted Revelio entity | 33,117 | 59.6% |
+| Matched, but no employee observed after formation | 2,883 | 5.2% |
+| Matched, under 20 employees observed | 8,819 | 15.9% |
+| Matched, 20 or more employees but under 3 years | 1 | 0.0% |
+| Usable, but review tier only | 1,057 | 1.9% |
+| Usable, size mismatch (dropped) | 70 | 0.1% |
+| Core sample (upper bound) | 9,643 | 17.3% |
 
-The recommended main sample removes two routes that audits showed are mostly not joint ventures (Capital IQ prior co-ownership and the small-library sample) and has 7,354 IJVs, of which 2,127 are strategic.
+The table includes the agent-made manual decisions from section 5. The core row is one lower than the 9,644 used elsewhere because one manually accepted IJV carries a size-mismatch flag and is kept as core.
+
+The recommended main sample removes two routes that audits showed are mostly not joint ventures (Capital IQ prior co-ownership and the small-library sample) and has 7,460 IJVs, of which 2,172 are strategic.
 
 Three consequences.
 
@@ -40,7 +43,7 @@ Three consequences.
 
 | # | Source | Adds | Access | Effort | Priority |
 |---|---|---|---|---|---|
-| 1 | Manual matching of the worklist (section 5) | up to 1,584 usable IJVs already found, plus part of the 1,847 larger strategic IJVs without a candidate | you or a research assistant, with LinkedIn | days of RA time | highest |
+| 1 | Manual matching of the worklist (section 5) | up to 1,057 usable IJVs still held back by a review-tier match (the agent has already resolved part of the rows), plus part of the 1,847 larger strategic IJVs without a candidate | you or a research assistant, with LinkedIn | days of RA time | highest |
 | 2 | SDC joint ventures and alliances | JVs since 1988 with participants, nations, status, equity stakes; dissolved JVs | enable on WRDS (schema exists) or LSEG Workspace | an email, then an export | high |
 | 3 | Orbis M&A (formerly Zephyr), deal type joint venture | JV deals with participant and target BvD ids | Moody's / Bureau van Dijk subscription of your institution | export, 10 to 40 minutes per run | high |
 | 4 | fDi Markets | greenfield JVs from 2003 that create a new physical operation | FT subscription | demo or institutional request | low to medium |
@@ -98,6 +101,8 @@ Dealogic, Mergermarket and Crunchbase deal records; national registers (for Chin
 ## 5. Manual matching worklist
 
 The worklist `data/interim/manual-match-list-v3-2026-10-09.csv` (written by `code/R/wrds/07_manual_match_list.R v3`; it exists now) has 9,285 rows. In priority order: (1) 976 strategic IJVs with a review-tier candidate to confirm; (2) 1,847 strategic IJVs with at least 50 Orbis employees and no candidate; (3) 1,210 other IJVs with a review-tier candidate; (4) 5,252 smaller or unknown-size strategic IJVs with no candidate. Do priorities 1 and 2 first (2,823 rows); priority 4 is unlikely to pay back. Each row gives the JV, its parents, website, Orbis headcount and up to three Revelio candidates with LinkedIn pages. It opens in Excel.
+
+Status (2026-10-09): the agent has triaged the 2,186 rows of priorities 1 and 3 with `code/R/wrds/08_triage_manual_candidates.R` (103 accepted, 109 replaced, 464 rejected, 1,510 left blank). Its decisions are in `data/raw/manual/manual-matches-claude-2026-10-09.csv`, are labelled `claude` in the sample table, and are overridden by any decision you save on the same IJV. Priorities 2 and 4 are untouched. Open the per-row log `data/interim/manual-triage-claude-v3-2026-10-09.csv` to spot-check the agent, then work the rows it left blank: priority 1 has 688 of them, priority 3 has 822.
 
 For each row, fill in three columns:
 

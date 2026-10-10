@@ -330,7 +330,13 @@ picks <- rbindlist(list(
 # rows win. Manual picks have tier "manual" and rank above automatic ones.
 f_man <- list.files(file.path(paths$raw, "manual"), "^manual-matches-.*[.]csv$", full.names = TRUE)
 if (length(f_man)) {
-  man <- rbindlist(lapply(f_man, function(f) fread(f, colClasses = "character")), fill = TRUE)
+  man <- rbindlist(lapply(f_man, function(f) cbind(fread(f, colClasses = "character"), manual_file = basename(f))), fill = TRUE)
+  # Provenance: the text between "manual-matches-" and the date, for example
+  # "claude" or a person's initials. Files from the agent triage
+  # (08_triage_manual_candidates.R, prefix "claude") are read first, so any
+  # decision by a person on the same IJV overrides them.
+  man[, manual_by := gsub("[.]csv$", "", gsub("^manual-matches-|-[0-9]{4}-[0-9]{2}-[0-9]{2}[.]csv$", "", manual_file))]
+  man <- man[order(-startsWith(manual_file, "manual-matches-claude-"))]
   for (cc in c("decision", "rcid_manual", "linkedin_url")) if (!cc %in% names(man)) man[, (cc) := NA_character_]
   man[, decision := tolower(trimws(decision))]
   man <- man[jv_bvdid %in% jv$jv_bvdid & decision %chin% c("accept", "reject", "replace")]
@@ -353,8 +359,9 @@ if (length(f_man)) {
   picks <- picks[!jv_bvdid %in% c(rej, rep$jv_bvdid)]
   picks[jv_bvdid %in% acc, `:=`(tier = "manual", method = "manual_accept")]
   if (nrow(rep)) picks <- rbind(picks, rep[, .(jv_bvdid, rcid, tier = "manual", method = "manual_replace", score = 1)], fill = TRUE)
-  log_line("F3 manual decisions: %d accepted (matched a candidate: %d), %d rejected, %d replaced", length(acc), picks[method == "manual_accept", .N],
-           length(rej), nrow(rep))
+  picks[tier == "manual", manual_by := man$manual_by[match(jv_bvdid, man$jv_bvdid)]]
+  log_line("F3 manual decisions: %d accepted (matched a candidate: %d), %d rejected, %d replaced; by source: %s", length(acc), picks[method == "manual_accept", .N],
+           length(rej), nrow(rep), paste(sprintf("%s=%d", names(table(man$manual_by)), as.integer(table(man$manual_by))), collapse = ", "))
 }
 fwrite(picks, f_rcids)
 log_line("F3 JV picks: %d automatic, %d strong review, %d other review; %d JV candidates rejected by the guards",

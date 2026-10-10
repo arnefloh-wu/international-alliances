@@ -121,6 +121,31 @@ Sample table columns added in the v3 run: `route` (`orbis_base`, `orbis_relaxed`
 
 Matching changes in the v2 run: name keys are searched in cached batches; when an Orbis JV and a Capital IQ JV of the same tier pick the same Revelio entity, the Orbis JV keeps it; positions at JV entities and career histories are shared with v1 and pulled incrementally.
 
+### Manual decisions and agent triage (2026-10-09)
+
+The sample table has `manual_by` for tier `manual` rows: `claude` for decisions in `manual-matches-claude-*.csv`, otherwise the initials in the file name. Where a person and the agent decided on the same IJV, the person's decision wins. `code/R/wrds/08_triage_manual_candidates.R` makes the agent decisions from the worklist rows that have a review-tier candidate, with these rules:
+
+| Decision | Rule |
+|---|---|
+| `accept` | the first candidate's name equals the JV's name once legal forms, punctuation and spacing are removed; Revelio headcount not more than 20 times Orbis headcount where Orbis reports 10 or more |
+| `replace` | the same test holds for exactly one of candidates 2 and 3 (`rcid_manual` set) |
+| `reject` | the first candidate is a parent's own entity, or shares no content word with the JV's name and has a name similarity below 0.6; abbreviated names and non-Latin script are never rejected |
+| blank | everything else, left for a person |
+
+Names that differ only by a holding or group word, or by Danish A/S against ApS, are not treated as equal. Per-row log: `data/interim/manual-triage-claude-v3-2026-10-09.csv`.
+
+## Matched dataset (2026-10-09)
+
+Built by `code/R/wrds/09_build_matched_dataset.R` for the `core_main` IJVs, in `data/processed/` (licensed data, gitignored). The shared key is `jv_bvdid`; a manifest `dataset-manifest-<run>.md` lists the row counts.
+
+| Table | Grain | Columns |
+|---|---|---|
+| `ijv-matched-<run>.csv` | one row per IJV | `jv_bvdid`, `jv_name`, `jv_country`, `region`, `industry`, `formation_year`, `formation_year_missing`, `source`, `route`, `admitted_by`, `exposure_group`, `n_parents`, `rcid_jv` (Revelio entity), `match_tier`, `match_method`, `match_score`, `manual_by`, `n_emp`, `n_years`, `function_cells_5`, `seniority_cells_5`, `jv_employees_orbis`, `operating_parents`, `strategic`, `flag_pre_formation_10y`, `flag_holding_vehicle`, `jv_website`, `jv_lei`, and for parents A and B: name, country, share, BvD id, `in_revelio` |
+| `ijv-parents-<run>.csv` | one row per IJV-parent pair | `jv_bvdid`, `parent_rank`, `parent_label` (A larger equity share, B second, then 3, 4), `parent_bvdid`, `parent_name`, `parent_country`, `parent_entity_type`, `equity_share_current`, `parent_guo`, `guo_name`, `guo_country`, `parent_in_revelio`, `revelio_family_size` |
+| `ijv-employee-spells-<run>.parquet` | one row per Revelio position at the matched JV entity | `jv_bvdid`, `rcid`, `user_id`, `position_id`, `start_date`, `end_date`, `ongoing`, `first_reference_year`, `last_reference_year`, `n_reference_dates`, `country`, `seniority`, `role_k17000_v3`, `function_role_k10`, `role_k50_v3` |
+
+A position is a spell only if it covers at least one 30 June from the formation year (or its start, if later) to 2026; `n_reference_dates` counts them. Parent A is the parent with the larger current equity share, ties broken on country code. `formation_year` is the incorporation year (Orbis) or founding year (Capital IQ; 1990 where missing, flagged by `formation_year_missing`), so for many IJVs the first observed year is later than the venture's real start. Career histories of the spell users are in `data/raw/revelio-histories-full-2026-10-09/` and link on `user_id`. Function and seniority are Revelio's own codes; the mapping to the project's nine functions and levels is set at gate 5. Version 3 of the 2026-10-09 run: 7,460 IJVs, 17,015 parent rows, 4,973,926 spells for 3,760,920 people.
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).
