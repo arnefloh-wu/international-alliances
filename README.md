@@ -89,6 +89,8 @@ Rscript code/R/01_pilot_matching.R main                # pilot matching and cove
 Rscript code/R/wrds/05_wrds_frame_v2.R with_dom with_small with_prior   # expanded frame v3 (no arguments: frame v2)
 Rscript code/R/wrds/03_wrds_full_sample.R v3           # full-frame matching, sample table, career histories
 Rscript code/R/wrds/07_manual_match_list.R v3          # worklist for manual matching
+Rscript code/R/wrds/08_triage_manual_candidates.R      # optional: agent triage of worklist rows (then rerun step 03)
+Rscript code/R/wrds/09_build_matched_dataset.R v3      # matched dataset: IJV, parent and employee-spell tables
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -101,6 +103,8 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `05_wrds_frame_v2.R [with_dom] [with_small] [with_prior]` | WRDS | `data/interim/wrds-ijv-frame-v2-*.csv` or `-v3-*.csv` |
 | `03_wrds_full_sample.R [v1\|v2\|v3\|v4]` | step 02 for v1, step 05 for v2 and v3, step 06 for v4 | `data/processed/sample-ijv-*.csv`, `sample-construction-log*.md`, career-history parts |
 | `07_manual_match_list.R [version]` | step 03 | `data/interim/manual-match-list-*.csv` |
+| `08_triage_manual_candidates.R` | step 07 | `data/raw/manual/manual-matches-claude-*.csv` (gitignored), `data/interim/manual-triage-claude-*.csv` |
+| `09_build_matched_dataset.R [version]` | step 03 (and the history parts it downloads) | `data/processed/ijv-matched-*.csv`, `ijv-parents-*.csv`, `ijv-employee-spells-*.parquet`, `dataset-manifest-*.md` |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 
