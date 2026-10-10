@@ -1,0 +1,43 @@
+---
+title: "IJV hypotheses and data: options for gate 4"
+date: 2026-10-10
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 2cm
+      y: 2cm
+    fontsize: 10pt
+---
+
+Prepared 10 October 2026 for Arne Floh, Alexander Mohr and Can Thanyi. Gate 4 (pilot feasibility) is pending; this note covers its first decision: what to do with H1, H3 and H5.
+
+## The problem
+
+Our hypotheses measure integration through who staffs the IJV. H2 and H4 are about localization: local staff versus parent-origin staff. H1, H3 and H5 are about cross-partner integration: staff from both parents working together in a function or at a level.
+
+The Orbis and Revelio pilots show that parent-origin staff are almost invisible in Revelio. In the pilot of large IJVs they make up 2.3 percent of person-years, and not one IJV shows employees from both parents. Matching quality and IJV size do not explain this. A likely reason is that seconded managers list the parent, not the IJV, as their employer, so Revelio files them under the parent; the data cannot confirm this. Localization, by contrast, is measurable at the function and seniority level in a large sample.
+
+## What BoardEx adds
+
+BoardEx (on WRDS, already licensed) records directors and senior managers with their full career histories. We checked it against the main sample on 10 October. With a country-confirmed name match, 2,537 of the 7,460 IJVs (34 percent) are in BoardEx. Where an IJV is covered, on average a quarter of its senior people have held a role at one of the parents (median zero). This supports the secondment explanation: parent people exist, but at the top, and often as board members who represent a parent. Coverage is best for North America and East Asia and weakest for Central and Eastern Europe.
+
+## Options
+
+| Option | What changes | Sample | Assessment |
+|------|----------|--------|------------|
+| A. Localization only | Restate H1, H3 and H5 in localization terms, for example that coordination-dependent functions and higher levels are less localized, and that coordination levels stay less localized after the shock. Orbis and Revelio only. | 7,460 IJVs (2,172 strategic); 9,644 as an upper bound for robustness | Largest sample and one consistent source across functions and levels; all five hypotheses become testable. The cost is a narrower construct: integration becomes the inverse of localization rather than staff from both partners working together. |
+| B. A plus a BoardEx supplementary analysis (recommended by the data engineer) | Main analysis as in A. A second analysis uses BoardEx to test parent representation among senior people, a top-level version of H3 and H5. | Main: 7,460. BoardEx: 1,207 IJVs with at least one parent-linked senior person (583 strategic); 279 with senior people linked to both parents (190 strategic) | Keeps a direct measure of parent presence where it is visible and lets us ask whether parents keep senior people in the IJV after the shock. Costs: a second source and more matching, the top level only, board seats are closer to governance than to functional integration, and coverage is selective. |
+| C. Cross-partner integration on BoardEx | Keep H1, H3 and H5 as stated, tested on BoardEx people. | At most 279 IJVs (190 strategic); only 107 have one person who held roles at both parents | Closest to the original construct, but small and selective. There are no functions and only one level, so H1 and H3 as stated cannot be tested. Not recommended. |
+| D. Keep everything as is | Original hypotheses on Revelio. | Practically no IJVs with staff from both parents | Not feasible. |
+
+## Caveats
+
+- The BoardEx numbers come from name matching with a head-office-country check. A spot check of 30 random matches looked right; 156 matches without a country confirmation are excluded. Some "both parents" cases are two units of one group that the Orbis rule missed, so 279 and 107 are upper bounds.
+- 212 of the 7,460 IJVs were matched by an agent triage and have not yet been checked by a person.
+- Formation dates: 19.9 percent of main-sample IJVs were incorporated before 1990 and 54 percent before 2005, so for many the panel starts mid-life.
+- The China coercion (86 IJVs) and Russia (40) exposure groups are thin under every option; this matters for the choice of shock at gate 5a.
+
+## Decision needed
+
+Choose A, B or C at gate 4, decision 1. The remaining gate 4 decisions (frame rules, country basis, sample definition, review tier, SDC) are listed in `reviews/gate-4-pilot.md` in the repository.
