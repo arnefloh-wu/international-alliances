@@ -1,0 +1,19 @@
+failure,table,flag,n_expected,unit
+an entity that belongs to two parents' families,ijv,flag_shared_family_entity,5,IJVs
+a parent's own entity matched as the IJV (the JV entity sits in a parent family),ijv,flag_jv_in_parent_family,3,IJVs
+a position that starts before the formation year,spells,flag_pre_formation,40,positions
+a person at two sample IJVs,spells,flag_multi_ijv_person,24,positions (12 people)
+an IJV with fewer than three observed years,ijv,flag_short_panel,6,IJVs
+a Revelio headcount more than 20 times the Orbis headcount,ijv,flag_size_mismatch,4,IJVs
+host country code NA (Namibia) kept as a value,ijv,jv_country == 'NA',8,IJVs
+employer not mapped (rcid missing),histories,flag_employer_unmapped,1536,positions
+country missing,histories,flag_country_missing,480,positions
+missing start dates,histories,flag_start_missing,25,positions
+repeated position_id,histories,flag_dup_position,6,positions
+open-ended positions,histories,flag_open_ended,4003,positions
+missing start dates,spells,flag_start_missing,15,positions
+end date before start date,spells,flag_end_before_start,7,positions
+country missing,spells,flag_country_missing,150,positions
+repeated position_id,spells,flag_dup_position,10,positions
+open-ended positions,spells,flag_open_ended,3772,positions
+two account rows for one entity and year,headcounts,flag_multi_account_row,40,records (20 entity-years)

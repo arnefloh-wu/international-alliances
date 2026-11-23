@@ -173,6 +173,32 @@ Two extracts from `code/R/wrds/12_wrds_headcount_education.R` (pulled 2026-11-23
 | `data/raw/orbis-jv-headcounts-2026-11-23.parquet` | one row per Orbis key-financials record with a headcount, for the Orbis-sourced IJVs of `core_main` (44,493 rows, 4,860 IJVs) | `jv_bvdid`, `conscode` (U1, U2 unconsolidated; C1, C2 consolidated; LF limited financials), `filing_type`, `closdate`, `closdate_year`, `nr_months`, `empl`, `orbis_library` (large, medium) |
 | `data/raw/revelio-education-full-2026-11-23/part-NNNN.parquet` | one row per education record of a hired person (7,613,952 rows, 3,302,616 people); one part per block of 5,000 user ids in ascending order, 753 parts | `user_id`, `education_number`, `startdate`, `enddate` (years, stored as 1 January), `degree`, `university_country`. University names and fields of study were not pulled |
 
+## Quality flags and synthetic data (2026-11-23)
+
+Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quality_flags.R [version|synthetic]` in `data/interim/quality-flags-<run>.md`. They are computed on read and stored nowhere: the raw and processed tables are not changed and no row is dropped. The flags of the sample table (`flag_pre_formation_10y`, `flag_holding_vehicle`, defined above) are counted alongside.
+
+| Flag | Table | Definition |
+|---|---|---|
+| `flag_dup_position` | spells, histories | `position_id` already seen; counts the copies after the first |
+| `flag_start_missing` | spells, histories | no start date |
+| `flag_end_before_start` | spells, histories | end date earlier than start date |
+| `flag_open_ended` | spells, histories | no end date (position still held); a case to handle, not an error |
+| `flag_employer_unmapped` | histories | no Revelio company id (`rcid`) for the employer |
+| `flag_country_missing` | spells, histories | no country; the value `NA` (Namibia) is not missing |
+| `flag_stray_entity` | spells | `jv_bvdid` not in the IJV table |
+| `flag_pre_formation` | spells | start year before the IJV's `formation_year` |
+| `flag_multi_ijv_person` | spells | the person has spells at more than one sample IJV; a case to handle |
+| `flag_short_panel` | IJV | fewer than `const$min_years` (three) reference years covered by the spells |
+| `flag_no_spells` | IJV | no spell at all |
+| `flag_size_mismatch` | IJV | codebook rule recomputed from the table: `jv_employees_orbis` of 10 or more and `n_emp` above 20 times it. Manual matches are exempt from the rule in the sample definition |
+| `flag_jv_in_parent_family` | IJV | the matched JV entity (`rcid_jv`) belongs to the Revelio family of one of its parents. Expected where Revelio files the JV under a parent; a wrong match where the entity is the parent's own unit |
+| `flag_shared_family_entity` | IJV | a Revelio entity belongs to the families of two parents of the IJV |
+| `flag_multi_account_row` | headcounts | another record exists for the same IJV and closing year |
+| `flag_consolidated` | headcounts | consolidation code C1 or C2 |
+| `flag_not_12_months` | headcounts | accounting period other than twelve months |
+
+Synthetic tables in `data/synthetic/` (tracked in Git), written by `code/R/tests/synthetic_matched.R` with a fixed seed: `ijv-matched`, `ijv-parents`, `parent-groups`, `ijv-employee-spells`, `revelio-histories` and `orbis-jv-headcounts`, each as `<table>-synthetic-2026-11-23.parquet` with the columns of the real table plus `synthetic = TRUE`. Every value is simulated; no real row is read. Ids start with `SYN`, `exposure_group` is empty, and names are placeholders. `function_cells_5` and `seniority_cells_5` are simplified there (categories with five or more people over all years). `seeded-failures-synthetic-2026-11-23.csv` lists the failures built into the tables and their numbers. The extractions and the synthetic data are logged in `data/data-log.md`.
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).

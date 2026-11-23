@@ -297,6 +297,21 @@ What the counts mean for the brief, in the agent's view. The two-dimensional fra
 
 Checks: category counts add up to the hires and to the person-years; every hired person has a career history on file; an independent recomputation for a random 300 IJVs (107,917 hires) reproduces all seven category counts for every IJV. For the two pulls: the education extract has no repeated record and one part per block of 5,000 people (753 parts); entrants and unknown histories add up to the hires with history not observed; a second recomputation for a random 300 IJVs (36,666 such hires) reproduces the entrant and unknown counts for every IJV; the Orbis extract has no duplicated row and one unconsolidated headcount per IJV-year after selection (450 IJV-years had several); the 2022 ratio recomputed from the spell table matches (2,972 IJVs, median 0.62); and the single headcount of the first comparison is found in the new extract for all 4,860 IJVs. Caveat for gate 5: these tables show how the categories are distributed over functions and levels before the hypotheses are fixed. The pre-analysis plan has to say so, and the contingency scores of the functions have to come from the interviews, not from these counts.
 
+## Data quality flags (first run of `/data-collector`, 2026-11-23)
+
+No new data were pulled. `code/R/wrds/13_quality_flags.R` computes quality flags as columns on the matched dataset v3, the career histories and the annual headcounts, with the functions in `code/R/functions/quality_flags.R`. The same code first ran on a simulated twin of the dataset (`data/synthetic/`, from `code/R/tests/synthetic_matched.R`), where it caught all 18 seeded failures in the seeded numbers. Counts and the shares by region, source, match tier and start year are in `data/interim/quality-flags-v3-2026-10-09.md`; the extractions are listed in `data/data-log.md`. Nothing is broken down by exposure group and no row was dropped.
+
+| Table | Rows | Clean | Flagged |
+|---|---|---|---|
+| IJVs | 7,460 | none with fewer than three observed years or without spells | first position more than ten years before incorporation 1,901 (25.5%); holding vehicle 98; size mismatch 1 (a manual match); matched entity inside a parent's Revelio family 831 (11.1%); an entity in two parents' families 216 |
+| Spells | 4,973,926 | no repeated position, no missing start date, no end before start, no entity outside the sample | country missing 61,047 (1.2%); start before the formation year 105,383 (2.1%); open-ended 1,582,599 (31.8%); person at more than one sample IJV 175,412 (3.5%) |
+| Career histories | 29,535,144 | no repeated position, no end before start; every spell user has a history | start date missing 855,916 (2.9%); employer not mapped to a Revelio company 4,207,125 (14.2%); country missing 386,435 (1.3%) |
+| Annual headcounts | 44,493 | | several records for one IJV and year 12,873 (28.9%); consolidated 13,075 (29.4%); year not twelve months 611 |
+
+Two rates differ strongly across groups, which is the warning sign the skill asks for. First, the share of history positions whose employer is not mapped to a Revelio company falls from 30.8% for positions that started before 2000 to 21.0% (2000 to 2009), 17.2% (2010 to 2014), 13.7% (2015 to 2019) and 9.6% (2020 to 2026). An unmapped prior employer counts as an independent hire, so a parent that is the unmapped employer is missed more often in the early years. This adds to the reasons given above for preferring hiring flows from about 2010. Second, the matched JV entity lies inside a parent's Revelio family for 831 IJVs: 12.7% of the automatic matches and 12.1% of the manual ones, and none of the strong-tier matches, whose rule excludes family members. Revelio files many joint ventures under one parent, so this is expected for a real IJV, and the tabulations never count the JV's own entity as a parent employer. It can also mark a parent's unit with a similar name that was matched as the IJV. The flag does not tell the two apart, and no person has audited these matches.
+
+The differences by region and by source are small: for the spells, country missing ranges from 0.9% to 1.8% across regions and start before the formation year from 1.0% to 3.3%.
+
 ## Data sources for further enlargement
 
 | Source | Status | What it adds |
@@ -324,6 +339,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 
 - All scripts run top to bottom from `code/R/00_setup.R` with no manual steps. Re-running the extraction regenerates an identical pilot 1 draw, and pilot 1's summary is identical after the refactor that added pilot 2 (`all.equal` on the saved summary).
 - Function checks: `Rscript code/R/tests/test-functions.R`, 23 of 23 pass.
+- Quality flags (2026-11-23): `13_quality_flags.R synthetic` catches all 18 seeded failures and confirms that the six synthetic tables match the real ones in column names, order and types; `13_quality_flags.R v3` then runs the same code on the real tables (see "Data quality flags").
 - Regression after the last pipeline patch: the v1 and v2 reruns give 1,530 and 6,139 core IJVs and identical shared columns against the saved references; v1 gained two columns (`route`, `core_main`).
 - The career-history store was audited after the full download (all parts scanned for repeated users): 1,061 parts, 5,292,799 distinct users, none duplicated. Two earlier duplicate downloads were removed and their cause fixed.
 - Manual decisions (accept, reject, LinkedIn replace) and the external importer were tested on synthetic files and the test files removed.
