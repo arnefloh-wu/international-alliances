@@ -140,6 +140,17 @@ The sample table has one row per IJV. The columns to start with are `tier`
 
 `code/R/02_build_panel.R` to `05_robustness.R` are the scripts of stages 6
 and 7. They are run by `/panel-build` and `/estimate` after gates 5 and 6.
+`04_estimate.R` already holds the models of the draft hypotheses (functions in
+`code/R/functions/estimation.R`) and runs now only on simulated panels; without
+the argument `synthetic` it stops until `reviews/gate-6-panel.md` is approved:
+
+```
+Rscript code/R/tests/synthetic_panel.R                 # simulated IJV x function x year and x level x year panels with planted effects
+Rscript code/R/04_estimate.R synthetic                 # all models on the simulated panel, with a check against the planted effects
+Rscript code/R/tests/check_estimate_recovery.R 500     # Monte Carlo: power, false-positive rates and bias over 500 draws (about 13 minutes)
+```
+
+`02_build_panel.R`, `03_measures.R` and `05_robustness.R` are still skeletons.
 
 ### How the scripts behave
 
