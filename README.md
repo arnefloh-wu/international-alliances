@@ -37,12 +37,16 @@ nothing from you. Stage 3 needs the interview transcripts and the consent
 notes in `data/interviews/`. Stage 4 needs the Orbis and Revelio pilot
 exports described in `data/raw/extraction-spec-*.md`.
 
-Three skills sit outside the stage pipeline and have no gate:
+Four skills sit outside the stage pipeline and have no gate:
 `/research-ideation` drafts or revises `docs/research-brief.md`,
 `/research-organizer` checks the folder structure, the naming conventions,
-this README and `CLAUDE.md`, and `/data-collector` plans, runs and logs a
+this README and `CLAUDE.md`, `/data-collector` plans, runs and logs a
 data extraction (log in `data/data-log.md`, simulated test data in
-`data/synthetic/`).
+`data/synthetic/`), and `/data-wrangler` cleans and types the extracted
+tables and keeps `data/codebook.md` (no function mapping and no measures
+before gate 5; those belong to `/panel-build`). `/statistical-analyst` is
+the method guide for the estimation part of the pre-analysis plan and for
+`/estimate`; before gate 6 it works on simulated panels only.
 
 ## Local tooling
 
