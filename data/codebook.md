@@ -199,6 +199,22 @@ Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quali
 
 Synthetic tables in `data/synthetic/` (tracked in Git), written by `code/R/tests/synthetic_matched.R` with a fixed seed: `ijv-matched`, `ijv-parents`, `parent-groups`, `ijv-employee-spells`, `revelio-histories` and `orbis-jv-headcounts`, each as `<table>-synthetic-2026-11-23.parquet` with the columns of the real table plus `synthetic = TRUE`. Every value is simulated; no real row is read. Ids start with `SYN`, `exposure_group` is empty, and names are placeholders. `function_cells_5` and `seniority_cells_5` are simplified there (categories with five or more people over all years). `seeded-failures-synthetic-2026-11-23.csv` lists the failures built into the tables and their numbers. The extractions and the synthetic data are logged in `data/data-log.md`.
 
+## Draft panel columns for estimation (simulated, 2026-11-23)
+
+The simulated panels of `code/R/tests/synthetic_panel.R` use these columns. They are a draft for the gate-5 measurement specification, not decided names; the real panels of `/panel-build` follow the plan. One row per IJV x function x year (`fn`) or IJV x level x year (`level`), counting hires in the year (flows).
+
+| Variable | Definition |
+|---|---|
+| `fn` | function key; the column is not called `function`, which is a reserved word in R and breaks `fixest` formulas |
+| `level` | hierarchical level key |
+| `dyad` | parent-country pair, the unit to which shock exposure is assigned |
+| `host_parent`, `parent_in_revelio` | IJV has a host-country parent; at least one parent has a Revelio entity |
+| `first_shock_year`, `shock`, `event_time` | first exposure year of the pair; 1 from that year on; year minus first exposure year (missing if never exposed) |
+| `coord_dependence`, `local_embeddedness`, `coord_role` | contingency scores per function (1 to 5) and per level (0 or 1); placeholders in the simulation, source open (`docs/decisions.md`) |
+| `n_hires`, `n_obs`, `n_not_obs` | hires; hires with a prior position in the origin window; hires with history not observed |
+| `n_local_parent`, `n_local_indep`, `n_intl_parent`, `n_intl_indep` | the four staffing categories among `n_obs`; `n_local`, `n_intl`, `n_parent` are their sums |
+| `share_local`, `share_parent`, `share_parent_local`, `share_not_obs` | `n_local / n_obs`, `n_parent / n_obs`, `n_local_parent / n_local`, `n_not_obs / n_hires`; missing where the denominator is zero |
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).

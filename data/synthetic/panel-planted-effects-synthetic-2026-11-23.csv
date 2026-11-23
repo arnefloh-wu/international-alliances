@@ -1,0 +1,13 @@
+param,value
+h2_le,0.25
+cd_local,0
+h1_intl_cd,0.3
+h3_host,0.4
+h3_nohost,0
+shock_main,0.2
+h4_shock_le,0.3
+h4_shock_cd,0
+h4_channel,0
+notobs_cd,0
+notobs_le,0
+lvl_role,0.5

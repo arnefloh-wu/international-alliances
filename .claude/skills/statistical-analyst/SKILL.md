@@ -230,8 +230,24 @@ perm_test(share_local ~ local_embeddedness + coord_dependence | ijv_id^year, d, 
 ```
 
 With nine functions there are 362,880 assignments, so the smallest
-attainable p-value is far below any threshold; with four levels there are
-24, and the smallest attainable p-value is 1/24. Say so where it applies.
+attainable p-value is far below any threshold. With four levels there are
+24, and tied scores make it worse: with a binary `coord_role` (two levels
+with a coordination role, two without) eight assignments reproduce the
+observed split or its mirror image, so the test cannot return less than 1/3
+(found in the simulated run of 2026-11-23). The level test cannot confirm an
+effect; say so, and report the smallest attainable p-value next to the
+p-value (`perm_test()` in `code/R/functions/estimation.R` returns `p_min`).
+
+**Linear or nonlinear for shares.** In the simulated run of 2026-11-23
+(500 draws, `data/synthetic/estimate-recovery-synthetic-2026-11-23.md`) the
+linear model with a linear slope in one score rejected a planted null on a
+correlated score in 10 to 12 percent of draws at nominal 5: the logistic
+curvature of the first score loads onto the second. Linear models of sparse
+shares also had clustered standard errors 5 to 10 percent too small. The
+fractional logit, the Poisson model, and the linear model with the other
+score as categories held the nominal level. Until the plan decides, report
+a nonlinear model next to every linear one and read a linear null rejection
+with that in mind.
 
 ### Step 2 — Generate the Analysis Script
 
