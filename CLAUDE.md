@@ -50,11 +50,14 @@ inputs, outputs and gates. The orchestrator skill is
 `/shock-options`, `/panel-build`, `/estimate`, `/write-section`, `/references`,
 `/internal-review`).
 
-Three skills sit outside the stage pipeline and have no gate:
+Four skills sit outside the stage pipeline and have no gate:
 `/research-ideation` drafts or revises `docs/research-brief.md`,
 `/research-organizer` checks the folder structure, the naming conventions,
-`README.md` and this file, and `/data-collector` plans, runs and logs a data
-extraction for the data engineer.
+`README.md` and this file, `/data-collector` plans, runs and logs a data
+extraction for the data engineer, and `/data-wrangler` cleans and types the
+extracted tables and keeps `data/codebook.md`. Before gate 5 the wrangler
+does definition-free cleaning only; function and level mapping, origin
+classes and measures belong to `/panel-build`.
 
 Review gates are recorded in `reviews/`. A stage whose gate file does not
 carry `Status: APPROVED` blocks every downstream stage. Agents never
