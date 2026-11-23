@@ -1,8 +1,13 @@
 # data/
 
-All content under `data/` except this file, `codebook.md`,
-`interviews/README.md` and the extraction specifications is gitignored.
-Exports live locally here or in the project Dropbox folder.
+All content under `data/` except this file, `codebook.md`, `data-log.md`,
+`synthetic/`, `interviews/README.md` and the extraction specifications is
+gitignored. Exports live locally here or in the project Dropbox folder.
+
+`data-log.md` has one entry per extraction, with aggregated counts only.
+`synthetic/` holds simulated tables with the schema of the real ones
+(`code/R/tests/synthetic_matched.R`); they contain no licensed data and are
+for testing code where the real exports are not available.
 
 Dropbox path (PI fills in): `Dropbox/international-alliances/data/`
 Mirror it to this folder before running any `/pilot-feasibility`,

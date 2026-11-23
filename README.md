@@ -37,10 +37,12 @@ nothing from you. Stage 3 needs the interview transcripts and the consent
 notes in `data/interviews/`. Stage 4 needs the Orbis and Revelio pilot
 exports described in `data/raw/extraction-spec-*.md`.
 
-Two skills sit outside the stage pipeline and have no gate:
-`/research-ideation` drafts or revises `docs/research-brief.md`, and
+Three skills sit outside the stage pipeline and have no gate:
+`/research-ideation` drafts or revises `docs/research-brief.md`,
 `/research-organizer` checks the folder structure, the naming conventions,
-this README and `CLAUDE.md`.
+this README and `CLAUDE.md`, and `/data-collector` plans, runs and logs a
+data extraction (log in `data/data-log.md`, simulated test data in
+`data/synthetic/`).
 
 ## Local tooling
 
@@ -102,6 +104,9 @@ Rscript code/R/wrds/09_build_matched_dataset.R v3      # matched dataset: IJV, p
 Rscript code/R/wrds/10_boardex_coverage.R v3           # BoardEx coverage of the matched IJVs
 Rscript code/R/wrds/12_wrds_headcount_education.R v3   # optional: annual Orbis headcounts and Revelio education records (about two hours)
 Rscript code/R/wrds/11_staffing_tabulations.R v3       # feasibility counts for the staffing frame (no WRDS connection; uses step 12 if present)
+Rscript code/R/tests/synthetic_matched.R               # simulated twin of the matched dataset in data/synthetic/ (no data needed)
+Rscript code/R/wrds/13_quality_flags.R synthetic       # quality flags on the simulated tables: every seeded failure must be caught
+Rscript code/R/wrds/13_quality_flags.R v3              # the same flags on the real matched dataset (no WRDS connection)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -119,6 +124,8 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `10_boardex_coverage.R [version]` | step 09, WRDS | `data/interim/boardex-coverage-*.csv`, `boardex-coverage-summary-*.md`, BoardEx pulls cached in `data/raw/` |
 | `12_wrds_headcount_education.R [version] [orbis] [education]` | step 09, WRDS | `data/raw/orbis-jv-headcounts-*.parquet`, `data/raw/revelio-education-full-*/` (parquet parts), `data/interim/wrds-headcount-education-log-*.md` |
 | `11_staffing_tabulations.R [version]` | steps 09 and 10; step 12 for the entrant and annual-headcount tables | `data/interim/staffing-tabulations-*.md` and the csv tables in the folder of the same name |
+| `tests/synthetic_matched.R` | nothing | `data/synthetic/<table>-synthetic-*.parquet`, `seeded-failures-synthetic-*.csv` (simulated, tracked in Git) |
+| `13_quality_flags.R [version\|synthetic]` | step 09 (steps 03 and 12 for histories and headcounts), or the synthetic tables | `data/interim/quality-flags-*.md`, or `data/synthetic/quality-flags-synthetic-*.md` |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 
