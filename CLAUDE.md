@@ -57,7 +57,10 @@ Four skills sit outside the stage pipeline and have no gate:
 extraction for the data engineer, and `/data-wrangler` cleans and types the
 extracted tables and keeps `data/codebook.md`. Before gate 5 the wrangler
 does definition-free cleaning only; function and level mapping, origin
-classes and measures belong to `/panel-build`.
+classes and measures belong to `/panel-build`. `/statistical-analyst` is the
+method guide of the quant-analyst for the estimation part of the
+pre-analysis plan and for `/estimate`; before gate 6 it works on simulated
+panels only.
 
 Review gates are recorded in `reviews/`. A stage whose gate file does not
 carry `Status: APPROVED` blocks every downstream stage. Agents never
