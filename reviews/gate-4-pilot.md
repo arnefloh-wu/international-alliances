@@ -196,6 +196,107 @@ Quality: a random audit of the first version (28 accepts, 28 replaces, 40 reject
 
 Eight consistency checks pass, among them that the spell table reproduces the employee counts and the observed years of the sample table for all 7,460 IJVs. This dataset is not the Stage 6 panel: no function or seniority mapping, no parent-origin classification and no measures are built, because they need the approved pre-analysis plan (gate 5).
 
+## Staffing tabulations (PI instruction, 2026-11-23)
+
+`code/R/wrds/11_staffing_tabulations.R` counts the staffing categories of `docs/research-brief.md` on the matched dataset and answers feasibility questions Q1 to Q6 of that brief. The PI lifted the hold on the parent-origin classification for these counts only (`docs/decisions.md`, 2026-11-23). The origin rule is the pilot's (a prior position held within three years before joining) and stays provisional. No panel and no measure is built, Revelio's own function and seniority codes are used, and nothing is broken down by shock exposure group. Full tables: `data/interim/staffing-tabulations-v3-2026-10-09.md` and the csv files in the folder of the same name (local only). On a second instruction of the same day the PI had annual Orbis headcounts and Revelio education records pulled from WRDS (`code/R/wrds/12_wrds_headcount_education.R`); they add the second paragraphs on Q3 and Q4 below.
+
+A hire is a person's first dated position at the JV entity, for people with at least one 30 June at the JV. The flow window runs from the formation year to 2026 and holds 3,725,590 hires. The stock is 20,068,047 person-years.
+
+**Q1, host-country parent.** Each parent is now labeled by the country of the direct shareholder and, for Orbis-sourced IJVs, by the country of the ultimate owner.
+
+| Parents by direct shareholder country | core_main | strategic |
+|---|---|---|
+| Host-country and foreign parent | 5,288 (70.9%) | 1,452 (66.9%) |
+| Host-country parents only (foreign at owner level) | 1,312 (17.6%) | 481 (22.1%) |
+| Foreign parents only | 860 (11.5%) | 239 (11.0%) |
+
+By owner country, 4,732 of the 6,032 Orbis-sourced IJVs have a host-country and a foreign parent, 1,177 have foreign parents only and 123 have host-country parents only. Capital IQ parents (1,428 IJVs) carry no owner country. A parent can be seen as a prior employer only if it has a Revelio entity: all parents do in 2,321 IJVs (31.1%), none does in 1,578 (21.2%), and the host-country parent does in 3,728 of the 6,600 IJVs that have one.
+
+**Q1, Q2 and Q6, the categories.**
+
+| Category | Hires | % | Person-years | % | IJVs with 1+ hires | 5+ | 20+ |
+|---|---|---|---|---|---|---|---|
+| Local parent-origin | 31,121 | 0.8 | 157,656 | 0.8 | 1,852 | 828 | 307 |
+| International parent-origin | 12,995 | 0.3 | 56,664 | 0.3 | 1,339 | 376 | 112 |
+| Parent-origin, location not recorded | 650 | 0.0 | 3,447 | 0.0 | 298 | 24 | 4 |
+| Independent local | 1,834,397 | 49.2 | 8,203,691 | 40.9 | 7,377 | 7,242 | 5,847 |
+| Independent international | 692,506 | 18.6 | 2,895,478 | 14.4 | 6,829 | 4,890 | 2,622 |
+| Independent, location not recorded | 31,543 | 0.8 | 150,152 | 0.7 | 4,178 | 1,238 | 298 |
+| History not observed | 1,122,378 | 30.1 | 8,600,959 | 42.9 | 7,289 | 6,381 | 3,898 |
+
+Parent-origin staff are 1.2% of hires and 1.1% of person-years, below the pilots (4.4% and about 2.3% of person-years). Where all parents are in Revelio (2,321 IJVs, 1,209,124 hires) the share is 2.4% of hires, 1.7% local and 0.7% international, which is the level of pilot 2. Where no parent is in Revelio the share is zero by construction. Of the 31,121 local parent-origin hires, 23,190 come from the host-country parent's group and 7,931 from host-country units of a foreign parent's group; a further 4,298 hires come from units abroad of the host-country parent's group. The two definitions of local parent-origin that the brief leaves open therefore differ by about a quarter of the cell.
+
+| IJVs that support the local parent-origin cell | All | Host-country parent | No host-country parent | Strategic |
+|---|---|---|---|---|
+| IJVs | 7,460 | 6,600 | 860 | 2,172 |
+| 1+ local parent-origin hire | 1,852 | 1,676 | 176 | 985 |
+| 5+ local parent-origin hires | 828 | 761 | 67 | 517 |
+| 20+ local parent-origin hires | 307 | 275 | 32 | 196 |
+| Local parent-origin hires in 3+ hire years | 999 | 913 | 86 | 611 |
+| Local parent-origin hires in 5+ hire years | 658 | 605 | 53 | 415 |
+| 5+ local parent-origin and 5+ independent local hires | 824 | 757 | 67 | 513 |
+| 5+ independent international hires | 4,890 | 4,247 | 643 | 1,395 |
+
+Of 96,980 IJV-function cells with hires, 31,664 have five or more local hires; 5,117 of those have at least one local parent-origin hire and 1,302 have five or more. 1,040 IJVs have two or more functions with five local hires and at least one local parent-origin hire. Local parent-origin hires are spread over all ten Revelio functions (from 901 in healthcare to 6,013 in sales and marketing) and all seven seniority levels, and half of them (15,606) fall in 2020 to 2026. Parent-origin hires are 0.6% of hires at seniority 1 and 3 to 5% at seniorities 5 to 7.
+
+**Q3, history not observed.** 30.1% of hires have no prior position in the window: for 28.8% the JV is the first recorded job, and for 1.3% all earlier positions ended more than three years before. The share falls from 65.5% of hires before 2000 to 16.9% of hires in 2020 to 2026, and from 39.9% at seniority 1 to about 10% at seniorities 6 and 7. It is 20 to 22% in North America and western Europe and 30 to 36% elsewhere. The stock share (42.9%) is higher than the flow share because long-tenured staff were hired in the years with the weakest histories. A second gap: for 14.2% of hires the prior employer is not mapped to a Revelio company, so these hires count as independent without the employer being known.
+
+**Q3, entrants (Revelio education records, pulled 2026-11-23).** `code/R/wrds/12_wrds_headcount_education.R` pulled 7,613,952 education records (dates, degree and university country only) for the hired people; 3,302,616 of the 3,760,920 have at least one. Rule: a hire is a labor market entrant if the JV is the first recorded job and the last education that ended by the year after joining ended at most three years before the hire year. Education dates are years.
+
+| Hires with history not observed | Hires | % of not observed | % of all hires |
+|---|---|---|---|
+| Labor market entrant | 467,895 | 41.7 | 12.6 |
+| First recorded job, last education ended more than three years before | 98,270 | 8.8 | 2.6 |
+| First recorded job, education on record ends only after joining | 135,459 | 12.1 | 3.6 |
+| First recorded job, education record without an end date | 120,601 | 10.7 | 3.2 |
+| First recorded job, no education record | 250,867 | 22.4 | 6.7 |
+| Earlier positions, all ended more than three years before joining | 49,286 | 4.4 | 1.3 |
+
+So 41.7% of the unobserved histories are entrants, and 654,483 hires (17.6% of hires, 29.8% of person-years) stay unknown. The entrant count is 387,121 with a one-year window and 502,142 with five years, so the window matters little. The unknown share falls from 43.7% of hires before 2000 to 9.6% of hires in 2020 to 2026, and from 22.6% at seniority 1 to 8 to 9% at seniorities 6 and 7. Entrants are 17.3% of hires at seniority 1 and 1.6% at seniorities 6 and 7, which fits the label. Of the entrants, 240,980 (51.5%) were educated in the host country and 69,311 (14.8%) abroad; for 157,604 (33.7%) the place of education is not recorded. Two things are not settled. For 371,468 unknown hires there is no dated education record, so no rule can classify them. And the rule takes a profile as complete from the end of education on: a job left off the profile between graduation and the JV makes an experienced hire look like an entrant. The entrant share of hires is higher in early years (21.8% before 2000 against 7.3% in 2020 to 2026), which may reflect such omissions in older profiles as well as long-tenured staff who joined at career start.
+
+**Q4, Orbis headcount.** The local extract holds one headcount per IJV, the latest year in the Orbis key-financials table, pulled without a consolidation filter. 4,818 of the 7,460 IJVs have one (none of the 1,428 Capital IQ-sourced IJVs), 3,697 of them for 2024 or 2025. The ratio of Revelio staff at 30 June of that year to the Orbis headcount has a median of 0.55 (quartiles 0.20 and 1.13). It is 0.30 for IJVs with an Orbis headcount of 50 or more and 1.13 below 50. 29.5% of IJVs have more Revelio staff than Orbis employees and 29.2% have a ratio under 0.25. Parent-origin staff were not inferred from the difference.
+
+**Q4, annual unconsolidated headcounts (Orbis key financials, pulled 2026-11-23).** The pull returned 44,493 headcount records for 4,860 of the 6,032 Orbis-sourced IJVs, with five consolidation codes: U1 and U2 (unconsolidated accounts), C1 and C2 (consolidated) and LF (limited financials). The reading of the codes follows the Orbis convention and fits the data: where an IJV-year has both, the consolidated headcount is the larger one in 67.7% of cases and equal in 28.7% (median ratio 1.29). Unconsolidated below means U1 or U2.
+
+| Orbis-sourced IJVs (6,032) with | IJVs | % |
+|---|---|---|
+| A headcount on any basis in at least one year | 4,835 | 80.2 |
+| An unconsolidated headcount in 1+ years | 3,912 | 64.9 |
+| in 3+ years | 3,489 | 57.8 |
+| in 5+ years | 3,068 | 50.9 |
+| in 10+ years | 1,576 | 26.1 |
+| Consolidated or limited-financials headcount only | 922 | 15.3 |
+
+The 3,912 IJVs are 52.4% of the main sample; the 1,428 Capital IQ-sourced IJVs have no Orbis record. There are 29,151 IJV-years with an unconsolidated headcount from the formation year on, and 27,797 of them fall in 2015 or later, so Orbis on WRDS gives almost no headcount history before 2015.
+
+| Revelio staff at 30 June / unconsolidated Orbis headcount | IJV-years | p25 | Median | p75 | Within 0.5 to 2 |
+|---|---|---|---|---|---|
+| To 2009 | 514 | 0.02 | 0.06 | 0.21 | 9.5% |
+| 2010 to 2014 | 840 | 0.05 | 0.17 | 0.54 | 19.5% |
+| 2015 to 2019 | 11,838 | 0.14 | 0.44 | 1.00 | 36.5% |
+| 2020 to 2026 | 15,959 | 0.23 | 0.62 | 1.22 | 44.3% |
+| Orbis headcount 1 to 9 | 3,310 | 1.33 | 2.56 | 7.50 | 38.0% |
+| 10 to 49 | 9,210 | 0.47 | 0.83 | 1.29 | 62.8% |
+| 50 to 249 | 9,553 | 0.16 | 0.36 | 0.78 | 36.4% |
+| 250 to 999 | 4,602 | 0.04 | 0.15 | 0.40 | 18.6% |
+| 1,000 or more | 2,476 | 0.01 | 0.03 | 0.16 | 8.9% |
+
+Coverage rises every year, from a median of 0.31 in 2015 to 0.67 in 2024, and falls steeply with size: Revelio shows about a third of the staff of IJVs with 50 to 249 employees and 3% for those with 1,000 or more, while for the smallest IJVs it shows more people than Orbis reports. For the 3,068 IJVs with five or more years the median IJV-level ratio is 0.53, and the ratio stays within a factor of two over the years for 53.6% of them. Year-on-year changes in the two counts move in the same direction in 70.8% of 24,176 pairs (correlation of log changes 0.30). On the latest year per IJV the median ratio is 0.64 on unconsolidated and 0.30 on consolidated headcounts; without a consolidation filter it is 0.53, against 0.55 in the first comparison, because 307 IJVs carry different headcounts under several codes at their latest closing date. In the agent's view the ratio is usable as a control or a sample restriction from 2015 on for about half of the sample, and not as a measure of how many staff of any one kind Revelio misses.
+
+**Q5, BoardEx.**
+
+| BoardEx group | IJVs | Median hires | Median coverage ratio | Parent-origin share of person-years | IJVs with a parent-origin hire | with a senior one |
+|---|---|---|---|---|---|---|
+| 1+ parent-linked senior person | 1,207 | 264 | 0.44 | 1.62% | 54.8% | 42.8% |
+| In BoardEx, no parent-linked person | 1,330 | 163 | 0.74 | 0.49% | 28.7% | 21.7% |
+| Not in BoardEx | 4,923 | 78 | 0.53 | 0.91% | 26.2% | 17.7% |
+
+IJVs with a parent-linked senior person in BoardEx have a lower coverage ratio, but they are also larger, and larger IJVs have lower ratios throughout. Among the 1,144 such IJVs with at least one parent in Revelio, 482 (42%) show no parent-origin hire in Revelio at any level and 628 (55%) none at seniority 5 to 7. This agrees with the view that Revelio under-records parent-origin staff, but it does not prove it: a parent link in BoardEx includes board seats, whose holders are not employees of the JV.
+
+What the counts mean for the brief, in the agent's view. The two-dimensional frame can be measured, with three limits. First, the organizational dimension is observable only where a parent is in Revelio, so hypotheses on it need that subset: 5,882 IJVs with at least one parent, 2,321 with all. Second, the local parent-origin cell supports an analysis on roughly 800 to 1,000 IJVs, not on 7,460, and the contrast group without a host-country parent is small (67 IJVs with five or more such hires). Third, hiring flows from about 2010 on are far better observed than stocks. With entrants separated, the hires whose origin is unknown fall from 30.1% to 17.6% overall and to 9.6% in 2020 to 2026. Entrants are a group of their own: they have a place of education but no prior employer, so they fit the geographic dimension only. Counts by exposure group, which H4 needs, were not made; they belong to `/shock-options rescore`.
+
+Checks: category counts add up to the hires and to the person-years; every hired person has a career history on file; an independent recomputation for a random 300 IJVs (107,917 hires) reproduces all seven category counts for every IJV. For the two pulls: the education extract has no repeated record and one part per block of 5,000 people (753 parts); entrants and unknown histories add up to the hires with history not observed; a second recomputation for a random 300 IJVs (36,666 such hires) reproduces the entrant and unknown counts for every IJV; the Orbis extract has no duplicated row and one unconsolidated headcount per IJV-year after selection (450 IJV-years had several); the 2022 ratio recomputed from the spell table matches (2,972 IJVs, median 0.62); and the single headcount of the first comparison is found in the new extract for all 4,860 IJVs. Caveat for gate 5: these tables show how the categories are distributed over functions and levels before the hypotheses are fixed. The pre-analysis plan has to say so, and the contingency scores of the functions have to come from the interviews, not from these counts.
+
 ## Data sources for further enlargement
 
 | Source | Status | What it adds |
@@ -253,6 +354,7 @@ Localization can. Function and seniority cells survive at the baseline threshold
 5. Deal data: whether to ask the library about the SDC joint-ventures module, which would give formation dates and dissolved JVs.
 6. Sample definition: the PI chose the upper bound on 2026-10-09. After the audits of frame v3 the data-engineer recommends `core_main` (7,460 IJVs, 2,172 strategic) as the analysis sample and `core` (9,644) as the upper bound for robustness checks; confirm or choose. The 212 agent-made manual matches are included in both; excluding them would give 7,354 and 9,504. Open: the usability threshold (20 employees by default).
 7. Enlargement routes still open (all WRDS routes have been run): manual matching and review-tier checking (the worklist is built; the agent triaged 2,186 rows, and a person still has to check the agent's decisions and work the 1,510 rows left blank plus priorities 2 and 4), the SDC licence, an Orbis M&A export, and other outside lists through the importer. The agent's order of value for cost: manual matching and review-tier checking first, then SDC and Orbis M&A. It does not recommend running the full small-company library.
+8. Staffing frame (added 2026-11-23, see "Staffing tabulations"): whether the organizational-origin hypotheses are estimated on IJVs with a parent in Revelio only (5,882 with at least one, 2,321 with all); which definition of local parent-origin applies (31,121 hires from any parent group's host-country units, or 23,190 from the host-country parent's group); how labor market entrants enter the frame (467,895 hires with a place of education but no prior employer: a category of their own, or part of the independent hires by place of education); and whether the Revelio-to-Orbis coverage ratio is used as a control or a sample restriction, given that it exists from 2015 on for 3,912 IJVs only. Both WRDS pulls were made on 2026-11-23.
 
 ## Proposed changes to earlier stages
 

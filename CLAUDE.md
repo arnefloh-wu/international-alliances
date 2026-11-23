@@ -16,6 +16,10 @@ integration inside an IJV is not a single alliance-level attribute but an
 internally differentiated configuration that varies across functions and
 hierarchical levels and is selectively reconfigured by environmental change.
 
+Then read `docs/research-brief.md` (draft of 2026-11-22): the idea as revised
+after the pilot, staffing by geographic and organizational origin. It is a
+proposal until the PI decides gate 4.
+
 Theory hierarchy (decided 2026-10-02, details in `docs/theory-framework.md`):
 structural contingency theory is the main theory. The differentiated
 network (Nohria and Ghoshal) and integration-responsiveness are related
@@ -46,9 +50,18 @@ inputs, outputs and gates. The orchestrator skill is
 `/shock-options`, `/panel-build`, `/estimate`, `/write-section`, `/references`,
 `/internal-review`).
 
+Three skills sit outside the stage pipeline and have no gate:
+`/research-ideation` drafts or revises `docs/research-brief.md`,
+`/research-organizer` checks the folder structure, the naming conventions,
+`README.md` and this file, and `/data-collector` plans, runs and logs a data
+extraction for the data engineer.
+
 Review gates are recorded in `reviews/`. A stage whose gate file does not
 carry `Status: APPROVED` blocks every downstream stage. Agents never
 approve a gate themselves.
+
+For the current status, run `/research-workflow status` or read the gate
+files in `reviews/`. This file carries no status text.
 
 ## Non-negotiable rules for every agent
 
@@ -97,6 +110,7 @@ approve a gate themselves.
 | `data/raw/` | untouched exports (Orbis, Revelio, BoardEx, dyad data) | data engineer |
 | `data/interviews/` | transcripts, consent notes, coding files | qualitative analyst |
 | `data/interim/`, `data/processed/` | matched entities, panel | data engineer |
+| `data/synthetic/`, `data/data-log.md` | simulated data with the schema of a real pull, for testing (never derived from licensed rows); one log entry per extraction with aggregated counts only. Both are created by `/data-collector` on its first run and may be committed | data engineer |
 | `code/R/` | numbered scripts, `functions/` helpers | data engineer, quant analyst |
 | `code/quarto/` | pilot feasibility report, analysis report | data engineer, quant analyst |
 | `manuscript/` | Quarto manuscript, sections, tables, figures, CSL | academic writer |
