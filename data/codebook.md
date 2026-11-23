@@ -146,6 +146,33 @@ Built by `code/R/wrds/09_build_matched_dataset.R` for the `core_main` IJVs, in `
 
 A position is a spell only if it covers at least one 30 June from the formation year (or its start, if later) to 2026; `n_reference_dates` counts them. Parent A is the parent with the larger current equity share, ties broken on country code. `formation_year` is the incorporation year (Orbis) or founding year (Capital IQ; 1990 where missing, flagged by `formation_year_missing`), so for many IJVs the first observed year is later than the venture's real start. Career histories of the spell users are in `data/raw/revelio-histories-full-2026-10-09/` and link on `user_id`. Function and seniority are Revelio's own codes; the mapping to the project's nine functions and levels is set at gate 5. Version 3 of the 2026-10-09 run: 7,460 IJVs, 17,015 parent rows, 4,973,926 spells for 3,760,920 people.
 
+## Staffing tabulations (2026-11-23)
+
+Feasibility counts from `code/R/wrds/11_staffing_tabulations.R` (PI instruction of 2026-11-23). Provisional definitions, not the Stage 6 measures; outputs in `data/interim/staffing-tabulations-<run>.md` and the folder of the same name.
+
+| Term | Definition |
+|---|---|
+| Hire | a person's first dated position at the matched JV entity, for people in the employee-spell table; stays that cover no 30 June are not counted |
+| Flow window | hires with a hire year from the formation year to 2026 |
+| Stock | person-years, one per person, IJV and 30 June |
+| Prior position | a position at another employer that started before the hire date and was ongoing or ended within `origin_window` years before it |
+| Parent-origin | any prior position in the window at an entity of a parent's Revelio family; the most recent such position gives the location and the parent. An entity in two parents' families goes to the parent with the larger equity share (216 IJVs have such entities) |
+| Independent | a prior position in the window, none of them in a parent family; the most recent one gives the location. Includes prior employers not mapped to a Revelio company |
+| Local, international | the prior position is in the IJV's host country, or in another country (Revelio country names converted to ISO 2) |
+| History not observed | no prior position in the window |
+| Host-country parent | a parent whose direct shareholder country equals the host country (`type_direct`); the owner label uses the Orbis GUO country and is missing for Capital IQ parents |
+| Labor market entrant | a hire with history not observed for whom the JV is the first recorded job and whose last education that ended by the year after joining ended at most `origin_window` (three) years before the hire year; split by place of that education (host country, abroad, not recorded) |
+| History unknown | a hire with history not observed who is not an entrant |
+| Unconsolidated headcount | Orbis `empl` from a record with consolidation code U1 or U2; one per IJV and closing year (twelve-month accounts first, then the latest closing date) |
+| Coverage ratio | Revelio staff at 30 June of the closing year divided by the unconsolidated Orbis headcount, from the formation year on |
+
+Two extracts from `code/R/wrds/12_wrds_headcount_education.R` (pulled 2026-11-23, licensed, local only) feed the last four rows.
+
+| File | Grain | Columns |
+|---|---|---|
+| `data/raw/orbis-jv-headcounts-2026-11-23.parquet` | one row per Orbis key-financials record with a headcount, for the Orbis-sourced IJVs of `core_main` (44,493 rows, 4,860 IJVs) | `jv_bvdid`, `conscode` (U1, U2 unconsolidated; C1, C2 consolidated; LF limited financials), `filing_type`, `closdate`, `closdate_year`, `nr_months`, `empl`, `orbis_library` (large, medium) |
+| `data/raw/revelio-education-full-2026-11-23/part-NNNN.parquet` | one row per education record of a hired person (7,613,952 rows, 3,302,616 people); one part per block of 5,000 user ids in ascending order, 753 parts | `user_id`, `education_number`, `startdate`, `enddate` (years, stored as 1 January), `degree`, `university_country`. University names and fields of study were not pulled |
+
 ## Revelio field assumptions
 
 Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).

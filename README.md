@@ -4,7 +4,9 @@ Empirical manuscript project (target: *Journal of International Business
 Studies*), run as an agent-based research workflow in Claude Code.
 
 - Research idea: `initial-research-idea.md`
-- Conventions for agents: `CLAUDE.md`
+- Research question and current statement of the idea (a proposal until
+  gate 4 is decided): `docs/research-brief.md`
+- Conventions for agents and the folder map: `CLAUDE.md`
 - Workflow stages, agents and gates: `docs/workflow.md`
 - Theory hierarchy and how each tier enters the paper: `docs/theory-framework.md`
 - Decision log and open questions: `docs/decisions.md`
@@ -34,6 +36,11 @@ Stages 1, 3, 4 and 5a have no prerequisites and can start now. Stage 1 needs
 nothing from you. Stage 3 needs the interview transcripts and the consent
 notes in `data/interviews/`. Stage 4 needs the Orbis and Revelio pilot
 exports described in `data/raw/extraction-spec-*.md`.
+
+Two skills sit outside the stage pipeline and have no gate:
+`/research-ideation` drafts or revises `docs/research-brief.md`, and
+`/research-organizer` checks the folder structure, the naming conventions,
+this README and `CLAUDE.md`.
 
 ## Local tooling
 
@@ -73,7 +80,8 @@ instead, for example `"C:/Program Files/R/R-4.6.1/bin/Rscript.exe"`.
 
    Restart R after editing. On Windows, run `path.expand("~")` in R to see
    which folder `~` means; the file belongs there. Your WRDS account needs read access to the Orbis
-   (`bvd_orbis_*`), Revelio (`revelio*`) and Capital IQ (`ciq*`) libraries.
+   (`bvd_orbis_*`), Revelio (`revelio*`), Capital IQ (`ciq*`) and BoardEx
+   (`boardex`) libraries.
 4. Know where the data goes. `data/raw`, `data/interim`, `data/processed` and
    `data/interviews` are gitignored. If the repository sits in Dropbox, the
    licensed exports sync to Dropbox too. Check that your Orbis, Revelio and
@@ -91,6 +99,9 @@ Rscript code/R/wrds/03_wrds_full_sample.R v3           # full-frame matching, sa
 Rscript code/R/wrds/07_manual_match_list.R v3          # worklist for manual matching
 Rscript code/R/wrds/08_triage_manual_candidates.R      # optional: agent triage of worklist rows (then rerun step 03)
 Rscript code/R/wrds/09_build_matched_dataset.R v3      # matched dataset: IJV, parent and employee-spell tables
+Rscript code/R/wrds/10_boardex_coverage.R v3           # BoardEx coverage of the matched IJVs
+Rscript code/R/wrds/12_wrds_headcount_education.R v3   # optional: annual Orbis headcounts and Revelio education records (about two hours)
+Rscript code/R/wrds/11_staffing_tabulations.R v3       # feasibility counts for the staffing frame (no WRDS connection; uses step 12 if present)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -105,6 +116,9 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `07_manual_match_list.R [version]` | step 03 | `data/interim/manual-match-list-*.csv` |
 | `08_triage_manual_candidates.R` | step 07 | `data/raw/manual/manual-matches-claude-*.csv` (gitignored), `data/interim/manual-triage-claude-*.csv` |
 | `09_build_matched_dataset.R [version]` | step 03 (and the history parts it downloads) | `data/processed/ijv-matched-*.csv`, `ijv-parents-*.csv`, `ijv-employee-spells-*.parquet`, `dataset-manifest-*.md` |
+| `10_boardex_coverage.R [version]` | step 09, WRDS | `data/interim/boardex-coverage-*.csv`, `boardex-coverage-summary-*.md`, BoardEx pulls cached in `data/raw/` |
+| `12_wrds_headcount_education.R [version] [orbis] [education]` | step 09, WRDS | `data/raw/orbis-jv-headcounts-*.parquet`, `data/raw/revelio-education-full-*/` (parquet parts), `data/interim/wrds-headcount-education-log-*.md` |
+| `11_staffing_tabulations.R [version]` | steps 09 and 10; step 12 for the entrant and annual-headcount tables | `data/interim/staffing-tabulations-*.md` and the csv tables in the folder of the same name |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 
@@ -112,6 +126,9 @@ The sample table has one row per IJV. The columns to start with are `tier`
 (how it was matched), `usable`, `core` (upper bound), `core_main`
 (recommended analysis sample), `strategic`, `route`, `source` and
 `admitted_by`. Definitions are in `data/codebook.md`.
+
+`code/R/02_build_panel.R` to `05_robustness.R` are the scripts of stages 6
+and 7. They are run by `/panel-build` and `/estimate` after gates 5 and 6.
 
 ### How the scripts behave
 
@@ -148,6 +165,26 @@ Manual match decisions go in `data/raw/manual/` and external deal lists in
 `data/raw/external/`. Formats, sources and access steps are in
 `docs/data-acquisition-guide.md`.
 
+## Data
+
+- Sources: Orbis and Capital IQ ownership data, Revelio Labs workforce data
+  and BoardEx, all through WRDS, and existing manager interviews.
+- Access: licensed to the institution and not shareable. Nothing under
+  `data/raw/`, `data/interim/`, `data/processed/` or `data/interviews/` is
+  committed, and no data are distributed with the code. Reproducing the
+  results needs your own WRDS subscription to these libraries; the scripts
+  then rebuild every dataset, table and figure.
+- Raw exports are in `data/raw/` and are never modified. Variables are
+  defined in `data/codebook.md`.
+
+## Status
+
+Run `/research-workflow status`, or read the gate files in `reviews/`.
+
 ## Team
 
 Arne Floh (PI), Alexander Mohr, Can Thanyi.
+
+## Citation
+
+To be added on publication.
