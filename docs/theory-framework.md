@@ -55,6 +55,18 @@ phase decides whether two summary scores suffice or whether a third
 | Environmental | dependence on host institutions, labor markets, customers, regulators; political sensitivity | `local_embeddedness` (H2, H4) |
 | Resource | dependence on parent technology, personnel, finance; access to parent resources | candidate third score, set at gate 3 |
 
+Update of 2026-11-24 (gates 4 and 2, `docs/decisions.md`): the hypotheses
+in the right-hand column above are those of the original research idea.
+The working set is now H1 to H4 of `docs/research-brief.md`:
+`coord_dependence` enters H1, H3 and H4, and `local_embeddedness` enters H2
+and H4. While the qualitative phase is set aside, both static scores come
+from O\*NET task measures at the occupation level, and the Brexit change
+score comes from a list of regulatory-facing occupations. A source and a
+measure for `coord_role` are still open, so the level part of H1 is
+exploratory. Resource dependence and bargaining power are treated as the
+rival account, not as a second theory. This update changes no tier of the
+hierarchy above.
+
 A shock is theoretically useful to the extent that it changes one or more
 of these contingency families by different amounts in different domains.
 

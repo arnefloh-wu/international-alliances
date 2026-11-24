@@ -23,6 +23,10 @@ knowledge of these works, not from a full-text reading in this run, and has
 to be confirmed at Stage 2. Works that are needed but not in the
 bibliography carry a `[CITE: ...]` marker. No Consensus search was run,
 because the search allowance is an open item in `docs/decisions.md`.
+Since 2026-11-24 the Stage 2 synthesis exists (`literature/synthesis/`,
+provisional, worked from abstracts). The evidence behind each hypothesis is
+in `theory-outline.md` and `concept-matrix.csv` there, and that synthesis
+replaces the readings in this brief where they differ.
 
 ## Core Question
 
@@ -100,10 +104,13 @@ level. No shock is named.
 depends on coordination with the parents' activities and on parent-specific
 knowledge, the larger its share of parent-origin hires (local and
 international together) relative to independent hires.
-Mechanism: a parent-origin hire carries the parent's routines, its tacit
-knowledge and personal ties into the parent organization, which lower the
-cost of coordinating interdependent tasks. A market hire has to build all
-three after entry.
+Mechanism: a domain that depends on coordination with the parents needs
+the parent's routines and parent-specific knowledge. A parent-origin hire
+brings both, which lowers the cost of coordinating interdependent tasks;
+a market hire has to acquire them after entry. (Revised at gate 2,
+2026-11-24: this step is a domain-level assumption, not an individual-level
+mechanism, and the earlier reference to personal ties is dropped;
+`docs/decisions.md`.)
 
 **H2 (geographic origin).** The more a function depends on host-country
 institutions, labor markets, customers and regulators, the larger its share
@@ -112,6 +119,11 @@ to international hires.
 Mechanism: locally recruited staff hold host-specific knowledge and
 relationships and are accepted by local stakeholders. H2 uses one dimension
 only. It is kept because H3 is defined on its outcome.
+Reading added at gate 2 (2026-11-24): at the level of the unit, greater
+distance between home and host raises parent-country staffing
+(`gaur2007institutional`, `gong2003subsidiary`). H2 is a claim about
+differences between functions inside one IJV-year, which IJV × year fixed
+effects separate from that unit-level pattern.
 
 **H3 (channel of localization; anchor hypothesis, chosen by the PI on
 2026-11-22).** Among locally recruited hires, the share with prior

@@ -166,3 +166,58 @@ All 95 distinct key-shaped tokens in `literature/synthesis/*.md` and `concept-ma
 - `literature/zotero/import-2026-11-24.ris`: the 19 new entries from sections 1 to 3, for manual Zotero import.
 - `literature/fulltext/` (gitignored): `jensen1992specific.pdf` (authors' version), `blinder2007how.pdf`, `homeoffice2020uks.pdf`.
 - Public files read in `data/raw/external/` (not modified): `ec-list-screening-mechanisms-2026-02-09.pdf`, `aspi-ccp-coercive-diplomacy-2020.pdf`.
+
+## 11. Gate 2 inclusions (2026-11-24)
+
+Applies decisions 7 and 8 of `docs/coauthor-notes/gate-2-decision-sheet-2026-11-24.qmd` (PI answer "Accept all", 2026-11-24). Run by the reference-manager. Zotero credentials are still absent, so no API step was taken. All DOIs were re-resolved on Crossref on 2026-11-24 (generic User-Agent, `curl --ssl-no-revoke`) and every record matched the verification tables.
+
+### 11.1 Entries added to `references.bib` (11)
+
+| Screening id | Key | Type | Evidence (2026-11-24) | Zotero item |
+|---|---|---|---|---|
+| CON-S1-06 | `andersson2002integration` | incollection | Routledge catalogue (re-opened: first published 2002, chapter by Andersson and Forsgren, editors Rod B. McNaughton and Milford B. Green); Texas A&M catalogue as logged in `verification-2026-11-24-s7-s8.md` (re-open returned HTTP 403) | NZTX3AZ7, pinned as `andersson2018integration` (see 11.4) |
+| CON-S5-03 | `atanassova2026sociopolitical` | article | Crossref 10.1108/cpoib-12-2025-0289 | JRJ96A97 |
+| CC-S1-16 | `bouquet2008managing` | article | Crossref 10.1177/0149206308316062 | CHMN62P9 |
+| CC-S3-20 | `chung2010trap` | article | Crossref 10.1287/orsc.1090.0489 | 4W4DC8XQ |
+| CON-S1-03 | `cocito2004subsidiaries` | techreport | RePEc record RePEc:ins:quaeco:qf04011 (re-opened) | RQ6DD3F8 |
+| CON-S6-10 | `cubrich2021examining` | article | Crossref 10.1016/j.chb.2021.106742 | V54G9EJS |
+| CC-S2-10 | `doz1980how` | article | HBR article page (re-opened: Yves Doz, C.K. Prahalad, March 1980) and OSTI 5424896 (re-opened: 58:2) | CICN2KGP |
+| CON-S6-09 | `gregoire2024mobilizing` | article | Crossref 10.5465/amj.2024.4002 | 9RI8EQ6K |
+| CON-S6-01 | `park2019global` | article | Crossref 10.1038/s41467-019-11380-w | GGZ839WS |
+| (section 4, entry 24) | `peterson1999occupational` | book (edited) | Crossref 10.1037/10313-000 (edited-book, APA, 1999, ISBN 1557985561) | none (new) |
+| CC-S2-05 | `prahalad1981approach` | article | ProQuest record (re-opened: Sloan Management Review 22(4), Summer 1981, first page 5) | 49E3HS6U |
+
+### 11.2 Fields left out (to confirm from a library copy)
+
+| Key | Field | Note |
+|---|---|---|
+| `doz1980how` | pages | Neither the HBR page nor OSTI gives pages; 149-157 appears in search summaries only |
+| `prahalad1981approach` | pages | First page 5 is confirmed (ProQuest) but the last page is not; `pages` left empty rather than "5", which would read as a one-page article. First page recorded in `note` |
+| `andersson2002integration` | pages | 2002 chapter pages not confirmed (343-365 in citing references only); the 2018 reissue pages (369-391) belong to a different version and were not used |
+| `atanassova2026sociopolitical` | volume, issue, pages | Online first 2026-09-07; Crossref pages 1-33 are online-first pagination. Year set to 2026; recheck the print-issue year before submission |
+
+### 11.3 Flags under decision 8
+
+Proceedings and working papers carry in `note` "no peer-reviewed version found 2026-11-24; not the sole support for a hypothesis (G2 decision 8)". A Crossref bibliographic search by title and author on 2026-11-24 found no journal version for any of them.
+
+| Key | Kind | Change |
+|---|---|---|
+| `cocito2004subsidiaries` | working paper (Insubria qf04011) | new entry, flagged |
+| `babina2023firm` | working paper (NBER w31325; screened as the SSRN version, CON-S6-05) | note extended |
+| `heiss2024structure` | AOM Proceedings abstract | note extended |
+| `lei2025playing` | AOM Proceedings abstract | note extended |
+| `tang2026strategic` | AOM Proceedings abstract | note extended |
+
+Not flagged (outside the five records decision 8 names): `firpo2011occupational` (IZA discussion paper with an SSRN DOI), `blinder2007how` (CEPS working paper) and `hanson2020chinese` (policy report). If the PI reads decision 8 as a general rule, these need the same check and flag.
+
+### 11.4 Keys
+
+All keys follow `auth.lower + year + shorttitle(1,1).lower`. Ten works already exist in Zotero with pinned keys; nine keep them. The exception is `andersson2002integration`: Zotero item NZTX3AZ7 is pinned as `andersson2018integration` and still describes the 2018 Routledge reissue. Under the PI rule on originals (2026-10-04) and decision 7, the 2002 Ashgate chapter is cited, so the key carries 2002, as with `prahalad2017approach` to `prahalad1981approach` on 2026-10-04. When Zotero is next edited, NZTX3AZ7 must be changed to the 2002 original and repinned; it must not be imported a second time. `handel2016onet` was moved before `hanson2020chinese` to restore key order (content unchanged).
+
+### 11.5 Screening sheet
+
+`literature/search/screening.csv`: `title_abstract_decision` and `reason` changed in 17 rows, all of which were `unsure`. Include (10): CC-S3-20, CC-S2-10, CC-S2-05, CC-S1-16, CON-S5-03, CON-S1-03, CON-S1-06, CON-S6-09, CON-S6-10, CON-S6-01. Exclude (7): CON-S2-04, CON-S2-07, CC-S1-17, CON-S5-10, CC-S5-05, CC-S5-08, CC-S5-09. Each `reason` starts with the sheet's code (`incl (x)`, `A_level`, `C_nonscholarly`, `E_offtopic`), names the bib key for includes, and ends "PI decision G2 2026-11-24". A cell-by-cell comparison with the previous file found no other cell changed; CRLF endings kept (546 lines). The stale row metadata of CON-S1-03 ("of Functions", J. van Oosten), CON-S1-06, CC-S2-05 and CC-S2-10 was not corrected, because only those two cells were in scope; the resolved work is named in `reason`.
+
+### 11.6 Zotero and counts
+
+`literature/zotero/import-2026-11-24-g2.ris` holds the 11 entries, each with "Extra (move to the Extra field after import): Citation Key: ...". Only `peterson1999occupational` is new to Zotero. The other ten records carry a second note naming the existing item; import them only to update tags, or skip them, so that no duplicates are created. `references.bib` now has 150 entries (139 + 11). Pandoc (`quarto pandoc -f biblatex -t csljson`) parses it into 150 items with no duplicate keys, and the keys are in order.

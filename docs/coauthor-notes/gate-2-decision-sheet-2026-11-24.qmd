@@ -1,0 +1,50 @@
+---
+title: "Gate 2: decision sheet"
+subtitle: "Literature synthesis (reviews/gate-2-synthesis.md)"
+date: 2026-11-24
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides. Sources: `reviews/gate-2-synthesis.md`, `literature/synthesis/`, `literature/search/targeted-followup-2026-11-24.md` and the verification tables in `literature/zotero/` (all read on 2026-11-24).
+
+**Where things stand.** Stage 2 ran on the provisional corpus approved at gate 1: 95 records, read from abstracts only. Since then:
+
+- 46 works have been verified and added, so `references.bib` holds 139 entries. Among them are the core works of structural contingency theory: Thompson, Galbraith, Donaldson, Child, Burns and Stalker, Woodward and Mintzberg.
+- A targeted agent search screened 353 further records.
+
+Three weaknesses remain:
+
+- The manual Web of Science, EBSCO and Google Scholar runs have not been done, so contingency theory (S7) and organizational design (S8) have no empirical studies in the corpus.
+- The specific steps of H3, the anchor hypothesis, have no direct source.
+- No full text has been read.
+
+**What approval unlocks.** Stage 5, the pre-analysis plan. Gates 4 and 5a are approved, and gate 3 is waived by the decision of 2026-11-24. Gate 2 is re-run when the manual exports arrive, as decided at gate 1.
+
+## Decisions
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 1 | Gate status | (a) Approved with changes, as a provisional synthesis. (b) Hold the gate until the manual runs are done | **(a).** The working hypotheses, the shock and the score source are fixed, and the plan does not depend on the empirical contingency studies that are missing. It does depend on decision 2. The gate stays provisional and is re-run when the manual exports arrive |
+| 2 | The search gap in S7, S8 and the H3 mechanism | (a) Run three of the new manual blocks before gate 5 is approved: S7-multiparent, S7-staffing and S3-local. Run the rest before stage 8. (b) Run all blocks before stage 5 starts. (c) Accept placeholders until stage 8 | **(a).** A published test of H3, or of contingency fit in a unit with two parents, would change the hypotheses or the claimed contribution. So these three blocks have to be run before the plan is fixed. The others (S7-adjust, S8-levels, S3-foreign, S4-source, S6-task, S9f, S9g, S9b2) feed the theory section and can wait. The strings and the run order are in `literature/search/search-strings.md` (2026-11-24) |
+| 3 | Resource dependence theory | (a) The rival account. (b) A complement to contingency theory | **(a), with an explicit check in the plan.** Bargaining at the IJV level is absorbed by the IJV × year fixed effects. Bargaining over single functions (each parent staffs what it contributed: `choi2004split`, `mohedanosuanes2021control`) is not absorbed. So the plan adds a test of whether a parent's industry matches the occupation group. The source is `pfeffer1978external`, now verified. This closes the open item of 2026-11-22 |
+| 4 | The O\*NET route against the function classifications found | (a) Keep O\*NET as the primary source, with any verified function-level ordering as a check of convergent validity. (b) Switch to a function classification from the literature | **(a).** No work in the corpus or in the follow-up search gives a numeric score per function or occupation that could be fixed before outcomes are seen. The best ordering of functions by integration need is Kim, Park and Prescott 2003 (`kim2003global`), which serves as the check. The gap between generic and parent-specific coordination is accepted and stated as a limitation. H3's boundary test (IJVs with and without a host-country parent) carries the parent-specific part |
+| 5 | Evidence basis | (a) Accept OpenAlex abstracts for this provisional gate, and retrieve full texts of the most exposed works before gate 5. (b) Require full texts now | **(a).** Before gate 5, retrieve full texts of the works that carry the most weight: `lawrence1967organization`, `prahalad1987multinational`, `geringer1989control`, `bartlett1989managing`, `choi2004split`, `kim2003global`, and the H3 candidates of the follow-up search. That is `missing-references.md`, section 10, plus the new candidates. The retrieval needs a person with library access |
+| 6 | Microfoundations flag | (a) State the step from "the domain needs parent-specific knowledge" to "a parent-origin hire supplies it" as a domain-level assumption. (b) Admit a narrowly scoped individual-level mechanism | **(a).** This is binding under `docs/theory-framework.md`. The H1 mechanism in the research brief is reworded: "personal ties" becomes the parent's routines and parent-specific knowledge that the hire carries |
+| 7 | Unsure records from gate 1 | Accept or change the reference agent's recommendations | **Accept.** Include 7: Chung and Beamish 2010; Doz and Prahalad 1980; Prahalad and Doz 1981; Bouquet and Birkinshaw 2008; Atanassova and Makhmadshoev 2026 (context only); Cocito et al. 2004; Andersson and Forsgren 2002. Exclude 7: CON-S2-04, CON-S2-07, CC-S1-17, CON-S5-10, CC-S5-05, CC-S5-08, CC-S5-09. Also include the three methods records (CON-S6-09, CON-S6-10, CON-S6-01, on the validity of LinkedIn data) and Peterson et al. 1999, the original O\*NET development report. All 11 then enter `references.bib` |
+| 8 | Proceedings and working papers (open since 2026-10-02) | (a) Admit them when no peer-reviewed version exists, flagged in the bib and never as the sole support for a hypothesis. (b) Exclude them | **(a).** This covers the three AOM proceedings, the SSRN paper and Cocito et al. 2004 |
+| 9 | Search protocol | (a) Version 1.2: a task-data stream (O\*NET and similar), the function-level question added to S2, and the 27 records marked `scope:` admitted only as support for the H3 mechanism (internal versus external hiring). (b) Leave the protocol unchanged and drop the 27 records | **(a).** The O\*NET route needs a stream of its own, and the hiring-source records are the only evidence for H3's cost step |
+| 10 | `coord_role` for hierarchical levels | (a) Carry the level part of H1 as exploratory in the plan, with Mintzberg 1979 as the candidate source, until a measure exists. (b) Drop the level hypotheses | **(a).** The level panel stays descriptive and exploratory. This also defuses the open inference problem for four levels |
+| 11 | Edits to earlier-stage files | Authorize the agent to apply the edits the gate file proposes | **Authorize:** (i) `docs/theory-framework.md`: the contingency table points to H1 to H4 of the brief and names O\*NET as the score source; the hierarchy itself is unchanged. (ii) `docs/research-brief.md`: the H1 wording (decision 6); H2 acknowledges that distance raises parent-country staffing at the unit level, with the within-IJV reading; the evidence note points to the synthesis. (iii) `literature/search/protocol.md` (decision 9). (iv) `docs/decisions.md`: Consensus was not available at stage 2. The `data/codebook.md` update waits for stage 5 or 6 |
+
+## Actions for the PI (not decisions)
+
+- **Zotero:** import `literature/zotero/import-2026-11-24.ris` and the other 27 new entries, or put `ZOTERO_API_KEY` and `ZOTERO_GROUP_ID` into `.Renviron` so that the agent can sync them. Until then, do not run the Better BibTeX auto-export over `references.bib`.
+- **Manual searches:** run the three blocks of decision 2 in Web of Science, EBSCO and Google Scholar, and drop the exports into `literature/search/exports/`.
+- **Library:** get the full texts for decision 5, and the JSTOR record for `downes2000knowledge`.
+- **For gate 5, not gate 2:** have a lawyer or the PI confirm the reading of the linked-entity rule for the UK intra-company route, and check the version of the sponsor guidance in force in 2021.
+
+## How to record the decision
+
+As at gates 4 and 5a: tell the agent which recommendations to accept or change. The agent records them under "PI notes" in the gate file and in `docs/decisions.md`, applies the authorized edits, and sets the Status line only on the PI's instruction.
