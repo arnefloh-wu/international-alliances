@@ -1,0 +1,50 @@
+---
+title: "Gate 4: decision sheet"
+subtitle: "Pilot feasibility and go/no-go (reviews/gate-4-pilot.md)"
+date: 2026-11-24
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides. All counts come from `reviews/gate-4-pilot.md` (read on 2026-11-24) and are for `core_main` unless stated otherwise. Decisions 2 and 6 were partly settled on 2026-10-09 (`docs/decisions.md`); the sheet shows only what is still open.
+
+**What approval unlocks.** Stage 5 (pre-analysis plan) needs decisions 1, 6 and 8, together with gate 5a. Decisions 2 and 3 are quick confirmations. Decisions 4, 5 and 7 are ongoing tasks that can be recorded as conditions, provided they are finished before the panel is built at stage 6.
+
+## Needed for stage 5
+
+| # | Decision | Options | Key numbers | Recommendation |
+|---|---|---|---|---|
+| 1 | Design | (a) Go for localization, drop cross-parent integration as a primary measure; (b) reject; (c) ask for changes | Staff from both parents: 0 IJVs in pilot 2, 1 in pilot 1. Parent-origin staff are 1.1% of person-years overall and 2.4% of hires where all parents are in Revelio | **(a)**, with H1 to H4 of `docs/research-brief.md` (staffing by geographic and organizational origin) as the working hypothesis set. Gate 5 fixes the final set. BoardEx is a supplement for senior levels only |
+| 6 | Sample | `core_main` (main) and `core` (upper bound); or `core` as main; or strategic only | `core_main` 7,460 IJVs (2,172 strategic); `core` 9,644; 7,354 without the agent's manual matches; threshold 20 employees (sensitivity at 10 and at 30) | **Confirm `core_main`** as main, `core` and the strategic subset as robustness, agent matches included, threshold 20. This replaces the upper-bound choice of 2026-10-09: the audits showed that the two excluded routes are mostly acquisitions and start-ups |
+| 8a | Sample for the organizational-origin hypotheses (H1, H3, H4) | IJVs with at least one parent in Revelio; with all parents in Revelio; all IJVs | 5,882 with at least one; 2,321 with all; 1,578 with none (share zero by construction) | **At least one parent in Revelio** as main, all parents as robustness |
+| 8b | Definition of local parent-origin hires | Any parent group's host-country units; or the host-country parent's group only | 31,121 hires against 23,190; the difference is 7,931 hires from host-country units of foreign parents | **Any parent group's host-country units.** H3's mechanism concerns a parent's host-country workforce, whichever parent owns it. Under the narrow definition, the H3 boundary test (no host-country parent) would be zero by construction. Narrow definition as robustness |
+| 8c | Labor market entrants | A category of their own; or independent hires by place of education | 467,895 hires (12.6% of all hires); 51.5% educated in the host country, 14.8% abroad, 33.7% not recorded | **A category of their own** in the main frame, so that "history not observed" shrinks to 17.6% of hires. As robustness, count entrants as independent local or international hires by place of education |
+| 8d | Revelio-to-Orbis coverage ratio | Control; sample restriction; robustness only | Unconsolidated headcounts for 3,912 IJVs, almost all from 2015 on; none for the 1,428 Capital IQ IJVs | **Robustness only**, from 2015 on. As a control it would halve the sample and drop every Capital IQ IJV |
+
+## Quick confirmations
+
+| # | Decision | Options | Key numbers | Recommendation |
+|---|---|---|---|---|
+| 2 | Frame rules | Already set on 2026-10-09: stakes of 10 to 90%, two to four parents, any year up to 2023, any status, Capital IQ as a second source, intra-group exclusion. Open: exclude listed JVs? | The audits found listed companies with blockholders (for example Ambuja Cements, Kolon Industries); the 10 to 20% stake rule mostly adds start-ups | **Confirm the rules.** Keep listed JVs, but flag them at stage 6 and drop them in a robustness check; also test the base rules through `admitted_by` |
+| 3 | Country basis | Direct shareholder country (current); or ultimate owner (GUO) country | 1,312 IJVs have host-country parents only at the direct level but foreign owners; Capital IQ parents (1,428 IJVs) have no owner country | **Direct shareholder** as main, because it exists for every IJV and locates the workforce a hire comes from. GUO country as robustness for the 6,032 Orbis-sourced IJVs |
+
+## Ongoing tasks, recorded as conditions
+
+| # | Decision | Status | Recommendation |
+|---|---|---|---|
+| 4 | Review tier and manual worklist | Agent triage of 2,186 rows: 212 positive decisions (about 95% correct in the audit of the first version), 1,510 rows left blank; priority 2 (1,847 larger strategic IJVs) untouched | **Count the strong website tier as accepted** (it is already in the sample). A research assistant spot-checks about 50 agent decisions and works priority 1 (688 blank) and priority 2. Finish before stage 6 |
+| 5 | SDC joint-ventures module | Not licensed; would give formation dates and dissolved JVs | **Ask the library.** Asking costs little, and the module is the only route out of the survivor frame |
+| 7 | Further enlargement | All WRDS routes have been run | **Order:** manual matching and review tier first, then SDC and an Orbis M&A export. Do not run the full small-company library |
+
+## Also open for gate 4 in `docs/decisions.md`
+
+- The BoardEx pull of 2026-10-10 has no dated go-ahead in the log. A line confirming it is enough.
+
+## Not a gate 4 decision, but next
+
+Every draft hypothesis needs contingency scores per function and level (`coord_dependence`, `local_embeddedness`, `coord_role`). These were to come from the interviews, which are now set aside. The source has to be fixed in the pre-analysis plan (gate 5). It must be citable, and it must not be read off the staffing tabulations.
+
+## How to record the decision
+
+In `reviews/gate-4-pilot.md`, set `Status:` to `APPROVED` or `APPROVED WITH CHANGES` and fill in `Approved by:`. Write any deviations from the recommendations, and the conditions for decisions 4, 5 and 7, under "PI notes". The orchestrator then logs the decisions in `docs/decisions.md`.

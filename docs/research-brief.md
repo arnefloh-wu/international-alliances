@@ -2,7 +2,13 @@
 
 Date: 2026-11-22. Version 0.1, produced by `/research-ideation`.
 Feasibility counts added on 2026-11-23 (see "Feasibility Dependencies").
-Status: draft for the PI and co-authors; nothing here is decided.
+Status: draft for the PI and co-authors. Since gate 4 (approved with
+changes, 2026-11-24), H1 to H4 are the working hypothesis set for the
+pre-analysis plan, and decision 8 of that gate settles the sample, the
+definition of local parent-origin hires and the treatment of labor market
+entrants (`docs/decisions.md`). Gate 5 fixes the final set; the rest of
+this brief is unchanged and some passages below still describe gate 4 as
+pending.
 
 Assumes: gate 1 approved; gates 4 and 5a pending; gates 2, 3 and 5 not
 reached. No literature synthesis (Stage 2) and no interview recoding

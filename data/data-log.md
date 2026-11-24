@@ -69,7 +69,7 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 
 ## Collection Event: 2026-10-10 (BoardEx)
 - Purpose: BoardEx coverage of the main-sample IJVs and their parents (feasibility question Q5, gate 4)
-- PI go-ahead: no dated row in `docs/decisions.md`; the check is reported in `reviews/gate-4-pilot.md` and was merged with pull request 21. To be confirmed by the PI
+- PI go-ahead: confirmed after the fact on 2026-11-24 (`docs/decisions.md`); the check is reported in `reviews/gate-4-pilot.md` and was merged with pull request 21
 - Source: WRDS `boardex` (company profiles, director and executive employment profiles, four regional files)
 - Script: `code/R/wrds/10_boardex_coverage.R [version]`
 - Frame and sample: frame v3, `core_main` (7,460 IJVs) and their parents

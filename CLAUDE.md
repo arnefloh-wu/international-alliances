@@ -17,8 +17,9 @@ internally differentiated configuration that varies across functions and
 hierarchical levels and is selectively reconfigured by environmental change.
 
 Then read `docs/research-brief.md` (draft of 2026-11-22): the idea as revised
-after the pilot, staffing by geographic and organizational origin. It is a
-proposal until the PI decides gate 4.
+after the pilot, staffing by geographic and organizational origin. Since
+gate 4 its hypotheses H1 to H4 are the working set for the pre-analysis
+plan; gate 5 fixes the final set.
 
 Theory hierarchy (decided 2026-10-02, details in `docs/theory-framework.md`):
 structural contingency theory is the main theory. The differentiated

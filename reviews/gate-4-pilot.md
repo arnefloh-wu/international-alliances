@@ -1,7 +1,7 @@
 # Gate 4: Pilot feasibility and go/no-go
 
-Status: PENDING
-Approved by:
+Status: APPROVED WITH CHANGES
+Approved by: Arne Floh, 2026-11-24, in chat ("Accept all" on the decision sheet, then "Yes, set it"); line set by the agent on the PI's instruction
 Stage: 4 Pilot feasibility
 Agent: data-engineer (run by the orchestrator in the PI's local session, WRDS access)
 Date produced: 2026-10-08 (pilot 1 and, at the PI's request, pilot 2 on large JVs); updated 2026-10-09 with the full-frame runs (frames v1 to v3)
@@ -380,4 +380,14 @@ Localization can. Function and seniority cells survive at the baseline threshold
 
 ## PI notes (filled in by the PI; applied by the orchestrator if status is APPROVED WITH CHANGES)
 
-- 
+Recorded by the agent on 2026-11-24 from the PI's answer "Accept all" to the decision sheet `docs/coauthor-notes/gate-4-decision-sheet-2026-11-24.qmd`. The decisions are logged in `docs/decisions.md` (2026-11-24). The Status line above is set by the PI.
+
+- Decision 1: go for localization; cross-parent integration dropped as a primary measure. H1 to H4 of `docs/research-brief.md` are the working hypothesis set; gate 5 fixes the final set. BoardEx is a supplement for senior levels only.
+- Decision 2: the frame rules of 2026-10-09 are confirmed. Listed JVs stay in, are flagged at stage 6 and dropped in a robustness check.
+- Decision 3: direct shareholder country; ultimate owner country as a robustness check for the Orbis-sourced IJVs.
+- Decision 4 (condition before stage 6): the strong website tier counts as accepted. A research assistant spot-checks about 50 agent decisions and works through priorities 1 and 2 of the manual worklist.
+- Decision 5 (condition): ask the library about the SDC joint-ventures module.
+- Decision 6: `core_main` (7,460; 2,172 strategic) is the analysis sample; `core` and the strategic subset are robustness samples; agent matches included; threshold 20 employees.
+- Decision 7: enlargement order is manual matching and review tier, then SDC and Orbis M&A; the full small-company library is not run.
+- Decision 8: (a) at least one parent in Revelio, all parents as robustness; (b) local parent-origin from any parent group's host-country units, the host-country parent's group as robustness; (c) labor market entrants as a category of their own; (d) coverage ratio in robustness checks only, from 2015 on.
+- The BoardEx pull of 2026-10-10 is confirmed after the fact.
