@@ -14,6 +14,12 @@ data/interviews/*
 !data/raw/extraction-spec-*.md
 !data/interviews/README.md
 
+# Bibliographic database exports (EBSCO, Web of Science, Scopus). They carry
+# publisher abstracts and the repository is public. Screening decisions are
+# kept in literature/search/screening.csv.
+literature/search/exports/*
+!literature/search/exports/.gitkeep
+
 # R and Quarto build artefacts
 .Rproj.user/
 .Rhistory

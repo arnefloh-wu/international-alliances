@@ -261,3 +261,96 @@ Per stream (unique new records).
 - Q08 (exact phrases for two-foreign-parent JVs) returned noise; Q09 found the relevant records. Q26 (WebSearch) returned only company pages.
 - Abstracts were missing for some records (OpenAlex does not return abstracts for some publishers); those were screened on title and outlet and marked unsure where the title suggested relevance.
 - No backward or forward citation chase was run in this increment.
+
+## 2026-11-24 EBSCO run: S3-local, S7-multiparent, S7-staffing (protocol v1.2, priority 1)
+
+Appended 2026-11-24 by the literature-searcher. Earlier sections and counts above are unchanged. This increment ingests the PI's EBSCO exports for the three blocks that protocol v1.2 ("Priorities of the manual runs", item 1) requires before gate 5. Only EBSCO was run for this increment. Memo for the PI: `literature/search/ebsco-run-2026-11-24.md`.
+
+### Sources and access
+
+- Database: EBSCO Business Source (the RIS `DB` field reads "Business Source Premier" for all 152 records), run manually by the PI on 2026-11-24 and exported as RIS.
+- Strings: the EBSCO strings of `search-strings.md`, section "2026-11-24 targeted follow-up", reproduced verbatim below. The exports do not record the query or the limiters, so "as run" means "as defined in `search-strings.md`"; the agent did not see the EBSCO session.
+- Limiters: the protocol specifies 1985 to present and Scholarly (Peer Reviewed) Journals. The exports contain 22 records typed Periodical, Newspaper or Trade Publication, 27 conference proceedings and one working paper, and S7-staffing contains 5 records from 1975 to 1982. The peer-reviewed limiter therefore appears not to have been applied to S3-local and S7-staffing (both contain periodicals), and is uncertain for S7-multiparent (one conference-proceedings teaching case); the date limiter appears not to have been applied to S7-staffing. These records were screened like the others; non-scholarly items are excluded as `C_nonscholarly`.
+- Parsing and deduplication: `literature/search/tools/ingest_ebsco_ris.py` (Python standard library). Deduplication within the run and against all 545 existing rows of `screening.csv`, first on DOI (case-insensitive, `https://doi.org/` prefix removed), then on normalized title plus year. A fuzzy title check (ratio above 0.85) against the existing sheet found no further matches.
+- Block check: each file was tested against an approximation of the three EBSCO strings on title, abstract and subject terms. S3-local 5 of 5 records match its string and none of the others; S7-multiparent 13 of 15 (the other two carry the matching term only in a subject heading); S7-staffing 88 of 132 match fully, and all 132 contain a contingency or misfit term in title or abstract. The remaining 44 lack the staffing terms of the string in title, abstract and keywords (three contain only inflected forms such as "hired" or "staff") and carry subject headings such as "Employees" or "Employee selection", which points to EBSCO's equivalent-subject expansion of `hiring` and `recruit*`. No file matches more than one block.
+
+### Files
+
+| Original file name (as exported by EBSCO) | Block | Renamed to | Records |
+|---|---|---|---|
+| `498c707e-b3e0-4b7d-ace1-130dc5448e55.ris` | S3-local | `exports/ebsco-S3local-2026-11-24.ris` | 5 |
+| `9654abb4-f2f6-479b-8192-2dc9d5eae14b.ris` | S7-multiparent | `exports/ebsco-S7multiparent-2026-11-24.ris` | 15 |
+| `7eb29be6-6da3-4e5b-8a79-40f20577fa1f.ris` | S7-staffing | `exports/ebsco-S7staffing-2026-11-24.ris` | 132 |
+
+The files were renamed only; SHA-256 checksums before and after renaming are identical.
+
+### Query log
+
+| # | Date | Database | Block | String (exact, as defined in `search-strings.md`) | Fields and limiters specified | Records exported |
+|---|---|---|---|---|---|---|
+| E01 | 2026-11-24 | EBSCO Business Source | S3-local | `(TI("joint venture*" OR IJV) OR AB("joint venture*" OR IJV)) AND AB("local partner*" OR "local parent*" OR "host partner*" OR "domestic partner*") AND AB(staffing OR secondment OR seconded OR "personnel transfer*" OR "top management team*" OR "human resource*" OR recruit*)` | TI, AB as in string; 1985 to present; Scholarly (Peer Reviewed) Journals (not applied, see above) | 5 |
+| E02 | 2026-11-24 | EBSCO Business Source | S7-multiparent | `(TI("joint venture*" OR "multiple parent*" OR "shared ownership" OR "multiple principal*") OR AB("joint venture*" OR "multiple parent*" OR "shared ownership" OR "multiple principal*")) AND AB("contingency theory" OR "structural contingency" OR "contingency approach" OR "organi?ational fit" OR misfit OR "information processing") AND (structure* OR design OR control OR staffing)` | TI, AB as in string, last group in default fields; 1985 to present; Scholarly (Peer Reviewed) Journals | 15 |
+| E03 | 2026-11-24 | EBSCO Business Source | S7-staffing | `(TI("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR misfit) OR AB("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR misfit)) AND (staffing OR "workforce composition" OR expatriat* OR "host-country national*" OR recruit* OR hiring)` | TI, AB as in string, last group in default fields; 1985 to present (not applied); Scholarly (Peer Reviewed) Journals (not applied) | 132 |
+| W01 | 2026-11-24 | WebSearch | publication-type check for EB-S3-04 | `Li Schotter "first mover" survival international joint ventures legitimacy general manager staffing Japanese` | n/a | no later journal version found; nothing added |
+| W02 | 2026-11-24 | WebSearch | publication-type check for EB-S7-89 | `Orewa nursing homes Patient Driven Payment Model staffing intensity financial performance contingency theory` | n/a | points to a possible later journal article (https://jhmhp.amegroups.org/article/view/9047), metadata not verified; noted on EB-S7-89; nothing added |
+
+W01 and W02 are checks under the publication-type rule of protocol v1.2, not searches; they added no records. Crossref and Google Scholar were not checked.
+
+### Duplicates
+
+| Block | Duplicates of existing rows (existing id, match) | Duplicates within the run |
+|---|---|---|
+| S3-local | 1: OA-S3-44 (DOI) | 0 |
+| S7-multiparent | 6: OA-S7-03, OA-S7-16, OA-S7-37, OA-S7-45, OA-S7-48, OA-S7-50 (all DOI) | 0 |
+| S7-staffing | 5: OA-S7-51, OA-S7-53, OA-S7-64 (DOI); OA-S7-54, OA-S7-63 (title and year; the RIS DOIs of these two carry stray `<n>` markup) | 2: records 40 and 75 repeat records 39 and 74 (two trade-press items) |
+| Total | 12 | 2 |
+
+Duplicates got no row in `screening.csv`. One further record, EB-S7-88 (AOM Proceedings 2020), was identified at screening as the conference version of the journal article EB-S7-15 (same authors, same question). It has a row and is excluded as `F_duplicate` under the publication-type rule.
+
+### PRISMA flow, 2026-11-24 EBSCO increment (title and abstract stage)
+
+| Step | n | Notes |
+|---|---|---|
+| Records identified, EBSCO S3-local (E01) | 5 | |
+| Records identified, EBSCO S7-multiparent (E02) | 15 | |
+| Records identified, EBSCO S7-staffing (E03) | 132 | |
+| Records identified, total | 152 | |
+| Duplicates removed before screening | 14 | 12 against existing rows, 2 within the run |
+| Records screened (rows added to `screening.csv`) | 138 | ids EB-S3-01 to EB-S3-04, EB-S7-01 to EB-S7-134 |
+| Excluded at title and abstract | 120 | E_offtopic 94, C_nonscholarly 21, D_language 2, B_formation 2, F_duplicate 1 |
+| Unsure, to full text | 8 | 3 of them `scope:` (hiring-source support only) |
+| Include, to full text | 10 | |
+| Kept for full-text screening (include plus unsure) | 18 | `full_text_decision = pending` |
+
+Per block (unique records screened).
+
+| Block | Stream | Exported | Duplicates | Screened | Include | Unsure | Exclude | Exclusion reasons |
+|---|---|---|---|---|---|---|---|---|
+| S3-local | S3 | 5 | 1 | 4 | 2 | 0 | 2 | D_language 1, C_nonscholarly 1 |
+| S7-multiparent | S7 | 15 | 6 | 9 | 4 | 1 | 4 | B_formation 2, E_offtopic 1, C_nonscholarly 1 |
+| S7-staffing | S7 | 132 | 7 | 125 | 4 | 7 | 114 | E_offtopic 93, C_nonscholarly 19, D_language 1, F_duplicate 1 |
+| Total | | 152 | 14 | 138 | 10 | 8 | 120 | |
+
+### Screening conventions used in this increment
+
+- Protocol v1.2. Stream follows the block name: S3-local hits are S3, both S7 blocks are S7. The block is named in `notes`.
+- Reasons follow the sheet's codes and the conventions of the 2026-11-24 follow-up: `incl (x)` for include, `incl (x)?` for unsure, `scope:` for hiring-source records under the mechanism-support rule, and code plus a short phrase for exclusions.
+- Generic uses of a contingency approach in micro HRM, leadership, marketing or health-services research were excluded as `E_offtopic`, as in the earlier increment (for example OA-S7-61, OA-S7-64). Records that test contingency fit with organizational structure as the fitted variable were kept as unsure under criterion (e).
+- EB-S3-01 (in Japanese, English abstract) is excluded under exclusion criterion (d) although its abstract concerns localization of human resources and JV partnering in foreign subsidiaries in Japan; the note says so, and the PI may waive the language rule.
+- Metadata (title, authors, year, outlet, DOI) are taken from the RIS only. DOIs are as given in the RIS and unverified. Titles are HTML-unescaped; the EBSCO title of EB-S3-01 is truncated in the export.
+
+### Limits
+
+- One database only. The S3-local string returned 5 records, far fewer than the OpenAlex S3 queries of the same day (75 unique S3 records); its recall is low because all three concept groups are restricted to the abstract and the local-partner group admits four phrases only. A null result from this block is weak evidence.
+- The limiters were not applied as specified (see "Sources and access"), which adds non-scholarly noise but does not reduce recall.
+- No citation chase and no Consensus search in this increment (excluded by the run brief).
+
+### Second screening and publication-type check (added by the orchestrator, 2026-11-24)
+
+Two further agents screened the S7-staffing export independently in halves (records 1 to 66 and 67 to 132), without access to the first decisions (minor exposure noted in their reports: the first decisions for records 1 to 6 and a few obvious trade items in 64 to 80 were briefly visible). Files: `tools/screen-S7staffing-part1-second.csv`, `tools/screen-S7staffing-part2-second.csv`, with their scripts. Agreement with the first screening on content: 66 of 66 (records 1 to 66; the two coded differences are duplicate handling) and 61 of 66 (records 67 to 132). Three of the five disagreements in 67 to 132 (EB-S7S-072, -102, -112) turn on whether criterion (e) admits domestic tests of contingency theory or only work on foreign units and IJVs; one (-071) is duplicate handling, one (-124, a biography of Joan Woodward) is background. The first decisions stand in `screening.csv` until the PI settles the scope of criterion (e). No record was flagged close to H3 except EB-S7-22 (Georgopoulos et al. 2024), which is already included.
+
+| Check | Date | Source | Query | Result |
+|---|---|---|---|---|
+| W03 publication-type check | 2026-11-24 | WebSearch (second screener) | journal version of OA-S7-63 (Zinn et al., AOM Proceedings 2007) | Zinn, Feng, Mor, Intrator & Grabowski 2008, Health Care Management Review 33(2), 113-123, DOI 10.1097/01.HMR.0000304506.12556.52 (from search results; not verified on Crossref). OA-S7-63 recoded to `F_duplicate`; the journal article added as WS-S7-01 (unsure, criterion (e) scope) |
+
+The novelty check of the three blocks is `ebsco-novelty-check-2026-11-24.md` (literature-synthesizer). It supersedes task 5 of `ebsco-run-2026-11-24.md` where the two differ.

@@ -319,7 +319,9 @@ document types Article and Review, categories Business and Management
 present, Scholarly (Peer Reviewed) Journals; Google Scholar via Publish or
 Perish, first 200 results, no field codes. Journal list: screening priority
 only, as in the protocol. None of these strings has been run in WoS, EBSCO or
-Google Scholar (no agent access). The agent-run OpenAlex and WebSearch
+Google Scholar (no agent access). (Update 2026-11-24: EBSCO was run by the PI for
+S3-local, S7-multiparent and S7-staffing; see the Run line at the end of this
+section.) The agent-run OpenAlex and WebSearch
 queries of the same day are logged verbatim in `search-log.md`, section
 "2026-11-24 targeted follow-up". The Consensus connector was not available
 in the session (no Consensus tool exposed), so no Consensus query was run.
@@ -496,7 +498,7 @@ S9b2 Google Scholar
 "investment screening" OR CFIUS "mitigation agreement" foreign affiliates operations staffing governance
 ```
 
-Run: [not run] | Records: WoS [ ] EBSCO [ ] GS [ ]. Export file names follow "Export instructions for manual runs", with the block ID in place of the stream number (for example `exports/wos-S7multiparent-<date>.ris`).
+Run: EBSCO Business Source run by the PI on 2026-11-24 for S3-local, S7-multiparent and S7-staffing (EBSCO strings above), ingested the same day (`search-log.md`, "2026-11-24 EBSCO run"); the other blocks of this section are not run in any database. Records: S3-local EBSCO 5, S7-multiparent EBSCO 15, S7-staffing EBSCO 132; WoS [ ] GS [ ]. Exports: `exports/ebsco-S3local-2026-11-24.ris`, `exports/ebsco-S7multiparent-2026-11-24.ris`, `exports/ebsco-S7staffing-2026-11-24.ris`. The exports contain periodicals, newspapers and trade items, and S7-staffing contains records from before 1985, so the Scholarly (Peer Reviewed) and date limiters appear not to have been applied as specified. Export file names follow "Export instructions for manual runs", with the block ID in place of the stream number (for example `exports/wos-S7multiparent-<date>.ris`).
 
 ### Proposed priority for the manual runs (pending PI agreement)
 
