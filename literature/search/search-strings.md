@@ -301,3 +301,207 @@ Consensus does not return citing or cited-by lists. The chase queries therefore 
 | EBSCO Business Source | S7 (core, IB), S8, S9a to S9e | not yet run |
 | Google Scholar (Publish or Perish, max 200 per string) | S1 to S6, both variants where two are listed | not yet run |
 | Google Scholar (Publish or Perish, max 200 per string) | S7 to S9, variants as listed | not yet run |
+
+## 2026-11-24 targeted follow-up
+
+Added 2026-11-24 by the literature-searcher after the Stage 2 synthesis
+(`literature/synthesis/missing-references.md`, `gap-statement.md`). The
+strings above are kept unchanged. This section (a) reviews whether the S7,
+S8 and S9 strings of 2026-10-02 still fit the revised idea in
+`docs/research-brief.md` (staffing by geographic x organizational origin;
+H1 to H4 stated as contingency hypotheses; focal shock S13, Brexit and the
+end of UK-EU free movement; fallback S06, investment screening; contingency
+scores from O\*NET task measures) and (b) proposes revised and added strings
+for the manual runs. Fields, date range and filters follow the protocol
+table unless stated: Web of Science Core Collection, `TS=`, 1985 to present,
+document types Article and Review, categories Business and Management
+(exceptions marked per block); EBSCO Business Source, `TI`/`AB`/`SU`, 1985 to
+present, Scholarly (Peer Reviewed) Journals; Google Scholar via Publish or
+Perish, first 200 results, no field codes. Journal list: screening priority
+only, as in the protocol. None of these strings has been run in WoS, EBSCO or
+Google Scholar (no agent access). The agent-run OpenAlex and WebSearch
+queries of the same day are logged verbatim in `search-log.md`, section
+"2026-11-24 targeted follow-up". The Consensus connector was not available
+in the session (no Consensus tool exposed), so no Consensus query was run.
+
+### Review of the 2026-10-02 S7, S8 and S9 strings
+
+| Block | Still fits? | Problem against the revised idea | Action |
+|---|---|---|---|
+| S7-core | Partly | Retrieves contingency theory in general, but nothing ties fit to personnel composition or staffing, which is the observed structure in H1 to H4; "structural adjustment" is not combined with misfit or change. | Keep; add S7-staffing and S7-adjust |
+| S7-IB | Partly | Combines contingency with IJV or alliance, but not with the two-parent (multiple principal, shared ownership) condition on which tension 2 of the gap statement rests. | Keep; add S7-multiparent |
+| S8 | Yes for decision rights and control, weak for levels | `coord_role` (senior levels coordinate, lower levels operate) needs hierarchical-level terms combined with coordination, not with alliances only. | Keep; add S8-levels |
+| S9a sanctions, S9c export controls, S9e bilateral relations | Context only | No longer focal or fallback shocks. | Keep unchanged, lowest priority |
+| S9b screening | Partly | Retrieves screening and acquisitions, but the fallback S06 needs effects on the operations, staffing and governance of established foreign affiliates and JVs (mitigation conditions). | Keep; add S9b2 |
+| S9d mobility | No for S13 | Generic visa and travel restrictions; no Brexit, free movement, EU nationals or points-based terms, so the focal shock is not retrieved. | Keep; add S9f (Brexit and firm organization) and S9g (Brexit and labor mobility) |
+| none | Missing | H3 and its boundary condition need the local parent as staff supplier, two-foreign-parent IJVs and the internal-versus-market hiring logic; the O\*NET route needs task data as contingency measures. No string covers these. | Add S3-local, S3-foreign, S4-source, S6-task |
+
+### Revised and added strings
+
+S7-staffing (T1 x T3: contingency theory with staffing or workforce composition as the structural outcome; requests 9 and 22). Web of Science
+```
+TS=(("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR "organi?ational fit" OR misfit) AND (staffing OR "workforce composition" OR "personnel composition" OR "employee composition" OR expatriat* OR "parent-country national*" OR "host-country national*" OR recruit* OR hiring))
+```
+S7-staffing EBSCO
+```
+(TI("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR misfit) OR AB("contingency theory" OR "structural contingency" OR "contingency approach" OR "contingency perspective" OR misfit)) AND (staffing OR "workforce composition" OR expatriat* OR "host-country national*" OR recruit* OR hiring)
+```
+S7-staffing Google Scholar (variants)
+```
+"contingency theory" staffing "workforce composition" subsidiary OR "joint venture"
+"contingency approach" expatriate OR "host country nationals" staffing multinational
+```
+
+S7-multiparent (T1 x S3: fit and misfit in units with more than one parent; request 10). Web of Science
+```
+TS=(("joint venture*" OR "shared ownership" OR "multiple parent*" OR "two parent*" OR "dual parent*" OR "multiple principal*" OR "hybrid organi?ation*") AND ("contingency theory" OR "structural contingency" OR "contingency approach" OR "organi?ational fit" OR "structural fit" OR misfit OR "information processing" OR "differentiation and integration") AND (structure* OR design OR control OR staffing OR coordination))
+```
+S7-multiparent EBSCO
+```
+(TI("joint venture*" OR "multiple parent*" OR "shared ownership" OR "multiple principal*") OR AB("joint venture*" OR "multiple parent*" OR "shared ownership" OR "multiple principal*")) AND AB("contingency theory" OR "structural contingency" OR "contingency approach" OR "organi?ational fit" OR misfit OR "information processing") AND (structure* OR design OR control OR staffing)
+```
+S7-multiparent Google Scholar (variants)
+```
+"joint venture" "contingency theory" fit misfit parents structure control
+"multiple parents" OR "two parents" "joint venture" "organizational design" fit
+```
+
+S7-adjust (T1: adjustment to regain fit after a contingency change; multiple and conflicting contingencies; tension 1). Web of Science
+```
+TS=(("structural adjustment" OR "regain* fit" OR SARFIT OR "contingency change*" OR "multiple contingenc*" OR "conflicting contingenc*" OR misfit) AND ("contingency theory" OR "structural contingency" OR "organi?ational structure") AND (environment* OR change OR adapt*))
+```
+S7-adjust EBSCO
+```
+(TI("structural adjustment" OR "regain fit" OR SARFIT OR "multiple contingenc*" OR misfit) OR AB("structural adjustment" OR "regain fit" OR SARFIT OR "multiple contingenc*" OR misfit)) AND ("contingency theory" OR "structural contingency")
+```
+S7-adjust Google Scholar
+```
+"structural contingency theory" misfit "structural adjustment" regain fit environmental change
+```
+
+S8-levels (T3: coordination responsibility by hierarchical level; request 11). Web of Science
+```
+TS=(("hierarchical level*" OR "management level*" OR "organi?ational level*" OR "middle manager*" OR "top manag*" OR "senior manag*" OR frontline OR "lower level*") AND (coordination OR "boundary spanning" OR "decision right*" OR "decision authority" OR integration OR "lateral linkage*") AND (subsidiar* OR "joint venture*" OR alliance* OR multinational* OR "organi?ational design"))
+```
+S8-levels EBSCO
+```
+(TI("hierarchical level*" OR "management level*" OR "middle manager*" OR "boundary spanning") OR AB("hierarchical level*" OR "management level*" OR "middle manager*" OR "boundary spanning")) AND (coordination OR "decision right*" OR integration) AND (subsidiar* OR "joint venture*" OR alliance* OR multinational*)
+```
+S8-levels Google Scholar
+```
+"hierarchical levels" coordination "boundary spanning" "joint venture" OR alliance OR subsidiary managers
+```
+
+S3-local (T3: the local parent as supplier of host-embedded staff; IJV staffing from a parent's workforce; seconded staff; requests 18 and 45). Web of Science
+```
+TS=(("international joint venture*" OR IJV* OR "joint venture*") AND ("local partner*" OR "local parent*" OR "host partner*" OR "host-country partner*" OR "domestic partner*" OR "parent firm*" OR "parent compan*") AND (staffing OR seconded OR secondment OR "transferred employee*" OR "assigned manager*" OR "personnel transfer*" OR "staff transfer*" OR "top management team*" OR "human resource*" OR recruit*))
+```
+S3-local EBSCO
+```
+(TI("joint venture*" OR IJV) OR AB("joint venture*" OR IJV)) AND AB("local partner*" OR "local parent*" OR "host partner*" OR "domestic partner*") AND AB(staffing OR secondment OR seconded OR "personnel transfer*" OR "top management team*" OR "human resource*" OR recruit*)
+```
+S3-local Google Scholar (variants)
+```
+"international joint venture" "local partner" staffing seconded managers employees
+"joint venture" "local parent" employees transferred OR seconded human resources
+```
+
+S3-foreign (T3: IJVs formed by two foreign parents; boundary condition of H3; request 20). Web of Science (no category filter; the terms are rare)
+```
+TS=(("joint venture*" OR IJV*) AND ("third-country partner*" OR "third country partner*" OR "third-country joint venture*" OR trinational OR "tri-national" OR "foreign-foreign" OR "two foreign partner*" OR "two foreign parent*" OR "same home country" OR "non-conventional ownership" OR "without a local partner" OR "no local partner"))
+```
+S3-foreign EBSCO
+```
+(TI("joint venture*" OR IJV) OR AB("joint venture*" OR IJV)) AND AB("third-country partner*" OR "third country partner*" OR trinational OR "two foreign partner*" OR "same home country" OR "non-conventional ownership" OR "no local partner")
+```
+S3-foreign Google Scholar (variants)
+```
+"international joint venture" "third-country" partner OR partners ownership staffing
+"joint ventures" "non-conventional ownership structures" OR "same home country" partners
+```
+
+S4-source (T3: recruitment source choice, internal or affiliated labor markets versus the open market; host-specific human capital; hiring flows as the adjustment margin; requests 19, 21 and 22). Web of Science (categories Business, Management, Economics, Industrial Relations and Labor)
+```
+TS=(("internal labo?r market*" OR "internal hiring" OR "external hiring" OR "external hire*" OR "internal mobility" OR "make or buy" OR "intra-group mobility" OR "recruitment source*") AND (subsidiar* OR affiliate* OR "business group*" OR multinational* OR "joint venture*" OR "corporate group*"))
+```
+S4-source EBSCO
+```
+(TI("internal labor market*" OR "internal labour market*" OR "external hiring" OR "external hire*" OR "internal mobility" OR "recruitment source*") OR AB("internal labor market*" OR "internal labour market*" OR "external hiring" OR "external hire*" OR "recruitment source*")) AND (subsidiar* OR affiliate* OR "business group*" OR multinational* OR "joint venture*")
+```
+S4-source Google Scholar (variants)
+```
+"internal labor markets" "business groups" affiliates hiring shocks
+"external hiring" "internal mobility" subsidiary OR multinational OR "joint venture"
+"host country" "local hires" "firm-specific" OR "location-specific" human capital subsidiary
+```
+
+S6-task (Methods: occupational task data such as O\*NET used as contingency, interdependence or external-contact measures, and O\*NET used outside the US; requests 25 to 28 and 30). Web of Science (categories Business, Management, Economics, Psychology Applied)
+```
+TS=(("O*NET" OR "Occupational Information Network" OR "task content" OR "task-based measure*" OR "occupational task*") AND (interdependen* OR coordination OR "work context" OR "face-to-face" OR offshorab* OR "contact with" OR contingenc* OR "organi?ational structure" OR multinational* OR subsidiar* OR "boundary of the firm"))
+```
+S6-task EBSCO
+```
+(TI("O*NET" OR ONET OR "Occupational Information Network" OR "task content") OR AB("O*NET" OR ONET OR "Occupational Information Network" OR "task content")) AND (interdependen* OR coordination OR "work context" OR "face-to-face" OR offshorab* OR multinational* OR organi?ation*)
+```
+S6-task outside the US. Web of Science (no category filter)
+```
+TS=(("O*NET" OR "Occupational Information Network") AND (Europe* OR "cross-country" OR transferab* OR PIAAC OR "country-specific" OR "United Kingdom" OR German* OR "outside the United States"))
+```
+S6-task Google Scholar (variants)
+```
+"O*NET" "task interdependence" OR "work context" measure organization management research
+"O*NET" Europe transferability PIAAC "task content" country-specific
+"O*NET" multinational OR subsidiary OR "boundary of the firm" task measures
+```
+Syntax note: OpenAlex rejects `O*NET` (a wildcard needs three leading characters), so the agent used `"O NET" OR "Occupational Information Network"`. In WoS and EBSCO the asterisk inside `"O*NET"` may be read as a wildcard; if the run returns noise, replace it with `"O NET" OR ONET`.
+
+S9f Brexit and firm organization (T4, focal shock S13; request 38). Web of Science (no category filter)
+```
+TS=((Brexit OR "UK withdrawal from the EU" OR "Trade and Cooperation Agreement" OR "EU referendum") AND (subsidiar* OR affiliate* OR multinational* OR "foreign-owned" OR "joint venture*" OR "foreign direct investment" OR FDI OR firm*) AND (staffing OR employ* OR relocat* OR restructur* OR reorgani?ation OR "corporate structure*" OR "human resource*" OR recruit* OR workforce))
+```
+S9f EBSCO
+```
+(TI(Brexit OR "Trade and Cooperation Agreement") OR AB(Brexit OR "Trade and Cooperation Agreement")) AND (subsidiar* OR affiliate* OR multinational* OR "foreign-owned" OR "joint venture*" OR FDI) AND (staffing OR employ* OR relocat* OR restructur* OR "human resource*" OR recruit*)
+```
+S9f Google Scholar (variants)
+```
+Brexit "foreign subsidiaries" OR affiliates employment OR staffing OR restructuring
+Brexit multinational "corporate structure" OR relocation subsidiaries evidence
+```
+
+S9g Brexit and labor mobility (T4, focal shock S13, mechanism C2; requests 37, 40 and 41). Web of Science (no category filter)
+```
+TS=((Brexit OR "end of free movement" OR "points-based system" OR "post-Brexit immigration") AND ("free movement" OR "EU nationals" OR "EU migrant*" OR "EU worker*" OR "skilled worker visa" OR "intra-company transfer*" OR "labo?r shortage*" OR expatriat* OR "global mobility") AND (firm* OR employer* OR recruit* OR hiring OR "workforce composition" OR organi?ation*))
+```
+S9g EBSCO
+```
+(TI(Brexit OR "end of free movement" OR "points-based") OR AB(Brexit OR "end of free movement" OR "points-based")) AND ("free movement" OR "EU nationals" OR "EU migrant*" OR "EU worker*" OR expatriat* OR "intra-company") AND (employer* OR recruit* OR hiring OR "workforce composition")
+```
+S9g Google Scholar (variants)
+```
+Brexit "end of free movement" employers recruitment "EU workers" evidence
+Brexit "workforce composition" OR "intra-company transfer" OR expatriates firms
+```
+
+S9b2 Investment screening and established foreign affiliates (T4, fallback S06; request 42). Web of Science (no category filter)
+```
+TS=(("investment screening" OR "FDI screening" OR CFIUS OR FIRRMA OR "national security review" OR "foreign investment review") AND (affiliate* OR subsidiar* OR "joint venture*" OR "foreign-owned") AND (mitigation OR operation* OR staffing OR employ* OR governance OR board* OR divest* OR restructur* OR "difference-in-difference*" OR effect*))
+```
+S9b2 EBSCO
+```
+(TI("investment screening" OR "FDI screening" OR CFIUS OR FIRRMA OR "national security review") OR AB("investment screening" OR "FDI screening" OR CFIUS OR FIRRMA OR "national security review")) AND (affiliate* OR subsidiar* OR "joint venture*") AND (mitigation OR operation* OR staffing OR governance OR divest* OR effect*)
+```
+S9b2 Google Scholar
+```
+"investment screening" OR CFIUS "mitigation agreement" foreign affiliates operations staffing governance
+```
+
+Run: [not run] | Records: WoS [ ] EBSCO [ ] GS [ ]. Export file names follow "Export instructions for manual runs", with the block ID in place of the stream number (for example `exports/wos-S7multiparent-<date>.ris`).
+
+### Proposed priority for the manual runs (pending PI agreement)
+
+1. S7-core, S7-IB, S7-multiparent, S7-adjust, S7-staffing (the main theory rests on one corpus work).
+2. S3-local, S3-foreign, S4-source (H3 mechanism and boundary condition).
+3. S6-task, both variants (decision 3 of 2026-11-24 rests on it).
+4. S9f and S9g (focal shock S13), then S9b2 (fallback S06).
+5. S8 and S8-levels, then the remaining 2026-10-02 blocks in the order given in `reviews/gate-1-literature-search.md`.

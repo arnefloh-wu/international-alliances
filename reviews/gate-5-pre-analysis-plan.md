@@ -45,13 +45,38 @@ anticipation; survivor bias; a single common onset; a thin local
 parent-origin cell; the framing of Brexit as a change in the political order
 between states.
 
-### Items this plan has to settle for the shock
+### Route to gate 5 (decided by the PI on 2026-11-24)
 
-Listed in the Open section of `docs/decisions.md` (raised 2026-11-24): the
-cell rule for the hard screen; the S13 design choices above; a sourced score
-for the change in local embeddedness per function and the `role_k50` map of
-regulatory-facing roles; the S06 definitions and the verification of nine
-non-EU adoption years, if the fallback is needed.
+The PI accepted all seven recommendations of
+`docs/coauthor-notes/pre-analysis-plan-inputs-decision-sheet-2026-11-24.qmd`
+("Accept all"). Recorded in `docs/decisions.md` (Decided, 2026-11-24).
+
+1. Stage 5 goes ahead without G3, as a dated departure from `docs/workflow.md`.
+2. `/lit-synthesis` runs now on the corpus approved at G1, and is re-run when
+   the manual exports arrive.
+3. The static scores (`coord_dependence`, `local_embeddedness`) come from
+   O\*NET task measures linked through Revelio's `onet_code`. Scores from raters
+   outside the team are the robustness check. Author-set scores are not used.
+4. The Brexit change score is a binary list of regulatory-facing occupations,
+   written into this plan before the panel is built. The O\*NET law and
+   government score is the robustness check.
+5. The domain variable is the occupation group. The panel unit is IJV x
+   occupation group x year, with the nine functions as a robustness check.
+6. The cell rule is at least 5 employees, with at least 5 hires as a
+   sensitivity check.
+7. The S13 design above is accepted as proposed.
+
+### Items this plan still has to settle
+
+Listed in the Open section of `docs/decisions.md`:
+- clustering for the occupation-level regressors;
+- a source for `coord_role` per level;
+- the O\*NET data step and its coverage;
+- the UK intra-company route for minority-held IJVs;
+- the S06 definitions, if the fallback is needed;
+- the estimators for share outcomes and the inference for the level panel;
+- the window for labor market entrants;
+- the unmapped prior employers.
 
 ## Deliverables
 
@@ -73,6 +98,7 @@ non-EU adoption years, if the fallback is needed.
 
 ## Proposed changes to earlier stages
 
+- `docs/workflow.md`, lines 53 to 54 ("Stage 5 needs G2, G3, G4 and G5a"): add that, by the PI's decision of 2026-11-24, stage 5 proceeds without G3 while the qualitative study is set aside, with a pointer to `docs/decisions.md`.
 - `data/codebook.md`, section "Shock": the S13 exposure definition (pairs, onset, variants), proposed by `literature/shock-scan/rescoring.md`, section 12.
 - `data/README.md` and the folder map: mention `data/raw/external/` for public source files.
 - `literature/references.bib`: add the sources the plan cites for the shocks (ASPI 2020, Bauerle Danzman and Meunier 2023, Regulation (EU) 2019/452, the EC list) through `/references`.

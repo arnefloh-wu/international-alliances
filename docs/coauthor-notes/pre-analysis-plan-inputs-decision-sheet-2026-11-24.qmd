@@ -1,0 +1,48 @@
+---
+title: "Route to gate 5: decision sheet"
+subtitle: "Stage prerequisites and contingency scores for the pre-analysis plan"
+date: 2026-11-24
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides. Sources: `docs/workflow.md`, `docs/decisions.md` (Decided and Open, read on 2026-11-24), `docs/research-brief.md`, `literature/shock-scan/rescoring.md`, `reviews/gate-5-pre-analysis-plan.md`, and the WRDS catalogue in `data/interim/wrds-catalog.csv`, which lists table columns only. Independence rule (`CLAUDE.md` rule 8): this sheet uses no staffing outcome, by function or by exposure.
+
+**Where things stand.** Gates 1, 4 and 5a are approved, and the focal shock is S13 (Brexit) with S06 as the fallback. Stage 5, the pre-analysis plan, needs G2, G3, G4 and G5a (`docs/workflow.md`). G2 has not run: `literature/synthesis/` does not exist. G3 cannot run, because the PI set the qualitative study aside on 2026-11-23. Without G3, the contingency scores that H1 to H4 need have no source. H4 for Brexit also needs a second score: how much each function's need for local knowledge rose with the shock.
+
+**Why this comes first.** The scores have to be fixed before anyone looks at the staffing outcomes. One complication: the tabulations of 2026-11-23 have already shown the PI and the agents how the staffing categories are spread over functions (Open item, 2026-11-23). Scores set now by someone who has seen those tables are open to the charge that they were fitted to them. That pushes the choice towards a source outside the team.
+
+**What approval unlocks.** `/lit-synthesis` now. Then a small `/data-collector` run (the O\*NET code of each position, plus the public O\*NET database) if decision 3 is accepted. Then `/research-workflow hypotheses` once G2 is approved.
+
+## Decisions
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 1 | Gate 3 as a prerequisite for stage 5 | (a) Stage 5 goes ahead without G3; the contingency scores come from decision 3. (b) Resume the interview recoding first; this is blocked by the open item on the interview corpus (location, consent) | **(a).** Record it in `docs/decisions.md` as a dated departure from `docs/workflow.md`. The interviews can later validate the scores, or feed the qualitative phase if it is resumed. The mixed-method scope of 2026-10-02 is not changed by this; it is revisited at stage 8 |
+| 2 | Gate 2 | (a) Run `/lit-synthesis` now on the Consensus and seed corpus approved at G1, and re-run it when the manual Web of Science, EBSCO and Google Scholar exports arrive (already decided at G1). (b) Wait for the manual exports | **(a).** The plan needs the synthesis for the theory section and for two sources it must cite: one for the contingency scores (decision 3) and one for the Brexit mechanism. Add one task to the run: look for an existing classification of business functions by local embeddedness or coordination need in the IB literature, which would compete with decision 3 |
+| 3 | Source of the static scores (`coord_dependence`, `local_embeddedness`) | (a) External task measures from O\*NET, linked through the `onet_code` field that Revelio's position table carries. (b) Scores set by the three authors on anchored scales for the nine functions. (c) Scores set by raters outside the team who have not seen the tabulations. (d) Wait for the interviews | **(a) as the primary source, (c) as robustness.** (a) is external, has a documented source, and is fixed at the occupation level before any outcome is seen. It also gives many distinct values instead of nine, which eases the inference problem (Open item, 2026-11-23). Candidate O\*NET elements, to be checked against the O\*NET content model: communicating with people outside the organization, and the knowledge domain law and government, for `local_embeddedness`; coordinating the work and activities of others, and interdependence measures, for `coord_dependence`. Weak point: O\*NET describes occupations, not coordination with an IJV's parents, so (a) measures `coord_dependence` less directly than `local_embeddedness`. (b) is not recommended, because the PI has seen the tabulations. `[CITE: a study that uses O*NET task measures as contingency or task-environment scores]` |
+| 4 | The Brexit change score per function (H4) | (a) A binary list of regulatory-facing occupations (legal, compliance, customs and trade, tax, regulatory affairs, employment law), defined on O\*NET-SOC codes or Revelio `role_k50` and fixed by rule. (b) A continuous score: the importance of the law and government knowledge domain in O\*NET | **(a) as the primary measure, (b) as robustness.** (a) follows the mechanism in `rescoring.md`, section 9, one for one and is easy to defend. (b) adds variation but also picks up legal knowledge that Brexit did not change. The list is written into the plan before the panel is built |
+| 5 | Grain of the domain variable | (a) The nine project functions (a remap of `role_k10`). (b) Occupation groups (`role_k50`, or O\*NET-SOC minor groups), with the nine functions as robustness | **(b).** The scores vary at the occupation level, and nine values are too few for function-level inference. The cells get sparser, and the Poisson and fractional models handle that. The panel unit becomes IJV × occupation group × year |
+| 6 | Cell rule for the hard screen and the estimation sample | (a) At least 5 employees per cell, the gate 4 rule. (b) At least 5 hires | **(a)**, with (b) as a sensitivity check. It keeps the rule set at gate 4, and it keeps S06 viable as the fallback (32 thresholded IJVs with a parent in Revelio, against 23 under the hires rule). S13 passes under both |
+| 7 | S13 design (`rescoring.md`, section 9) | Accept as proposed, or change single elements | **Accept:** exposure on parent–host pairs only; onset 2021, with 2013 to 2015 as the clean pre-period and 2016 to 2020 as the anticipation window; UK-Ireland IJVs (31) as the contrast that gets the regulatory change but keeps free movement; a level × exposure × post term for the mobility channel; clustering by country pair with a wild cluster bootstrap and IJV clustering as a check. The quant-analyst writes these into the plan |
+
+## Data step if decision 3 is accepted
+
+The spells extract of 2026-10-09 holds `role_k17000_v3`, `role_k50_v3` and `function_role_k10`, but not `onet_code`. Two steps are needed:
+
+- **Revelio pull (licensed).** One extra column (`onet_code`) for the positions already in the extract, run on the PI's computer through WRDS. Like every licensed pull, it needs the PI's go-ahead.
+- **O\*NET download (public).** The occupation descriptors, to be stored under `data/raw/external/` and logged in `data/data-log.md`. The licence is to be confirmed at download.
+
+Unknowns: `[DATA: share of positions with a non-missing onet_code]` and `[DATA: O*NET-SOC version used by Revelio]`. If coverage is poor, the fallback is to map `role_k50` to O\*NET by title. That mapping is the authors' choice and has to be documented.
+
+## Also open in `docs/decisions.md` and answered by this sheet
+
+- 2026-11-23: source of the contingency scores (decision 3), and inference for function-level regressors (decision 5).
+- 2026-11-24: the cell rule (decision 6), the S13 design (decision 7), and the H4 change score with the role map (decisions 4 and 5).
+
+Left open for the pre-analysis plan itself: estimators for share outcomes, inference for the level panel, the three-year window for labor market entrants, and the treatment of unmapped prior employers.
+
+## How to record the decision
+
+As at gates 4 and 5a: tell the agent which recommendations to accept or change. The agent records them in `docs/decisions.md`, carries them into `reviews/gate-5-pre-analysis-plan.md` under "Decisions carried in before stage 5", and proposes the edit to `docs/workflow.md` for decision 1. No gate status is changed.
