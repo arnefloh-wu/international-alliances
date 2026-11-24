@@ -92,6 +92,24 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 - Collector: PI's computer, data-engineer agent (separate session)
 - Notes: run log `data/interim/wrds-headcount-education-log-2026-11-23.md`. Capital IQ-sourced IJVs have no Orbis headcount
 
+## Collection Event: 2026-11-24 (public shock-side sources for the rescore)
+- Purpose: exposure counts for `/shock-options rescore` (gate 5a, decisions 2 and 7): Entity List listings for S09, the ASPI coercion case list for S19, and EU screening adoption dates for S06
+- PI go-ahead: gate 5a approved with changes on 2026-11-24 (`docs/decisions.md`), which provides for the Entity List name match and the source retries
+- Source: public downloads, no licence restriction known:
+  - (1) trade.gov Consolidated Screening List CSV, https://data.trade.gov/downloadable_consolidated_screening_list/v1/consolidated.csv
+  - (2) ASPI, "The CCP's coercive diplomacy" (2020), PDF from ASPI's S3 bucket
+  - (3) European Commission, list of national FDI screening mechanisms (update of 9 Feb 2026), from circabc.europa.eu
+- Script: `code/R/06_shock_exposure.R` reads (1) and downloads it again if it is missing. The ASPI cases and the screening adoption years are typed into the script with their sources
+- Frame and sample: frame v3, `core_main` (direct shareholder countries; owner countries as robustness)
+- Output: `data/raw/external/`:
+  - `consolidated-screening-list-2026-11-24.csv` (26,339 rows, 3,427 of them Entity List; 19,083,418 bytes; sha256 639e12a2b8f02fa462944c4e726de98c432384ae2514cfb344ff4b99c58b4ae9)
+  - `aspi-ccp-coercive-diplomacy-2020.pdf` (68 pages, 100 government cases in Table 1; 7,952,164 bytes)
+  - `ec-list-screening-mechanisms-2026-02-09.pdf` (31 pages; 4,871,447 bytes)
+- Derived: `data/interim/shock-exposure-ijv-2026-11-24.csv` and `shock-s09-entity-list-matches-2026-11-24.csv` (row level, gitignored); aggregates in `literature/shock-scan/rescoring-counts-2026-11-24.csv`
+- Flags: the screening list holds current entries only, so parties that were removed are missing. Screening adoption years outside the EU are `[unverified]` (`literature/shock-scan/rescoring.md`)
+- Handling: kept under `data/raw/` (gitignored) like the other raw files. No staffing outcome is read by exposure status
+- Collector: PI's computer, shock-evaluator agent
+
 ## Quality flags: 2026-11-23
 - Purpose: first run of the flag code on the matched dataset v3 (`core_main`), the career histories and the annual headcounts. No new data were pulled
 - Script: `code/R/wrds/13_quality_flags.R v3`, functions in `code/R/functions/quality_flags.R`; the same code caught all 18 seeded failures in the synthetic tables first
