@@ -4,8 +4,8 @@ Empirical manuscript project (target: *Journal of International Business
 Studies*), run as an agent-based research workflow in Claude Code.
 
 - Research idea: `initial-research-idea.md`
-- Research question and current statement of the idea (a proposal until
-  gate 4 is decided): `docs/research-brief.md`
+- Research question and current statement of the idea (working hypotheses
+  since gate 4; the final set is fixed at gate 5): `docs/research-brief.md`
 - Conventions for agents and the folder map: `CLAUDE.md`
 - Workflow stages, agents and gates: `docs/workflow.md`
 - Theory hierarchy and how each tier enters the paper: `docs/theory-framework.md`
