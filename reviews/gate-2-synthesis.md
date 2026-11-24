@@ -1,7 +1,7 @@
 # Gate 2: Literature synthesis
 
-Status: PENDING
-Approved by:
+Status: APPROVED WITH CHANGES
+Approved by: Arne Floh, 2026-11-24, in chat ("Accept all" on the decision sheet, then "Yes, set it"); line set by the agent on the PI's instruction. Provisional: G2 is re-run when the manual database exports arrive
 Stage: 2 Literature synthesis
 Agent: literature-synthesizer
 Date produced: 2026-11-24
@@ -442,4 +442,22 @@ The DOIs of these candidates are as OpenAlex returned them and are unverified; n
 
 ## PI notes (filled in by the PI; applied by the orchestrator if status is APPROVED WITH CHANGES)
 
--
+Recorded by the agent on 2026-11-24 from the PI's answer "Accept all" to the decision sheet `docs/coauthor-notes/gate-2-decision-sheet-2026-11-24.qmd`. The decisions are logged in `docs/decisions.md` (2026-11-24). The Status line above is set by the PI or on the PI's instruction.
+
+1. **Gate status:** approved with changes, as a provisional synthesis. G2 is re-run when the manual exports arrive.
+2. **Searches:** the manual blocks S7-multiparent, S7-staffing and S3-local are run before gate 5 is approved. The other new blocks are run before stage 8.
+3. **Resource dependence theory** is the rival account, not a complement. The pre-analysis plan adds a domain-level check, whether a parent's industry matches the occupation group, citing `pfeffer1978external`.
+4. **O\*NET** stays the primary source of the static scores. A verified function-level ordering (`kim2003global`) serves as a check of convergent validity. The gap between generic and parent-specific coordination is stated as a limitation.
+5. **Evidence basis:** OpenAlex abstracts are accepted for this provisional gate. Full texts of the most exposed works are retrieved before gate 5: `lawrence1967organization`, `prahalad1987multinational`, `geringer1989control`, `bartlett1989managing`, `choi2004split`, `kim2003global`, and the H3 candidates of the follow-up search.
+6. **Microfoundations:** the step from a domain's need for parent-specific knowledge to the parent-origin hire is stated as a domain-level assumption. The H1 mechanism in the research brief is reworded.
+7. **Records:** the reference agent's recommendations on the 14 unsure G1 records are accepted (include 7, exclude 7). The three methods records (CON-S6-09, CON-S6-10, CON-S6-01) and Peterson et al. 1999 are also included.
+8. **Proceedings, working papers and dissertations** are admitted when no peer-reviewed version exists, flagged in the bib, and never as the sole support for a hypothesis.
+9. **Search protocol version 1.2:** a task-data stream; the function-level question added to S2; records marked `scope:` admitted only as support for the hiring-source step of H3.
+10. **`coord_role`:** the level part of H1 is carried as exploratory, with `mintzberg1979structuring` as the candidate source.
+11. **Edits to earlier-stage files are authorized and applied:**
+    - `docs/theory-framework.md`: pointers only; the hierarchy is unchanged;
+    - `docs/research-brief.md`;
+    - `literature/search/protocol.md`;
+    - `docs/decisions.md`.
+
+    The `data/codebook.md` update waits for stage 5 or 6.
