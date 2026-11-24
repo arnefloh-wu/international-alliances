@@ -100,3 +100,164 @@ Chase yield: 80 results, 27 duplicates, 29 includes, 10 unsure, 14 exclusions. A
 - Consensus returned 10 results per query on the free tier, so each stream search is a top-10 sample of a semantic ranking, not an exhaustive list.
 - Title/abstract decisions use Consensus abstracts as returned (some truncated or absent). Full text has not been retrieved for any record.
 - Dates in `year` are as returned by Consensus unless a seed source corrected them.
+
+## Stage 2 addendum: targeted searches by the literature-synthesizer (2026-11-24)
+
+Authorized by the Stage 2 brief (at most about five targeted searches for
+S7, S8 and the O\*NET question; hits are candidates for the search agent,
+not cited until screened and verified). The Consensus connector was not
+available in this session, so the searches were run against the OpenAlex
+API through the agent's web-fetch tool. Results were read through the
+tool's summary, not exported; nothing was added to `screening.csv` or
+`references.bib`. Candidates are listed in
+`literature/synthesis/missing-references.md`.
+
+| # | Date | Database | Purpose | Query (exact URL parameters) | Records shown | Usable candidates |
+|---|---|---|---|---|---|---|
+| 1 | 2026-11-24 | OpenAlex API | S7 | `search=structural contingency theory fit misfit structural adjustment&sort=cited_by_count:desc&per-page=15` | 15 | none (citation-sorted full-text search returned off-topic records) |
+| 2 | 2026-11-24 | OpenAlex API | O\*NET as task-environment measure | `search=O*NET task interdependence work context occupation measure organization&sort=cited_by_count:desc&per-page=15` | 15 | none (off-topic) |
+| 3 | 2026-11-24 | OpenAlex API | function-level IR classification (task 4a) | `search=global integration of business functions local responsiveness value chain activity multinational&sort=cited_by_count:desc&per-page=15` | 14 of 15 (page truncated by the tool) | none directly; off-topic at citation sort |
+| 4 | 2026-11-24 | OpenAlex API | O\*NET offshorability (local embeddedness proxy) | `filter=title_and_abstract.search:O*NET offshorability&per-page=15` | 11 of 15 (page truncated by the tool) | 1: Blinder 2007, "How Many U.S. Jobs Might Be Offshorable" (RePEc) |
+| 5 | 2026-11-24 | OpenAlex API | function-level integration (task 4a) | `filter=title.search:integration business functions multinational&per-page=15` | 1 | 1: Kim, Park & Prescott 2003, JIBS, doi 10.1057/palgrave.jibs.8400035 |
+
+Lesson for the search agent: OpenAlex full-text search sorted by citations
+is unusable for these topics; title or title-and-abstract filters with
+relevance ranking worked. S7 and S8 still need the manual Web of Science,
+EBSCO and Google Scholar runs specified in `search-strings.md`.
+
+Also on 2026-11-24, abstracts of the 82 corpus works with a DOI in
+`literature/references.bib` were requested from OpenAlex (batched DOI
+filters) to replace screening-only evidence in the concept matrix; this is
+retrieval of known records, not a search, and added no records. Coverage
+and the evidence code per record are in
+`literature/synthesis/concept-matrix.csv` (`evidence_basis`).
+
+## 2026-11-24 targeted follow-up
+
+Stage 1 increment run by the literature-searcher on 2026-11-24 for the
+search requests in `literature/synthesis/missing-references.md`, meaning claims
+for which no work is named yet. Works already named there (Thompson 1967,
+Galbraith, Donaldson, Child 1972, Pfeffer and Salancik 1978, Mintzberg, the
+O\*NET content model, Kim, Park and Prescott 2003, Blinder 2007, Brexit and
+screening documents) are being verified in parallel by the reference-manager
+and were not searched for here. Kim, Park and Prescott 2003 and Blinder 2007
+were screened at title and abstract level only, as the brief asked. Nothing
+was added to `literature/references.bib` or Zotero. Earlier counts in this
+log are unchanged. New strings for the manual runs are in `search-strings.md`,
+section "2026-11-24 targeted follow-up". The memo for the gate 2 re-run is
+`literature/search/targeted-followup-2026-11-24.md`.
+
+### Sources and access
+
+| Source | Access on 2026-11-24 | Used |
+|---|---|---|
+| Consensus connector | Not available. The PI, through the orchestrator, asked for `mcp__Consensus__search`, but no Consensus tool was exposed in this session's tool list, so no call could be made. | no |
+| OpenAlex API (`api.openalex.org/works`) | Reachable by direct HTTPS request without an API key (shared free daily budget; about 26 requests used). Raw JSON responses kept in the agent's session scratch space, not in the repository. | 24 searches, 2 record retrievals by DOI |
+| Crossref | Not queried. No DOI was checked against Crossref; DOIs in the sheet are exactly as OpenAlex returned them and are unverified. | no |
+| WebSearch | Reachable | 2 searches |
+| Web of Science, EBSCO, Google Scholar | No agent access | 0 (strings proposed) |
+
+Query syntax. OpenAlex `filter=title_and_abstract.search:` (or `title.search:`
+for Q04) with Boolean AND/OR and quoted phrases; default relevance order
+("best matches first"); `per-page` as stated; no date or type filter. The
+OpenAlex parse of each query (the normalized `url` echoed in the response's
+`meta.x_query`) is given in the table, where `,` separates ANDed clauses and
+`|` separates ORed terms. Only the first page was screened. "Total" is
+OpenAlex's match count; "Screened" is the number of records returned and
+screened; "Kept" is include plus unsure; "Dup" is duplicates (within this run
+or against the existing sheet).
+
+### Query log
+
+| # | Date | Source | Request (missing-references entry) | Query as sent | OpenAlex parse (`meta.x_query.url`) | Total | Screened | Include | Unsure | Dup |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Q01 | 2026-11-24 | OpenAlex | 10 contingency fit in IJVs | `filter=title_and_abstract.search:"joint venture" AND (contingency OR misfit) AND (structure OR control OR staffing OR design)&per-page=20` | `title_and_abstract.search:"joint venture",title_and_abstract.search:contingency\|misfit,title_and_abstract.search:control\|design\|staffing\|structure` | 121 | 20 | 8 | 1 | 1 |
+| Q02 | 2026-11-24 | OpenAlex | 10 units with more than one parent | `filter=title_and_abstract.search:("multiple parents" OR "two parents" OR "dual parents" OR "parent firms" OR "multiple principals") AND ("joint venture" OR alliance OR subsidiary) AND (contingency OR fit OR misfit OR "organizational design" OR "structural")&per-page=15` | as sent | 94 | 15 | 0 | 3 | 3 |
+| Q03 | 2026-11-24 | OpenAlex | 10 contingency constructs in IJVs | `filter=title_and_abstract.search:("joint venture" OR "international joint venture") AND ("information processing" OR "task interdependence" OR "differentiation and integration" OR "structural contingency" OR "contingency theory")&per-page=15` | as sent | 33 | 15 | 1 | 0 | 2 |
+| Q04 | 2026-11-24 | OpenAlex | 10, 11 JV organization design | `filter=title.search:("joint venture" OR "joint ventures") AND ("organizational design" OR "organization design" OR "organizational structure" OR "structural fit" OR "organizational fit")&per-page=15` | `display_name.search:...` (title field) | 7 | 7 | 1 | 1 | 0 |
+| Q05 | 2026-11-24 | OpenAlex | 18 local parent as staff supplier | `filter=title_and_abstract.search:("joint venture" OR "joint ventures") AND ("local partner" OR "local parent" OR "host partner" OR "local firm") AND (staffing OR personnel OR employees OR managers OR secondment OR seconded OR "human resource")&per-page=15` | as sent | 165 | 15 | 1 | 1 | 1 |
+| Q06 | 2026-11-24 | OpenAlex | 18, 45 seconded and parent-assigned staff | `filter=title_and_abstract.search:("joint venture" OR "joint ventures") AND (seconded OR secondment OR "assigned managers" OR "parent-assigned" OR "transferred employees" OR "staff transfer" OR "personnel transfer" OR "parent company managers")&per-page=15` | as sent | 2478 | 15 | 1 | 2 | 3 |
+| Q07 | 2026-11-24 | OpenAlex | 18 IJV HRM and recruitment by parents | `filter=title_and_abstract.search:"international joint venture" AND ("human resource management" OR HRM OR recruitment OR recruiting OR hiring) AND (parent OR partner)&per-page=15` | as sent | 28 | 15 | 5 | 7 | 0 |
+| Q08 | 2026-11-24 | OpenAlex | 20 two foreign parents (phrases) | `filter=title_and_abstract.search:"third-country joint venture" OR "third country joint venture" OR "trinational joint venture" OR "tri-national joint venture" OR "foreign-foreign joint venture" OR "joint ventures between foreign" OR "two foreign partners" OR "two foreign parents" OR "foreign partners only"&per-page=20` | as sent | 39 | 20 | 0 | 0 | 0 |
+| Q09 | 2026-11-24 | OpenAlex | 20 two foreign parents (grouped) | `filter=title_and_abstract.search:("third-country" OR "third country" OR trinational OR "tri-national" OR "two foreign") AND ("joint venture" OR "joint ventures")&per-page=15` | as sent | 48 | 15 | 0 | 3 | 1 |
+| Q10 | 2026-11-24 | OpenAlex | 19, 22 internal versus market hiring in multi-unit firms | `filter=title_and_abstract.search:("external hiring" OR "external hires" OR "internal hiring" OR "internal labor market" OR "internal labour market" OR "internal mobility") AND (subsidiary OR subsidiaries OR multinational OR "joint venture" OR "business group" OR affiliate)&per-page=20` | as sent | 91 | 20 | 0 | 6 | 5 |
+| Q11 | 2026-11-24 | OpenAlex | 19 cost of external versus internal hires | `filter=title_and_abstract.search:("external hires" OR "external hiring" OR "outside hires") AND ("internal mobility" OR "internal promotion" OR "internal candidates" OR "internal hires" OR "promoted workers") AND (pay OR cost OR costs OR performance)&per-page=12` | as sent | 63 | 12 | 0 | 4 | 1 |
+| Q12 | 2026-11-24 | OpenAlex | 25, 26 O\*NET interdependence and work context | `filter=title_and_abstract.search:("O NET" OR ONET OR "Occupational Information Network") AND (interdependence OR teamwork OR "work context" OR coordination OR "task context")&per-page=15` (a first attempt with `"O*NET"` was rejected by the API, 0 records) | as sent | 87 | 15 | 0 | 3 | 0 |
+| Q13 | 2026-11-24 | OpenAlex | 25, 30 O\*NET in firm-level research | `filter=title_and_abstract.search:("O NET" OR "Occupational Information Network") AND (firms OR "firm-level" OR "organizational structure" OR "organization design" OR "managerial" OR "top management" OR subsidiaries)&per-page=15` | as sent | 99 | 15 | 2 | 2 | 1 |
+| Q14 | 2026-11-24 | OpenAlex | 28 O\*NET outside the US | `filter=title_and_abstract.search:("O NET" OR "Occupational Information Network") AND (European OR Europe OR "cross-country" OR transferability OR "outside the US" OR "other countries" OR PIAAC OR "country-specific")&per-page=15` | as sent | 174 | 15 | 0 | 7 | 1 |
+| Q15 | 2026-11-24 | OpenAlex | 27 location-bound task measures | `filter=title_and_abstract.search:("face-to-face" OR offshorability OR offshorable OR "on-site" OR teleworkability OR "work from home") AND ("O NET" OR "Occupational Information Network") AND (occupations OR tasks)&per-page=15` | as sent | 41 | 15 | 0 | 4 | 4 |
+| Q16 | 2026-11-24 | OpenAlex | 38 Brexit and MNE subsidiaries | `filter=title_and_abstract.search:Brexit AND (subsidiary OR subsidiaries OR multinational OR multinationals OR "foreign-owned" OR "foreign affiliates") AND (relocation OR staffing OR employment OR employees OR restructuring OR organizational OR reorganization)&per-page=20` | as sent | 82 | 20 | 2 | 2 | 0 |
+| Q17 | 2026-11-24 | OpenAlex | 37 Brexit, free movement and employers | `filter=title_and_abstract.search:Brexit AND ("free movement" OR "EU migrants" OR "EU workers" OR "EU nationals" OR immigration) AND (firms OR employers OR recruitment OR hiring OR "labour shortages" OR "labor shortages")&per-page=20` | as sent | 213 | 20 | 1 | 5 | 1 |
+| Q18 | 2026-11-24 | OpenAlex | 41 Brexit, expatriation and HRM | `filter=title_and_abstract.search:Brexit AND (expatriate OR expatriates OR "global mobility" OR "international assignments" OR "intra-company" OR "posted workers" OR "talent management" OR "human resource management" OR HRM)&per-page=15` | as sent | 71 | 15 | 1 | 0 | 0 |
+| Q19 | 2026-11-24 | OpenAlex | 42 investment screening and foreign firms | `filter=title_and_abstract.search:("investment screening" OR "FDI screening" OR CFIUS OR "national security review" OR "foreign investment review") AND (affiliates OR subsidiaries OR "joint venture" OR "joint ventures" OR acquisitions OR "foreign firms" OR multinationals)&per-page=20` | as sent | 279 | 20 | 1 | 3 | 1 |
+| Q20 | 2026-11-24 | OpenAlex | 42 empirical effects of screening | `filter=title_and_abstract.search:("investment screening" OR "FDI screening" OR CFIUS OR FIRRMA OR "screening mechanism") AND (effect OR effects OR impact OR "difference-in-differences") AND (firms OR affiliates OR subsidiaries OR employment OR innovation OR operations)&per-page=15` | as sent | 165 | 15 | 0 | 2 | 1 |
+| Q21 | 2026-11-24 | OpenAlex | 9 contingency theory with staffing as outcome | `filter=title_and_abstract.search:("contingency theory" OR "contingency approach" OR "contingency perspective" OR "structural contingency") AND (staffing OR "workforce composition" OR "personnel composition" OR expatriates OR "parent-country nationals")&per-page=15` | as sent | 370 | 15 | 3 | 1 | 0 |
+| Q22 | 2026-11-24 | OpenAlex | 26 occupation-level interdependence measures | `filter=title_and_abstract.search:("task interdependence" OR "work interdependence" OR "interdependence of work" OR "coordination requirements") AND (occupations OR occupational OR "job analysis" OR "O NET")&per-page=15` | as sent | 38 | 15 | 0 | 2 | 0 |
+| Q23 | 2026-11-24 | OpenAlex | 35, 36, 38 Brexit regulatory divergence | `filter=title_and_abstract.search:Brexit AND ("regulatory divergence" OR "non-tariff" OR customs OR "regulatory compliance" OR "trade and cooperation agreement") AND (firms OR jobs OR occupations OR employment OR skills OR exporters)&per-page=15` | as sent | 157 | 15 | 2 | 5 | 1 |
+| Q24 | 2026-11-24 | WebSearch | 38 Brexit and foreign subsidiaries | `Brexit effect on foreign subsidiaries staffing organization empirical study international business journal` | n/a | 10 links | 8 records | 1 | 2 | 1 |
+| Q25 | 2026-11-24 | OpenAlex | 38 Brexit and subsidiaries (follow-up to Q24 leads) | `filter=title_and_abstract.search:Brexit AND (subsidiaries OR subsidiary) AND (software OR "regional" OR formation OR referendum)&per-page=10` | as sent | 24 | 10 | 3 | 1 | 2 |
+| Q26 | 2026-11-24 | WebSearch | 20 two foreign parents | `"international joint ventures" partners from "third country" OR "same home country" ownership structure staffing Makino Beamish non-conventional` | n/a | 19 links | 0 (all company pages; nothing added) | 0 | 0 | 0 |
+
+Record retrievals (not searches; no new records found by them):
+
+| # | Date | Source | Purpose | Request | Records |
+|---|---|---|---|---|---|
+| R00 | 2026-11-24 | OpenAlex | Stage 2 candidate Kim, Park & Prescott 2003, retrieved for screening | `filter=doi:10.1057/palgrave.jibs.8400035` | 1 (screened as OA-S2-01) |
+| R24a | 2026-11-24 | OpenAlex | metadata for the WebSearch Q24 hit "Brexit: human resourcing implications" | `filter=doi:10.1108/ER-11-2018-0310` (DOI from the WebSearch link) | 1 (screened as WS-S9-01) |
+| R24b | 2026-11-24 | OpenAlex | malformed title filter for the Fuller postprint | `filter=title.search:Brexit foreign subsidiaries,author.id:null` | 0; superseded by Q25 |
+
+Blinder 2007 (the other Stage 2 candidate) was retrieved by Q15 (rank 1) and screened as OA-S6-46.
+
+### PRISMA flow, 2026-11-24 increment (title and abstract stage)
+
+| Step | n | Notes |
+|---|---|---|
+| Records identified, OpenAlex searches (Q01 to Q23, Q25) | 374 | first page of each query |
+| Records identified, OpenAlex retrieval of a Stage 2 candidate (R00) | 1 | Kim, Park & Prescott 2003 |
+| Records identified, WebSearch (Q24, Q26) | 8 | Q24: 10 links, 8 distinct records; Q26: 19 links, none scholarly, none added |
+| Records identified, Consensus | 0 | connector not available in the session |
+| Records identified, Web of Science / EBSCO / Google Scholar | 0 | not run (no access); strings proposed |
+| Total rows added to `screening.csv` | 383 | ids `OA-<stream>-NN` and `WS-S9-NN` |
+| Duplicates (F_duplicate) | 30 | 26 within this increment; 4 against existing rows (CON-S3-05 twice, CON-S3-07, and CC-S3-04, the record the PI dropped on 2026-10-04); see `notes` |
+| Unique new records screened | 353 | |
+| Excluded at title/abstract | 252 | E_offtopic 183, C_nonscholarly 45, B_formation 18, D_language 5, A_level 1 |
+| Unsure, to full text | 67 | 27 of them marked `scope:` (outside criteria (a) to (g)); see below |
+| Include, to full text | 34 | |
+| Kept for full-text screening (include plus unsure) | 101 | `full_text_decision = pending` |
+
+Per stream (unique new records).
+
+| Stream | Include | Unsure | Exclude | Total |
+|---|---|---|---|---|
+| S2 | 1 | 0 | 0 | 1 |
+| S3 | 7 | 13 | 55 | 75 |
+| S4 | 0 | 10 | 16 | 26 |
+| S6 (task-data methods) | 2 | 18 | 49 | 69 |
+| S7 | 12 | 5 | 42 | 59 |
+| S8 | 1 | 1 | 5 | 7 |
+| S9 | 11 | 20 | 85 | 116 |
+| Total | 34 | 67 | 252 | 353 |
+
+### Screening conventions used in this increment
+
+- Reasons for include and unsure cite the protocol criterion, for example
+  `incl (b)` or `incl (g)?`. A reason that starts with `scope:` marks a record
+  that falls outside inclusion criteria (a) to (g) (single-firm HRM, business-group
+  labor markets, labor-economics task data) but is the only evidence found for a
+  named search request. These records are marked unsure, not include, and the
+  PI decides at gate 2 whether the protocol needs an amendment, for example a
+  task-data methods block or a recruitment-source block.
+- O\*NET and task-data records are filed under S6 (Methods tier) because
+  the protocol has no task-data stream; the notes say so.
+- `full_text_decision` is `pending` for include and unsure rows and blank for
+  exclusions, following the convention of the existing sheet.
+- DOIs are recorded only as OpenAlex returned them (lower-case prefix as
+  returned) and are unverified; no DOI was added from memory. WebSearch-only
+  records carry no DOI.
+
+### Limits
+
+- OpenAlex relevance ranking with Boolean filters is not a substitute for the WoS, EBSCO and Google Scholar runs; only the first page (10 to 20 records) of each query was screened, and the totals show that several queries matched far more records (Q06 2478, Q21 370, Q19 279).
+- Q08 (exact phrases for two-foreign-parent JVs) returned noise; Q09 found the relevant records. Q26 (WebSearch) returned only company pages.
+- Abstracts were missing for some records (OpenAlex does not return abstracts for some publishers); those were screened on title and outlet and marked unsure where the title suggested relevance.
+- No backward or forward citation chase was run in this increment.
