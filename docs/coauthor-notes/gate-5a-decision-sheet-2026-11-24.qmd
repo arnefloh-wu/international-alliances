@@ -1,0 +1,45 @@
+---
+title: "Gate 5a: decision sheet"
+subtitle: "Shock shortlist (reviews/gate-5a-shock-scan.md)"
+date: 2026-11-24
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides. Sources: `reviews/gate-5a-shock-scan.md` and `literature/shock-scan/` (scan of 2026-10-04), and the exposure counts in `reviews/gate-4-pilot.md` (read on 2026-11-24). Independence rule (`CLAUDE.md` rule 8): this sheet uses exposure counts and design properties only. No staffing outcome has been tabulated by exposure group, here or anywhere else.
+
+**What has changed since the scan.** The scan scored theoretical fit against the original hypotheses, which concerned cross-parent integration. Gate 4 replaced them with H1 to H4 of the research brief. H4 now needs a shock that raises the local-embeddedness requirement of some functions while leaving their coordination dependence unchanged. The fit scores in `scoring.csv` are therefore out of date and have to be redone at the rescore. Pilot design (old decision 6) is also settled: the full frame has been matched, and the exposure groups are counted for `core_main`.
+
+**What approval unlocks.** `/shock-options rescore`, which counts exposure in `core_main` under the gate 4 rules and re-scores the shortlist. The final shock is chosen at gate 5, together with the pre-analysis plan.
+
+## The shortlist under the new H4
+
+| ID | Candidate | Scan score | Exposed IJVs in `core_main` (strategic) | Fit with H4 (agent's provisional reading) | Main risk |
+|---|---|---|---|---|---|
+| S13 | Brexit: end of UK-EU free movement (2021; referendum 2016) | 4.40 | 485 (136) in the UK-EU group, about 31 country pairs | Good. Regulatory divergence raises the local-embeddedness requirement of regulatory, legal, customs and finance functions in UK-EU IJVs, and coordination with the parents is unchanged | The end of free movement also makes international hires dearer in every function (a supply channel), so the H4 test rests on the contrast between functions. Anticipation 2016 to 2020, COVID-19 in 2020 to 2021 |
+| S06 | Staggered investment screening in OECD hosts | 3.60 | Not counted. The 3,638 in the "OECD screening" group are every IJV hosted in a screening country, far broader than the treatment (a non-allied parent in a screened sector) | Partial. Screening raises the local-embeddedness requirement of security-sensitive functions, but it also cuts the screened parent's access, which changes coordination as well | Weak treatment of IJVs formed before screening; mitigation conditions not observed |
+| S19 | Chinese coercion episodes against partner states (2010 to 2020) | 3.80 | 86 (54) | Closest to H4: customer-facing and government-facing functions in China need more local legitimacy, while technical functions keep their coordination need | Too few IJVs once cells are thresholded; Revelio coverage of China-based staff is weak |
+| S09 | US Entity List designations of parent groups | 4.00 | Not counted (needs a name match of the Federal Register list against the Orbis parents) | Weak. The listing restricts technology transfer, so mainly coordination and parent resources change, not local embeddedness | Unknown exposure; designated firms are selected |
+| S02 (reserve) | Russia 2022 sanctions | 3.60 | 40 (6) | Changes many contingencies at once, so the predictions are close to uniform | LinkedIn blocked in Russia since 2016; exits and takeovers |
+
+## Decisions
+
+| # | Decision | Recommendation |
+|---|---|---|
+| 1 | Weights | **Keep equal weights.** The top three are the same under three of the four schemes tried, and the top two under all four |
+| 2 | Shortlist | **Rescore S13, S06 and S19; S09 only if the name match finds at least 30 exposed IJVs; drop S02** (40 IJVs, almost no Revelio coverage). The rescore re-scores fit against H4 of the brief and recounts S06 on its proper definition |
+| 3 | Hard screens | **Confirm the defaults** (dated onset; exposure assignable from a documented source; at least about 15 country pairs and 30 IJVs after cell thresholds), with H3 counted on the gate 4 sample for the organizational-origin hypotheses. **No single-pair shocks as the focal shock**: one exposed pair gives one treated cluster, so clustering by pair cannot work |
+| 4 | Admissibility | **Admit Brexit.** It is a change in the political order between states that changes a contingency (regulatory exposure and personnel mobility), which is how `docs/theory-framework.md` treats geopolitics. **Do not admit non-geopolitical regulatory fallbacks** (S26, S27): they leave the paper's environmental context |
+| 5 | Panel window | The Revelio data on file run to 2026. **Admit onsets up to 2023**, so that every shock has at least two post-onset years of hiring. The PI confirms the licence end date before stage 6 |
+| 6 | Pilot design | **Settled by gate 4.** The remaining step is the Entity List name match for S09, run by `/data-collector` in the rescore if decision 2 keeps S09 |
+| 7 | Verification | **The agent first retries the documentation pages** that were blocked on 2026-10-04 (ASPI case file, PRISM, Federal Register, UK visa statistics). A person verifies whatever still fails before gate 5 |
+| 8 | Combinations | **Fold S10 into S09** as an intensity layer if S09 stays. **Use S18 (dyadic political alignment) as a continuous moderator**, not as a shock: it does not say which contingency changed |
+
+## Also open in `docs/decisions.md` for gate 5a
+
+The shock-scan item of 2026-10-04 (hard-screen readings, admissibility of Brexit and of regulatory shocks, who verifies the sources) is answered by decisions 3, 4 and 7 above. The open item on which shock to adopt stays open until gate 5.
+
+## How to record the decision
+
+As for gate 4: tell the agent which recommendations to accept or change. The agent records them in the gate file under "PI notes" and in `docs/decisions.md`, and sets the Status line only on the PI's instruction.
