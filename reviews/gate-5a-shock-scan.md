@@ -1,7 +1,7 @@
 # Gate 5a: Shock shortlist
 
-Status: PENDING
-Approved by:
+Status: APPROVED WITH CHANGES
+Approved by: Arne Floh, 2026-11-24, in chat ("Accept all" on the decision sheet, then "Yes, set it"); line set by the agent on the PI's instruction
 Stage: 5a Shock scan (`/shock-options scan`, Phase A)
 Agent: shock-evaluator
 Date produced: 2026-10-04
@@ -169,4 +169,13 @@ and H3 are the agent's interpretation and need the PI's confirmation.
 
 ## PI notes (filled in by the PI; applied by the orchestrator if status is APPROVED WITH CHANGES)
 
-- 
+Recorded by the agent on 2026-11-24 from the PI's answer "Accept all" to the decision sheet `docs/coauthor-notes/gate-5a-decision-sheet-2026-11-24.qmd`. The decisions are logged in `docs/decisions.md` (2026-11-24). The Status line above is set by the PI or on the PI's instruction.
+
+- Decision 1: equal weights.
+- Decision 2: rescore S13, S06 and S19. S09 stays only if the Entity List name match finds at least 30 exposed IJVs. S02 is dropped. The rescore re-scores fit against H4 of `docs/research-brief.md` (gate 4) and recounts S06 on its treatment definition (a non-allied parent in a screened sector).
+- Decision 3: default hard screens confirmed, with H3 counted on the gate 4 sample. A shock touching a single country pair is not admitted as the focal shock.
+- Decision 4: Brexit is admitted; non-geopolitical regulatory shocks (S26, S27) are not admitted as fallbacks.
+- Decision 5: onsets up to 2023. The PI confirms the Revelio licence end date before stage 6.
+- Decision 6: settled by gate 4. If S09 stays, `/data-collector` runs the Entity List name match during the rescore.
+- Decision 7: the agent retries the blocked documentation pages; a person verifies whatever still fails before gate 5.
+- Decision 8: S10 is folded into S09 if S09 stays; S18 is a continuous moderator, not a shock.
