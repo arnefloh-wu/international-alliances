@@ -73,7 +73,7 @@ instead, for example `"C:/Program Files/R/R-4.6.1/bin/Rscript.exe"`.
    ```r
    install.packages(c("data.table", "stringdist", "stringi", "lubridate", "ggplot2", "knitr",
                       "DBI", "RPostgres", "countrycode", "arrow", "R.utils",
-                      "fixest", "did", "didimputation", "modelsummary", "quarto", "renv"))
+                      "fixest", "did", "didimputation", "HonestDiD", "modelsummary", "quarto", "renv"))
    ```
 
 3. Put your WRDS login in `~/.Renviron` (your home folder, outside the
@@ -114,6 +114,9 @@ Rscript code/R/wrds/13_quality_flags.R v3              # the same flags on the r
 Rscript code/R/tests/synthetic_onet.R                  # simulated twin of the O*NET extracts (needs the synthetic spells)
 Rscript code/R/wrds/14_wrds_onet_code.R v3             # Revelio O*NET codes for the JV positions and the role lookup (one to two hours)
 Rscript code/R/07_contingency_scores.R                 # contingency scores and domains from O*NET alone (no staffing data)
+Rscript code/R/08_feasibility_reg_cells.R              # stage 5 feasibility count for H4: REG cells by exposure group, structural counts only
+Rscript code/R/09_audit_parent_family_sample.R         # audit worksheet: 100 of the IJVs filed in a parent's Revelio family (seed 20261125; never overwrites a coded sheet)
+Rscript code/R/10_rater_sheet.R                        # workbooks for the outside raters: 50 role_k50 groups with O*NET titles (taxonomy only, no staffing data)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -136,6 +139,9 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `tests/synthetic_onet.R` | `tests/synthetic_matched.R` | `data/synthetic/revelio-role-lookup-v3-synthetic-*.parquet`, `revelio-jv-positions-onet-synthetic-*.parquet` |
 | `14_wrds_onet_code.R [version] [lookup] [positions] [coverage]` | step 09, WRDS | `data/raw/revelio-role-lookup-v3-*.parquet`, `data/raw/revelio-jv-positions-onet-*/` (parquet parts), `data/interim/wrds-onet-log-*.md` |
 | `07_contingency_scores.R` | step 14 (lookup) and the O\*NET 31.0 download | `data/processed/contingency-scores-occupation-*.csv`, `contingency-scores-domain-*.csv`, `data/interim/contingency-scores-*.md` |
+| `08_feasibility_reg_cells.R` | steps 07 and 14, `06_shock_exposure.R` | `data/interim/feasibility-reg-cells-*.md` (aggregate counts) |
+| `09_audit_parent_family_sample.R [overwrite]` | steps 03 and 09 | `data/interim/audit-parent-family-worksheet-*.xlsx` and `.csv` (licensed, gitignored); coding guide `docs/coauthor-notes/audit-parent-family-guide-*.qmd` |
+| `10_rater_sheet.R` | step 14 (lookup) | `data/interim/rater-sheet-*.xlsx`, `rater-sheet-onet-only-*.xlsx` (gitignored; Revelio group labels in the first) |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 

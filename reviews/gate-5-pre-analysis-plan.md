@@ -4,7 +4,7 @@ Status: PENDING
 Approved by:
 Stage: 5 Pre-analysis plan (`/research-workflow hypotheses`)
 Agent: orchestrator with quant-analyst
-Date produced: 2026-11-25, draft (parts A and C merged; part B, estimation, in progress). File opened on 2026-11-24 to carry in the focal shock decision
+Date produced: 2026-11-25, draft (parts A, B and C merged). File opened on 2026-11-24 to carry in the focal shock decision
 
 ## Decisions carried in before stage 5
 
@@ -196,6 +196,78 @@ Recorded in `docs/decisions.md` (Decided, 2026-11-25).
 6. Part A5 is kept as worded (dimensions of the 2026-11-23 tabulations
    named, no values) and extended to the mobility-channel test (A5, item 3).
    PI: "Yes, keep it".
+7. Static inference for H1 to H3: the permutation p-value over domains is
+   decisive; two-way and IJV-only clustered errors are reported (amends
+   pre-analysis plan rules, decision 6, after the simulation in part B). PI:
+   "Yes, permutation".
+8. H4 feasibility count and fallback rule (rule fixed before the count;
+   PI: "Yes, count with rule"). `code/R/08_feasibility_reg_cells.R` counted
+   structural quantities only (no origin, no hires, no before-after
+   magnitudes; `data/interim/feasibility-reg-cells-2026-11-25.md`):
+
+   | List | Period | Exposed IJVs | Exposed pairs | Control IJVs | Control pairs |
+   |---|---|---|---|---|---|
+   | narrow | 2013-2015 | 16 | 8 | 156 | 88 |
+   | narrow | 2021 on | 50 | 18 | 363 | 154 |
+   | narrow | both periods | 14 | 8 | 139 | 79 |
+   | broad | 2013-2015 | 40 | 16 | 361 | 161 |
+   | broad | 2021 on | 120 | 22 | 873 | 276 |
+   | broad | both periods | 38 | 16 | 328 | 151 |
+
+   With 8 exposed pairs (fewer than 10) for the narrow list and 16 for the
+   broad list, the rule makes the broad regulatory list the confirmatory H4
+   measure. Amendment to parts A and B: wherever H4a, H4b, the H4 event study
+   or the H4 decision rules name `REG` or the narrow list, the confirmatory
+   measure is the broad-list domain (`REG_B`: the 22 broad-list codes, carved
+   out of their minor groups in the H4 models); the narrow list and the
+   continuous law-and-government importance are robustness. The static
+   domains of H1 to H3 keep the narrow `REG` domain. Rule C counts
+   (ownership only): of 168 UK-hosted exposed IJVs with an EU, EEA or Swiss
+   parent, 59 have a largest stake above 50 percent (control-linked), 17
+   exactly 50 and 92 below 50; 226 exposed IJVs are EU-hosted with a UK
+   parent, to which the UK rule does not apply. Controls: 3,409 IJVs in 528
+   pairs; 912 have no foreign direct parent (owner-level IJVs; 104 of them
+   are dropped from the controls, item 14).
+9. Pre-trend rule for H4a: one pooled 2010 to 2012 lead, p-value from the
+   cluster score bootstrap by dyad, fail if p < 0.10; the separate leads,
+   the Wald test and the linear slope are reported only; `HonestDiD`
+   sensitivity is a reported robustness check once installed. To be
+   simulated before approval. PI: "Yes, pooled lead".
+10. Mobility test, part (c): the Rule C gradient is a two-sided secondary
+    result; the confirmatory mobility test is parts (a) and (b) with
+    p = max(p_a, p_b). The earlier one-sided direction had been relayed by
+    the orchestrator, not set by the PI. PI: "Two-sided".
+11. The confirmatory mobility test is labeled C1, a competing-channel test,
+    not H5; it stays confirmatory and in the Holm family. PI: "Yes, C1".
+12. The six smaller proposed choices of part B are accepted: H2 on all of
+    `core_main`; the new variable names, plus `reg_b` for the broad list;
+    the lead-pooling display rule (fewer than 25 exposed regulatory cells in
+    any of 2010 to 2012); the 5 percent small-effect reading; the Holm family
+    of six (H1, H2, H3, H4a, H4b test (i), C1); and `dyad` as host plus the
+    largest-equity foreign parent. Wherever part B marks these as
+    "proposed", they are now decided. PI: "Accept all six".
+13. Causal language for H4a needs the pooled pre-test to pass and the
+    `HonestDiD` relative-magnitude bound (M-bar = 1) to exclude zero; the
+    trend-adjusted estimate is reported beside H4a; the bound decides the
+    wording, not the classification. `HonestDiD` installed with the PI's
+    approval. PI: "Yes, add the bound".
+14. S13 control group: the 912 controls without a foreign direct parent
+    are owner-level IJVs (route `orbis_owner_level`), not domestic joint
+    ventures. The 104 with a UK-set link through their ultimate owner are
+    dropped from the control group; the other 808 stay. Owner-level IJVs
+    take their `dyad` from the host and the country of the largest-equity
+    foreign ultimate owner. Robustness: all owner-level IJVs dropped from the
+    S13 models. Exposure stays on direct parent-host pairs. PI: "Yes, drop
+    the 104".
+15. Audit and rater procedures: a research assistant codes the audit (to
+    be named); only `parent_own_unit` counts toward the 20-of-100 rule, and
+    more than 20 `cannot_tell` cases are recoded by the PI first; two coding
+    cues accepted; coded copy returned in the project Dropbox. Raters: O\*NET
+    scores aggregated to `role_k50` weighted by taxonomy entries, compared by
+    Spearman correlation; blanks filled before the ICC; no second round below
+    0.70; ratings stored gitignored. The PI asks WRDS or Revelio about sharing
+    the group labels; otherwise the O\*NET-only workbook is used. PI: answers
+    of 2026-11-25.
 
 ### Items this plan still has to settle
 
@@ -204,7 +276,8 @@ Listed in the Open section of `docs/decisions.md`:
 - the outside raters (recruited by the PI) and their ratings (before the panel is built);
 - `[CITE]` markers for the O\*NET-based scores (targeted S10 search at the G2 re-run);
 - the S06 definitions, if the fallback is needed;
-- `[CITE: methods reference for the consistency of Poisson with high-dimensional fixed effects]`;
+- the methods `[CITE]` markers of part B, section 8, including the Poisson
+  fixed-effects reference (through `/references`);
 - the full texts and the G2 re-run, before this gate is approved.
 
 ## Part A: Hypotheses and measurement
@@ -873,16 +946,932 @@ carried to "Decisions required from the PI".
 6. Whether to keep A5's sentence that names the content of the seniority
    tables (by type, not by value) in the public plan.
 
-## Part B: Estimation (quant-analyst; in progress)
+## Part B: Estimation
 
-Not merged yet. The quant-analyst's draft is being revised to the PI's
-decisions of 2026-11-25 (directional H4, three-year origin window, 97
-minor groups plus `REG`, flows from 2010), and its simulated recovery
-check (`data/synthetic/estimate-recovery-domain-synthetic-2026-11-25.md`)
-is still running. This part will hold the specification block per
-hypothesis, the event study for H4a, the decision rules for support,
-partial support and no support, the multiple-testing policy, the
-robustness set and the deviation policy.
+Drafted on 2026-11-25 by the quant-analyst (method guide
+`.claude/skills/statistical-analyst/SKILL.md`) and merged by the
+orchestrator the same day. Choices the PI has made are cited to their
+decision; choices the agent proposes are marked "proposed" and are not
+binding until the PI accepts them. No model has been estimated on real
+outcome data (`real_data_lock`; gate 6 is not approved). The simulated
+recovery check is `data/synthetic/estimate-recovery-domain-synthetic-2026-11-25.md`
+(code: `code/R/tests/check_recovery_domain.R`,
+`code/R/functions/simulate_domain_panel.R`).
+
+Label note: the confirmatory mobility-channel test is labeled C1, a
+competing-channel test (PI, 2026-11-25), so that the theory's set stays H1 to
+H4 and part A1.0's "no H5" holds; the quant-analyst's draft had proposed
+"H5".
+
+Disclosure required by the plan (skill, `preregistered`; `docs/decisions.md`,
+Decided, 2026-11-25): the staffing tabulations of 2026-11-23 showed how the
+staffing categories are distributed over Revelio's ten functions and seven
+seniority levels before these hypotheses were fixed (part A5). They were not broken down by the
+O\*NET domains, by the contingency scores or by shock exposure. The scores
+were fixed from O\*NET alone (`code/R/07_contingency_scores.R`) so that no
+author judgment informed by the tabulations enters the regressors (route to
+gate 5, decision 3).
+
+### 0. Common elements
+
+#### 0.1 Panels
+
+| Panel (proposed file name) | Unit | Use |
+|---|---|---|
+| `data/processed/panel-ijv-domain-year-v1.parquet` | IJV x domain x year | H1 (functions part), H2, H3, H4 (primary) |
+| `data/processed/panel-ijv-level-year-v1.parquet` | IJV x level x year | H1 levels (exploratory); mobility channel of S13 |
+| `data/processed/panel-ijv-function-year-v1.parquet` | IJV x function x year | grain robustness (nine functions) |
+
+`domain` is the column name of the domain (never `function`, which breaks
+`fixest` formulas; the function key in the robustness panel is `fn`). It takes
+98 values: 97 SOC minor groups and `REG`, the 16 narrow regulatory-facing
+O\*NET-SOC codes taken out of their minor groups (score construction,
+decisions 4 to 6). Minor group 23-2 (legal support workers) lies wholly in
+`REG` and so does not appear as a domain of its own. A position gets its domain from its `onet_code`
+(`onet_source` = position, else lookup). `level` takes the values
+`executive`, `middle_management`, `professional`, `operational`, mapped from
+Revelio seniority 6-7, 4-5, 3 and 1-2 (PI, 2026-11-25).
+
+#### 0.2 Sample (decided unless marked)
+
+1. Frame: `core_main` (7,460 IJVs; gate 4, decision 6).
+2. Hypotheses that use organizational origin (H1, H3, H4): IJVs with at least
+   one parent that has a Revelio entity (5,882; gate 4, decision 8a). H2 uses
+   all of `core_main` because local versus international origin does not need
+   a parent entity (proposed; H2 is not an organizational-origin hypothesis).
+3. The 831 IJVs flagged `flag_jv_in_parent_family`: if more than 20 of the 100
+   audited are parent units, they leave the main sample; otherwise they stay
+   (pre-analysis plan rules, decision 3). The audit result is recorded before
+   any model is run.
+4. Period: hiring flows with hire year 2010 to 2025 (pre-analysis plan
+   rules, decision 4); the full period from formation is a robustness check
+   (robustness 12). Stocks are descriptive only (same decision). The PI
+   confirms the Revelio licence end date before stage 6 (gate 5a, decision 5).
+5. Cell rule: a cell-year enters if it holds at least 5 employees on 30 June
+   (`n_emp >= 5`, `const$min_cell_emp`; route to gate 5, decision 6). The
+   Poisson models use cells with a positive denominator; cells with a zero
+   denominator carry no information under the offset and their number is
+   reported.
+
+#### 0.3 Outcomes (hiring flow per cell-year)
+
+Classification of each hire by the codebook rules (`data/codebook.md`,
+"Staffing tabulations"), with the three-year origin window for prior
+positions (`const$origin_window`; PI, 2026-11-25) and the three-year entrant
+window (pre-analysis plan rules, decision 2):
+
+| Variable | Definition |
+|---|---|
+| `n_hires` | hires in the cell-year |
+| `n_obs` | hires with a prior position in the origin window |
+| `n_local_parent`, `n_local_indep`, `n_intl_parent`, `n_intl_indep` | the four categories of the staffing frame among `n_obs`; local parent-origin is a prior position at a host-country unit of any parent's group (gate 4, decision 8b) |
+| `n_local`, `n_intl`, `n_parent` | `n_local_parent + n_local_indep`; `n_intl_parent + n_intl_indep`; `n_local_parent + n_intl_parent` |
+| `n_entrant`, `n_unknown` (proposed names) | history not observed, split into labor market entrants and unknown; `n_not_obs = n_entrant + n_unknown`; entrants are a category of their own (gate 4, decision 8c) |
+| `n_emp` | employees in the cell on 30 June (cell rule only) |
+
+Shares are defined only as estimands: share of parent-origin hires
+`n_parent / n_obs` (H1), local share `n_local / n_obs` (H2, H4), parent-origin
+share among local hires `n_local_parent / n_local` (H3). Entrants and unknown
+histories are outside every denominator.
+
+#### 0.4 Regressors
+
+`local_embeddedness`, `coord_dependence`: domain scores from
+`data/processed/contingency-scores-domain-v1-2026-11-25.csv` (unweighted mean
+of the rated occupations of the domain; occupation scores standardized across
+rated occupations, mean 0 and SD 1). Across the 98 domains the SDs are 0.77
+and 0.73, the interquartile ranges 0.92 and 0.94, and the correlation 0.40.
+REG ranks 6th of 98 on `local_embeddedness` and lies at the 22nd percentile
+of `coord_dependence` (-0.47). A cell's score is its domain's score; it does
+not change with the cell's occupational composition. `job_zone`,
+`law_gov_importance`: domain means (robustness only).
+
+S13 variables (proposed names; definitions from `literature/shock-scan/rescoring.md`, 4.1, and the S13 design):
+
+| Variable | Definition |
+|---|---|
+| `exposed` | 1 if the IJV's host and one of its direct parents' countries form a {GB, X} pair with X in the EU27, Iceland, Liechtenstein, Norway or Switzerland (direct shareholder country; gate 4, decisions 2 and 3) |
+| `shock` | `exposed` x 1[year >= 2021] (codebook: 1 from the first exposure year) |
+| `antic` | `exposed` x 1[2016 <= year <= 2020] (anticipation window) |
+| `event_time` | year - 2021 for exposed IJVs, missing otherwise |
+| `reg` | 1 if `domain == "REG"` |
+| `dyad` | cluster for the shock models: the host country paired with the country of the foreign direct parent with the largest equity share (proposed rule; for exposed IJVs one of the {GB, X} pairs). The codebook's identifier table defines `dyad` as the pair of parent HQ countries; gate 5 should revise it (see section 7) |
+
+S13 sample: exposed IJVs and never-exposed control IJVs hosted in the UK, the
+EU27, the EEA or Switzerland without a UK-set link (rescoring 4.1 and 9);
+parent-parent pairs hosted in third countries (19 IJVs) are excluded and used
+as a placebo. Expected size before outcomes: 24 exposed pairs and 231 exposed
+IJVs with a parent in Revelio after the employee rule; 2,510 controls with a
+parent in Revelio before the cell rule.
+
+#### 0.5 Estimators, effect sizes and reporting (common to all blocks)
+
+- Primary: `fepois(count ~ x + offset(log(denominator)) | fixed effects)`
+  (pre-analysis plan rules, decision 5). The coefficient `b` is the change in
+  the log expected share; consistency needs only the conditional mean to be
+  correct, not a Poisson distribution, and clustered errors absorb
+  overdispersion [CITE: consistency of the Poisson pseudo-maximum-likelihood estimator with high-dimensional fixed effects for non-count and overdispersed outcomes].
+  No switch to negative binomial.
+- Robustness estimators: fractional logit (`feglm`, `quasibinomial("logit")`,
+  weights = denominator) [CITE: fractional response model] and linear
+  (`feols`, weighted by the denominator, unweighted reported).
+- Effect size: `100 * (exp(b) - 1)` percent change in the share per one
+  occupation-level SD, also per domain interquartile range; percentage points
+  as the average marginal effect by prediction (fixed effects included,
+  cells weighted by the denominator), set against the denominator-weighted
+  mean share; 95 percent confidence intervals for all. No stars without
+  intervals.
+- Reported with every model: cells given and used, fixed-effect groups
+  dropped for all-zero outcomes (`fepois`, `feglm` notes are never silenced),
+  IJVs, clusters, and for the static models the within-IJV-year share of
+  outcome variance (skill, variance check).
+- Seeds: `set.seed(20261125)` for permutations and bootstraps.
+
+### 1. Specification blocks
+
+#### H1 (organizational origin, functions part: domains). Confirmatory
+
+```
+Hypothesis: H1. The more a domain depends on coordination with the parents'
+  activities and on parent-specific knowledge, the larger its share of
+  parent-origin hires (local and international) relative to independent hires.
+Unit and sample: IJV x domain x year cells, hiring flows 2010-2025, n_emp >= 5,
+  n_obs >= 1; IJVs of core_main with at least one parent in Revelio; 831 rule.
+Outcome: n_parent with offset log(n_obs); estimand log E[n_parent / n_obs].
+Regressor: coord_dependence (domain score; 98 values). local_embeddedness
+  enters as a control so that each axis is read net of the other.
+Model (primary): fepois(n_parent ~ coord_dependence + local_embeddedness
+  + offset(log(n_obs)) | ijv_id^year)
+Fixed effects: IJV x year. They absorb everything constant within the
+  IJV-year: ownership shares, parent bargaining power and control rights, IJV
+  size and age, host country and its labor market, industry, the shock, and
+  the IJV-wide parent-origin rate (including coverage of parents in Revelio).
+  Domain fixed effects cannot be added: the score varies only across domains.
+Identifying variation: differences between domains inside one IJV-year.
+Models: Poisson (decisive); fractional logit; linear, weighted (robustness).
+Inference: permutation test over domains, decisive (PI, 2026-11-25,
+  amending pre-analysis plan rules, decision 6): B = 999 reassignments of the
+  score rows, both scores together, statistic the Poisson coefficient,
+  one-sided p = (1 + #{b* >= b}) / (B + 1) [CITE: randomization inference
+  for the assignment of a regressor across groups]. Clustered two-way by IJV
+  and domain (t with G - 1 = 97 df) [CITE: multiway cluster-robust
+  inference] and IJV-only errors are reported.
+Test: coefficient on coord_dependence > 0, one-sided, Holm-adjusted across
+  the confirmatory family (section 4).
+Effect size: percent and percentage-point change in the parent-origin share
+  per occupation SD and per domain IQR of coord_dependence, against the mean
+  share in the estimation sample.
+Checks: within-IJV-year variance share; cells and IJV-years dropped;
+  history-not-observed outcome n_not_obs ~ scores (offset log(n_hires)) and
+  bounds (all unknown histories as independent, then as parent-origin);
+  domains with all scores imputed (the three military domains) dropped.
+Competing accounts: parent bargaining power (absorbed); skill level
+  (job_zone control, robustness 8); resource dependence: a domain hires from
+  the parent because it is the parent's core business, not because of
+  coordination (domain-level check, robustness 19, pfeffer1978external);
+  secondments missed by Revelio, which bias against H1 (gate 4 pilot).
+```
+
+#### H1 (levels part). Exploratory, reported in a separate section
+
+```
+Hypothesis: as H1, for hierarchical levels (pre-analysis plan rules, decision 7).
+Unit and sample: IJV x level x year, same sample rules as H1.
+Outcome: n_parent with offset log(n_obs).
+Regressor: coord_role (1 for executive and middle_management, 0 otherwise;
+  source mintzberg1979structuring).
+Model: fepois(n_parent ~ coord_role + offset(log(n_obs)) | ijv_id^year)
+Fixed effects: IJV x year, as H1.
+Identifying variation: the two senior levels against the two junior levels
+  inside one IJV-year: a two-group contrast.
+Inference: clustered by IJV. No permutation test (with four levels and a
+  binary score the smallest attainable p is 1/3). No multiple-testing
+  adjustment, no support classification.
+Effect size: percent change in the parent-origin share, senior against junior.
+Limitation stated in the text: coord_role cannot be separated from anything
+  else that differs between senior and junior levels, above all the longer
+  prior careers of senior hires, which raise the chance of any prior parent
+  position. BoardEx senior-level counts (gate 4, decision 1) are a descriptive
+  cross-check.
+```
+
+#### H2 (geographic origin). Confirmatory
+
+```
+Hypothesis: H2. The more a domain depends on host-country institutions, labor
+  markets, customers and regulators, the larger its share of locally recruited
+  hires (parent-origin and independent) relative to international hires.
+Unit and sample: IJV x domain x year, hiring flows 2010-2025, n_emp >= 5,
+  n_obs >= 1; all IJVs of core_main (proposed, 0.2); 831 rule.
+Outcome: n_local with offset log(n_obs).
+Regressor: local_embeddedness; coord_dependence as control.
+Model (primary): fepois(n_local ~ local_embeddedness + coord_dependence
+  + offset(log(n_obs)) | ijv_id^year)
+Fixed effects and identifying variation: as H1. IJV x year effects separate
+  the claim from the unit-level pattern that distance raises parent-country
+  staffing (gaur2007institutional, gong2003subsidiary).
+Models, inference: as H1.
+Test: coefficient on local_embeddedness > 0, one-sided, Holm-adjusted.
+Effect size: as H1, against the mean local share in the estimation sample.
+Checks: as H1; entrants counted as local or international by place of
+  education (robustness 10), since entrants bear on H2 only; H2 without the
+  exposed IJV-years from 2016 on, so that the static slope is not mixed with
+  the H4 response (robustness 15g).
+Competing accounts: host labor supply by occupation (not absorbable with
+  domain-level scores; the job_zone control and the role_k50 grain are the
+  available checks); skill level (robustness 8).
+```
+
+#### H3 (channel of localization; anchor). Confirmatory
+
+```
+Hypothesis: H3. Among locally recruited hires, the share with prior employment
+  in a parent's group increases with the domain's coordination dependence.
+  Boundary: weaker or absent in IJVs without a host-country parent.
+Unit and sample: IJV x domain x year, hiring flows 2010-2025, n_emp >= 5,
+  n_local >= 1; IJVs with at least one parent in Revelio; 831 rule. IJVs
+  without a host-country parent stay in the model for the boundary term.
+Outcome: n_local_parent with offset log(n_local).
+Regressors: cd_host = coord_dependence x host_parent and cd_nohost =
+  coord_dependence x (1 - host_parent): separate slopes; local_embeddedness
+  as control. host_parent is constant within the IJV and absorbed.
+Model (primary): fepois(n_local_parent ~ cd_host + cd_nohost
+  + local_embeddedness + offset(log(n_local)) | ijv_id^year)
+Fixed effects and identifying variation: as H1; the slopes come from
+  differences between domains inside the IJV-year, separately for IJVs with
+  and without a host-country parent.
+Models: Poisson (decisive); fractional logit; linear, weighted.
+Inference: permutation over domains (decisive; PI, 2026-11-25); two-way
+  IJV and domain and IJV-only errors reported. The boundary contrast rests on few IJVs without a
+  host-country parent (67 with five or more local parent-origin hires in the
+  tabulations); if fewer than 50 such IJVs contribute cells with a positive
+  outcome, its p-value comes from a wild cluster (score) bootstrap by IJV
+  (pre-analysis plan rules, decision 5).
+Test (confirmatory): cd_host > 0, one-sided, Holm-adjusted.
+Test (secondary, not in the family): cd_host - cd_nohost > 0, one-sided.
+Effect size: percent and percentage-point change in the local parent-origin
+  share among local hires per occupation SD and domain IQR of coord_dependence,
+  against the mean share in the estimation sample.
+Checks: host-country parent's group only as the definition of local
+  parent-origin (gate 4, decision 8b, robustness 13c); bounds for unobserved
+  histories; all-parents-in-Revelio sample.
+Competing accounts: as H1; in addition, parents with a large host workforce
+  supply local hires everywhere (absorbed by IJV x year as long as the
+  supply does not differ by domain; the resource-dependence check covers the
+  case where it does).
+```
+
+#### H4 (dynamic form of H3), stated at the contingency level
+
+When an environmental change raises the local-embeddedness requirement of a
+set of domains and leaves their coordination dependence unchanged, then, in
+the IJVs exposed to the change and relative to unexposed IJVs: (H4a) the
+local share of new hires rises more in the affected domains than in the other
+domains of the same IJV-year (the geographic axis moves); (H4b) the rise
+consists of local parent-origin hires where the affected domains' coordination
+dependence is high and of independent local hires where it is low (the
+organizational axis holds its contingency-fit position). Which contingency
+changes: local embeddedness. Which domains: those whose work depends on the
+changed part of the host environment. Direction: local share up in those
+domains; composition of the increase set by their coordination dependence.
+
+#### H4 instantiated for S13 (Brexit). H4a and H4b confirmatory (PI, 2026-11-25)
+
+The end of the UK-EU transition period on 31 December 2020 separated UK and
+EU regulation, customs, product approval, tax administration and employment
+law. For an IJV whose host and parent countries straddle the new border, the
+regulatory-facing domain (`REG`: legal, compliance, regulatory affairs,
+customs brokerage, tax and labor relations occupations) now needs knowledge of
+the host regime that staff from the other jurisdiction no longer hold: its
+local-embeddedness requirement rises. Its coordination dependence on the
+parents does not change. REG's coordination dependence is below the domain
+average (-0.47; 22 of the 98 domains score lower), so H4b predicts that the
+rise in REG is carried by independent local hires. REG is a single domain with
+one `coord_dependence` value, so a shock x REG x `coord_dependence` moderation
+is not identified at the primary grain; H4b is therefore stated as the
+directional prediction for REG (PI decision of 2026-11-25), and the
+moderation form is reported only as a secondary analysis.
+
+```
+Hypothesis: H4a (S13). From 2021, in exposed IJVs relative to control IJVs,
+  the local share of new hires rises more in REG than in the IJV's other
+  domains.
+Unit and sample: IJV x domain x year, hiring flows 2010-2025, n_emp >= 5,
+  n_obs >= 1; S13 sample (0.4): exposed and control IJVs with at least one
+  parent in Revelio; 831 rule.
+Outcome: n_local with offset log(n_obs).
+Regressor: shock x reg (exposed x post-2021 x REG); antic x reg (exposed x
+  2016-2020 x REG) enters as its own term so that the anticipation window
+  does not enter the baseline; the baseline is 2010-2015.
+Model (primary): fepois(n_local ~ shock:reg + antic:reg + offset(log(n_obs))
+  | ijv_id^domain + domain^year + ijv_id^year)
+Fixed effects: IJV x domain absorbs every time-invariant difference between
+  the domains of one IJV (including REG's level of local hiring and exposed x
+  REG); domain x year absorbs domain-specific shocks common to exposed and
+  control IJVs (COVID-19 effects on occupations, occupation-wide labor market
+  trends); IJV x year absorbs everything that moves the whole IJV in a year,
+  including the shock main effect, the part of the mobility shock that is
+  uniform across domains, sterling and demand.
+Identifying variation: the change from 2010-2015 to 2021-2025 in the gap
+  between REG and the other domains of the same IJV, exposed against control
+  IJVs (a triple difference [CITE: triple-difference estimator and its
+  identifying assumption]).
+Models: Poisson (decisive); fractional logit; linear, weighted (robustness).
+Inference: clustered by dyad (parent-host pair); the decisive p-value comes
+  from a wild cluster bootstrap by dyad with the null imposed, implemented
+  for the Poisson model as a cluster score bootstrap (restricted fit,
+  Rademacher weights, B = 9,999; code/R/functions/simulate_domain_panel.R,
+  score_boot()) [CITE: wild cluster bootstrap with few clusters]
+  [CITE: score bootstrap for nonlinear models]; the test rests on about 24
+  exposed pairs, below the 50-cluster line of decision 5. Dyad-clustered and
+  IJV-clustered t tests are reported as checks. The number of exposed pairs
+  that contribute REG cells in both periods is reported.
+Test: coefficient on shock:reg > 0, one-sided, Holm-adjusted.
+Effect size: 100 * (exp(b) - 1) percent change in the local share of REG
+  hiring in exposed IJVs after 2021; percentage points at the exposed REG
+  mean of 2010-2015.
+Checks: event study and pre-trend rule (section 2); GB-IE contrast; mobility
+  channel with the Rule C contrast (competing-pattern check below); placebos
+  (robustness 15).
+Competing accounts: (1) mobility channel: the end of free movement raises the
+  cost of international hiring in every domain; the uniform part is absorbed
+  by IJV x year; the part that varies with skill (salary thresholds bite in
+  lower-paid roles) is checked with shock x job_zone and the level term
+  below; REG lies above the average job zone (3.73), so a skill gradient of
+  the mobility channel biases the REG estimate down, not up. (2) COVID-19 at
+  the same onset: absorbed where common to exposed and control IJVs by domain
+  x year. (3) Anticipation 2016-2020: separate term. (4) Survivor bias: IJVs
+  dissolved because of Brexit are missing (robustness 15f).
+```
+
+```
+Hypothesis: H4b (S13, confirmatory, directional; PI decision of 2026-11-25).
+  Because REG scores low on coord_dependence, the post-2021 rise of the local
+  share in REG in exposed IJVs is carried by independent local hires: the
+  independent local component rises, and local parent-origin hires in REG do
+  not rise more than elsewhere.
+Unit and sample: as H4a, restricted to IJVs with a host-country parent (the
+  channel needs a parent workforce in the host country).
+Model (i), decisive: fepois(n_local_indep ~ shock:reg + antic:reg
+  + offset(log(n_obs)) | ijv_id^domain + domain^year + ijv_id^year)
+Model (ii), composition condition: fepois(n_local_parent ~ shock:reg
+  + antic:reg + exposed:reg + offset(log(n_local)) | domain^year + ijv_id^year)
+  IJV x domain effects are replaced by domain x year and IJV x year effects
+  with exposed x REG as a regressor, because local parent-origin hires in REG
+  cells are so rare that the model with IJV x domain effects separates (found
+  in the simulation of 2026-11-25).
+Fixed effects and identifying variation: as H4a for (i); for (ii) the
+  comparison is the parent-origin share among local hires in REG against other
+  domains, exposed against control, after against before.
+Inference: as H4a (cluster score bootstrap by dyad with the null imposed).
+Test: (i) coefficient on shock:reg > 0, one-sided, in the Holm family;
+  (ii) the coefficient on shock:reg must not be positive with two-sided
+  bootstrap p < 0.05.
+Decision rule: support if (i) passes its Holm-adjusted test, (ii) holds, and
+  H4a is at least partially supported; partial support if (i) passes
+  unadjusted but not Holm-adjusted, or if (i) passes and the core checks of
+  section 3 fail; no support if (i) fails; evidence against if (ii) shows a
+  positive coefficient with two-sided p < 0.05 (parent-origin hires carry the
+  rise), whatever (i) shows.
+Effect size: percent change in the independent local share of REG hiring;
+  percent change in the parent-origin share among local REG hires with its
+  95 percent interval.
+What the test can and cannot show: local parent-origin hires are a small part
+  of local hires (gate 4 tabulations), so (i) is close to H4a by construction
+  and adds little on its own; the information about the channel sits in (ii),
+  whose interval will be wide (simulation, section 6a). A non-significant (ii)
+  is not evidence that parent-origin hiring did not rise; the text reports the
+  interval and says how large a rise it rules out.
+```
+
+```
+Secondary (not confirmatory): moderation form of H4 (PI, 2026-11-25).
+  fepois(n_local_parent ~ shock:law_gov_importance + shock:law_gov_importance:coord_dependence
+  + antic:law_gov_importance + antic:law_gov_importance:coord_dependence
+  + offset(log(n_local)) | ijv_id^domain + domain^year + ijv_id^year), all
+  98 domains, law_gov_importance standardized across domains, host-parent
+  IJVs; the same with n_local and offset log(n_obs) for the geographic axis.
+  H4 at the contingency level predicts a positive three-way term for the
+  parent-origin share. Clustered by dyad, score bootstrap; reported without a
+  support label.
+```
+
+```
+GB-IE contrast and REG effect by linked status are checks of H4a (below);
+the mobility channel has its own confirmatory block (C1).
+REG by linked status (check of H4a): the H4a model with shock:reg split into
+  shock:reg:control_linked and shock:reg:(1 - control_linked). The regulatory
+  channel predicts both positive and not different; a REG effect present only
+  in one group points to the mobility channel.
+GB-IE contrast: shock:reg split into shock:reg:ie and shock:reg:non_ie. GB-IE
+  IJVs (31 before thresholds) see the regulatory change without the end of
+  free movement for Irish nationals, so the regulatory channel predicts a
+  positive REG coefficient in both groups. GB-IE is a single pair, hence a
+  single cluster: its coefficient is reported with IJV-clustered intervals
+  only and read descriptively.
+```
+
+#### C1 (S13 mobility channel; competing-channel test). Confirmatory (PI, 2026-11-25)
+
+The same date ended free movement between the UK and the EU, EEA and
+Switzerland. For an exposed IJV this raises the cost of hiring nationals of
+the other jurisdiction in every domain and at every level, including staff
+from a foreign parent's home units, who now need sponsorship under the
+intra-company or skilled worker routes. The channel acts on the geographic
+axis everywhere, not on the regulatory domain in particular; it is the
+competing account H4a must be separated from and is tested in its own right.
+
+```
+Hypothesis: C1 (S13). From 2021, in exposed IJVs relative to control IJVs,
+  (a) the local share of new hires rises; (b) international parent-origin
+  hires from a foreign parent's home country fall as a share of hires.
+  Secondary, two-sided (PI, 2026-11-25): (c) the fall in (b) differs between
+  UK-hosted IJVs whose EU, EEA or Swiss parent is control-linked under Rule C
+  and other UK-hosted exposed IJVs.
+Unit and sample: IJV x level x year, hiring flows 2010-2025, cells with
+  n_emp >= 5 and n_obs >= 1; S13 sample (0.4) with at least one parent in
+  Revelio; 831 rule.
+Outcomes: (a) n_local with offset log(n_obs); (b), (c) n_intl_parent_home
+  (proposed name: international parent-origin hires whose prior position was
+  in the home country of a foreign direct parent; for exposed IJVs this is the
+  other jurisdiction) with offset log(n_obs).
+Regressors: shock (exposed x post-2021); antic (exposed x 2016-2020);
+  for (c) also shock:uk_host and shock:control_linked, where control_linked
+  (Rule C, PI 2026-11-25) is 1 for a UK-hosted exposed IJV whose EU, EEA or
+  Swiss parent holds more than 50 percent of the voting rights or controls the
+  board (equity above 50 percent as the proxy where only equity data exist;
+  50/50 coded 0 unless board control is documented), and 0 otherwise; uk_host
+  is 1 for UK-hosted IJVs. Rule L (every JV party linked, Home Office guidance
+  ICW2.8 to ICW2.14 and GBM2.11 onward; candidate source homeoffice2026workers)
+  does not vary across IJVs and is reported for completeness only, as the
+  model without the control_linked term.
+Models (primary):
+  (a) fepois(n_local ~ shock + antic + offset(log(n_obs)) | ijv_id^level + level^year)
+  (b) fepois(n_intl_parent_home ~ shock + antic + offset(log(n_obs)) | ijv_id^level + level^year)
+  (c) fepois(n_intl_parent_home ~ shock + shock:uk_host + shock:control_linked
+      + antic + antic:uk_host + antic:control_linked + offset(log(n_obs))
+      | ijv_id^level + level^year)
+Fixed effects: IJV x level absorbs every time-invariant difference between
+  the levels of one IJV; level x year absorbs level-specific trends and shocks
+  common to exposed and control IJVs (COVID-19 effects by seniority, labor
+  market cycles). IJV x year effects are not used, because they would absorb
+  the IJV-wide shock that C1 predicts.
+Identifying variation: (a), (b) the change from 2010-2015 to 2021-2025 in
+  exposed against control IJVs (difference in differences, single common
+  onset); (c) the same change in control-linked against other UK-hosted
+  exposed IJVs.
+Inference: clustered by dyad; decisive p-values from the cluster score
+  bootstrap by dyad with the null imposed (wild cluster bootstrap counterpart
+  for the Poisson model; pre-analysis plan rules, decisions 5 and 6); IJV
+  clustering as a check. The number of control-linked exposed IJVs and of the
+  pairs they come from is reported. The four-level limit on permutation tests
+  concerns the static coord_role score and does not apply here.
+Test: one-sided: (a) shock > 0; (b) shock < 0. C1 enters the confirmatory
+  family as one member with the intersection-union p-value
+  p_C1 = max(p_a, p_b), which needs no adjustment within C1. (c)
+  shock:control_linked is tested two-sided and reported as a secondary
+  result outside the confirmatory family (PI, 2026-11-25: route access
+  predicts a weaker fall where control-linked, baseline dependence on parent
+  transfers a stronger one).
+Decision rule: support if p_C1 passes its Holm-adjusted threshold and the
+  core checks hold (event-study pre-trend rule of section 2 applied to the
+  level panel with treat = exposed; same signs in the fractional logit and
+  linear models; level-specific shock coefficients in (a) positive at all
+  four levels, sign only). Partial support if (a) and (b) pass at their
+  unadjusted one-sided 0.05 but p_C1 does not pass Holm-adjusted, or if a core check fails. No support if (a) or (b) fails.
+  Evidence against if (a) or (b) has the opposite sign with two-sided
+  p < 0.05.
+Effect size: percent change in the local share and in the international
+  parent-origin share of hires after 2021; the difference between
+  control-linked and other UK-hosted exposed IJVs in percent.
+Checks: all international parent-origin hires in place of the home-country
+  ones; UK-hosted IJVs and their controls only; Ireland excluded (GB-IE keeps
+  free movement for Irish nationals, so C1 predicts no effect there: a
+  placebo); level gradient i(level, shock) with IJV x year effects
+  (salary thresholds bite more at professional and operational levels).
+Level mapping (PI, 2026-11-25; labels from the Revelio data dictionary,
+  methodology page, "Seniority"): executive = seniority 6-7, middle_management
+  = 4-5, professional = 3, operational = 1-2. Robustness: (b) executive = 7,
+  middle_management = 5-6, professional = 3-4, operational = 1-2; (c) the
+  seven seniority codes as one linear term in the level-gradient check.
+  Disclosure: the staffing tabulations by seniority (2026-11-23) were seen
+  before this test and the mapping were fixed; they were not broken down by
+  exposure.
+Competing accounts: COVID-19 at the same onset (level x year effects absorb
+  the part common to exposed and controls); sterling and UK demand after the
+  referendum (IJV-wide; not separable in (a) and (b), which is why (c), a
+  within-exposed contrast, carries the channel-specific part).
+```
+
+The direction of (c) was relayed to the quant-analyst by the orchestrator,
+not set by the PI: the PI decided Rule C as the contrast and the test as
+confirmatory, not its sign (correction, 2026-11-25). Section 7, point 4,
+records that the intra-company route logic predicts the opposite sign; the
+sign is put to the PI before approval.
+
+### 2. Event study for H4a
+
+Model:
+
+```
+fepois(n_local ~ i(year, treat_reg, ref = c(2013, 2014, 2015)) + offset(log(n_obs))
+       | ijv_id^domain + domain^year + ijv_id^year)
+treat_reg = exposed x reg; cluster: dyad
+```
+
+- Leads and lags: one coefficient per calendar year 2010 to 2025 except the
+  reference. All exposed IJVs share the onset 2021, so event time equals
+  calendar year minus 2021 for everyone (-11 to +4) and the ends need no
+  binning for composition. Precision rule (proposed, applied before outcomes
+  are seen from the cell counts alone): if any of the years 2010 to 2012 has
+  fewer than 25 exposed REG cells with a positive denominator, those three
+  years are pooled into one lead.
+- Reference period: 2013 to 2015 pooled, the clean pre-period of the S13
+  design. The year -1 (2020) is not the reference because it lies in the
+  anticipation window and is the first COVID-19 year.
+- Groups of coefficients: 2010 to 2012, pre-trend leads; 2016 to 2020,
+  anticipation window (reported, not part of the pre-trend test); 2021 to
+  2025, effects.
+- Pre-trend test (PI, 2026-11-25): one pooled lead, the 2010 to 2012
+  coefficient of treat_reg against the 2013 to 2015 reference, with its
+  p-value from the cluster score bootstrap by dyad (one degree of freedom).
+  Reported but not deciding: the separate 2010, 2011 and 2012 leads, the
+  dyad-clustered Wald test of the three leads, and the slope of treat_reg x
+  (year - 2015) on 2010 to 2015. The trend-adjusted estimate is reported
+  beside H4a in every case.
+- Power of the pre-test: report the linear pre-trend slope that the pooled
+  test would detect with 80 percent power, and the bias in the H4a estimate
+  that such an undetected trend would produce [CITE: power of pre-trend tests
+  and the bias that conditioning on passing them can introduce]. Sensitivity
+  of H4a to bounded violations of parallel trends: the relative-magnitude
+  bound with M-bar = 1 decides causal language (PI, 2026-11-25); the bound
+  over a grid of M-bar values and the smoothness bound are reported
+  [CITE: sensitivity analysis for violations of parallel trends].
+- Staggered adoption: not relevant for S13, which has one common onset; the
+  two-way fixed-effects event study with never-exposed controls carries no
+  forbidden comparisons, and `sunab` or `did::att_gt` would reproduce it. If
+  the fallback S06 (staggered host adoption from 2017) replaces S13, its
+  design is specified as a dated amendment with `sunab` (never-exposed cohort
+  coded 10000) and `did::att_gt` with not-yet-treated controls
+  [CITE: heterogeneity-robust estimators for staggered adoption].
+
+Decision rule for the pre-trends (fixed before the data are seen):
+
+1. Pass: score-bootstrap p-value of the pooled 2010 to 2012 lead >= 0.10.
+   Causal language for H4a needs a second condition (PI, 2026-11-25): the
+   `HonestDiD` sensitivity bound with relative magnitudes, M-bar = 1,
+   computed from the event-study coefficients and their cluster score
+   bootstrap covariance, excludes zero. If the pre-test passes but the bound
+   includes zero, H4a is reported as a pattern consistent with the
+   regulatory channel, without causal language; its support classification
+   is unchanged. H4a may then be described with causal language, conditional on
+   parallel trends in the REG-to-other gap between exposed and control IJVs,
+   and the text names COVID-19 and the anticipation window as the remaining
+   threats. A non-rejection is not proof of parallel trends: the leads are
+   shown with their intervals and the detectable trend of the power check is
+   stated.
+2. Fail: that p-value < 0.10. No causal language for H4. The trend-adjusted
+   estimate (H4a with treat_reg x linear trend estimated on 2010 to 2015 and
+   extrapolated) is reported next to the main estimate, and H4 can be
+   classified at most as partial support (section 3).
+3. Anticipation: if the 2016 to 2020 coefficients are jointly positive
+   (p < 0.10), the text says that adjustment began after the referendum; the
+   main estimate (2021 to 2025 against 2010 to 2015) is unchanged by
+   construction, and a supplementary estimate with 2016 to 2025 as the post
+   period is reported.
+
+### 3. Decision rules
+
+Common to H1, H2, H3, H4a, H4b and C1: the decisive estimate is the Poisson
+coefficient named in the block; the decisive p-value is one-sided in the
+predicted direction and is Holm-adjusted across the six confirmatory family
+members (section 4) at a family-wise alpha of 0.05. H4b adds its composition
+condition and C1 its two components (intersection-union p-value), each with
+its own decision rule in its block. Two-sided 95 percent intervals are reported for every estimate.
+
+Core checks (the only results that can change a classification):
+
+| Hypothesis | Decisive p-value | Core checks |
+|---|---|---|
+| H1 | permutation test over domains, one-sided (PI, 2026-11-25) | (a) two-way (IJV, domain) and IJV-only clustered errors reported, not decisive; (b) same sign in the fractional logit and the linear model; (c) same sign without positions with imputed scores; (d) same sign under the 5-hires cell rule |
+| H2 | as H1 | as H1 |
+| H3 (`cd_host`) | as H1 | as H1 |
+| H4a (`shock:reg`) | cluster score bootstrap by dyad | (a) pre-trend rule passes (section 2); (b) same sign in the fractional logit and the linear model; (c) same sign with the broad REG list; (d) same sign under the 5-hires cell rule |
+| H4b (`shock:reg` on `n_local_indep`) | cluster score bootstrap by dyad | as H4a, plus the composition condition (ii), which decides between support and evidence against as stated in the block |
+| C1 (`shock` in (a) and (b); level panel) | cluster score bootstrap by dyad; p_C1 = max of the two one-sided p-values; (c) `shock:control_linked` two-sided, secondary | pre-trend rule on the level panel; same signs in the fractional logit and linear models; positive level-specific shock coefficients at all four levels (sign only) |
+
+Static inference (see section 7, point 1): the simulation of 2026-11-25 shows
+two-way clustered errors 20 to 43 percent too small and one-sided size 0.078
+to 0.114 at nominal 0.05 when outcomes carry a domain-level component, while
+the permutation test over domains holds its size. On 2026-11-25 the PI made
+the permutation p-value the decisive p-value for H1 to H3 ("Yes,
+permutation"); two-way and IJV-only errors are reported. Holm adjustment
+applies to the permutation p-values.
+
+Classification:
+
+- Support: positive coefficient, Holm-adjusted p < 0.05, and every core check
+  holds.
+- Partial support: positive coefficient and Holm-adjusted p < 0.05 with at
+  least one core check failing; or positive coefficient with unadjusted
+  one-sided p < 0.05 and Holm-adjusted p >= 0.05; for H4, also when the
+  pre-trend rule fails but the trend-adjusted estimate is positive with
+  one-sided p < 0.05.
+- No support: unadjusted one-sided p >= 0.05.
+- Evidence against: negative coefficient with two-sided p < 0.05; reported as
+  such, not as no support.
+- Size: an effect is called small if the change in the share per domain IQR
+  is below 5 percent of the mean share (proposed); this qualifies the reading,
+  not the classification.
+
+What robustness can and cannot change: robustness results cannot raise a
+classification. Only the core checks can lower it, and only in the way stated.
+Every other robustness result is reported in a table and discussed; a sign
+reversal across a whole group of them (for example all three grain
+alternatives) is named as a limitation in the text but does not reclassify.
+Secondary tests (H3 boundary, moderation form of H4, mobility channel,
+GB-IE contrast) are
+reported with their own one- or two-sided p-values, are not adjusted, and
+carry no support label. The levels part of H1 is exploratory.
+
+### 4. Multiple testing
+
+Policy (proposed): Holm's step-down procedure across the six confirmatory
+family members (H1, H2, H3, H4a, H4b test (i), C1 with its intersection-union
+p-value) at a family-wise error rate of 0.05 [CITE: Holm step-down
+procedure] [CITE: intersection-union test]. The H4b composition condition
+(ii) is a condition, not a test in the family; the two components of C1
+enter through one p-value, the larger of the two, which controls the error
+of the joint claim without a further adjustment. Reasons: (1) each of the six is a claim
+the paper would make on its own, so the family-wise rate, not the false
+discovery rate, is the relevant error; (2) Holm controls it under any
+dependence among the tests, which matters because the tests share IJVs and
+cells and are positively dependent; (3) it is uniformly more powerful than
+Bonferroni, and with six members its cost is modest: the smallest p-value is
+compared with 0.0083 (0.05/6), and the weakest members, likely H4 and C1,
+are compared with up to 0.05 if the others reject first. H4a and H4b (i) are nearly
+the same test (section 1), which Holm handles without penalty beyond one
+step; treating them as one family member is the alternative if the PI
+prefers it. Benjamini-Hochberg was not chosen because the
+family is small and the aim is confirmation, not discovery. Secondary,
+robustness and exploratory results are not adjusted and are labeled.
+
+### 5. Robustness set (fixed order; each item tied to the decision that created it)
+
+1. Fractional logit and linear models for every confirmatory test, with the
+   samples of all three estimators side by side (pre-analysis plan rules,
+   decision 5).
+2. Wild cluster (score) bootstrap wherever a test rests on fewer than about 50
+   clusters: H4a, H4b and the mobility term by dyad; the H3 boundary by IJV if
+   fewer than 50 IJVs without a host-country parent contribute (pre-analysis
+   plan rules, decision 5).
+3. Inference checks: IJV-only clustering and the permutation test over
+   domains for the static models (decision 6); IJV clustering for the shock
+   models (S13 design); dyad defined by the combination of all foreign parent
+   countries instead of the largest-equity parent (proposed).
+4. Cell rules: at least 5 hires (route to gate 5, decision 6); 3 and 10
+   employees (skill candidate list, item 4).
+5. Grain: Revelio `role_k50` (50 groups) and the nine functions, with scores
+   aggregated to that grain from the occupation scores (score construction,
+   decision 4; route to gate 5, decision 5).
+6. Scores: broad element sets (score construction, decision 1); level scale
+   (`*_lv`) as an appendix check (decision 2); outside raters' scores for the
+   50 `role_k50` groups if ICC(2,k) >= 0.70 (decision 8; route, decision 3);
+   the function ordering of `kim2003global` as a convergent-validity check
+   (gate 2, decisions 1 to 4).
+7. Imputation and coding route: positions with `score_imputed` dropped
+   (score construction, decision 3; includes the military domains); positions
+   with `onet_source` = lookup dropped (PI, 2026-11-25).
+8. Skill level: domain mean `job_zone` as an added regressor in H1 to H3, and
+   `shock:job_zone` in H4a (score construction, decision 7).
+9. H4 measure: REG built from the broad list (22 codes); continuous
+   `law_gov_importance` in place of `reg`, without the REG carve-out
+   (score construction, decision 5); the moderation form shock x
+   `law_gov_importance` x `coord_dependence` as the secondary analysis of H4
+   (PI, 2026-11-25; block in section 1).
+10. Entrants: one- and five-year windows (pre-analysis plan rules, decision
+    2); entrants counted as local or international independent hires by place
+    of education (gate 4, decision 8c).
+11. The 831 flagged IJVs: dropped if the audit keeps them, added back if it
+    drops them (pre-analysis plan rules, decision 3).
+12. Period and unmapped employers: full period from formation; the cell's
+    share of prior employers not mapped to a Revelio company as a control
+    (pre-analysis plan rules, decision 4).
+13. Samples: (a) IJVs with all parents in Revelio (gate 4, decision 8a);
+    (b) strategic subset and `core` (gate 4, decision 6); (c) local
+    parent-origin from the host-country parent's group only (gate 4,
+    decision 8b); (d) listed JVs dropped; ultimate owner's country for the
+    host-parent label and for S13 exposure (gate 4, decisions 2 and 3;
+    rescoring variant "Orbis, owner"); (e) usability threshold of 10 and 30
+    employees (gate 4, decision 6).
+14. Coverage: the Revelio-to-Orbis coverage ratio as a control, from 2015 on
+    (gate 4, decision 8d).
+15. S13 design checks (route to gate 5, decision 7; rescoring 4.1 and 9):
+    (a) GB-IE contrast and Ireland excluded; (b) level x exposure x post
+    mobility term; (c) mobility channel with the Rule C contrast
+    (`control_linked`), Rule L reported for completeness (pre-analysis plan
+    rules, decision 8; PI, 2026-11-25); (d) announcement onset 2016 as the post period;
+    (e) placebos: shifted onset 2013 on 2010 to 2015 data, the placebo
+    exposure of third-country parent-parent pairs, and each of the 97
+    non-REG domains in place of REG, with the rank of the REG estimate in
+    that distribution reported; (f) IJVs formed before 2016 only (survivor
+    and entry check); (g) H2 without exposed IJV-years from 2016 on.
+16. Unobserved histories: `n_not_obs` as its own outcome on the scores, and
+    bounds (all unknown histories counted as independent, then as
+    parent-origin) for H1 and H3 (gate 4 pilot; skill, Step 3).
+17. Origin window for prior positions of one and five years next to three
+    (PI, 2026-11-25).
+18. Level mapping for the level panel (C1 and the levels part of H1; PI,
+    2026-11-25): (b) executive = seniority 7, middle_management = 5-6,
+    professional = 3-4, operational = 1-2; (c) the seven seniority codes as
+    one linear term.
+19. Resource dependence (gate 2, decisions 1 to 4; pfeffer1978external): an
+    indicator that the domain is among the leading occupation groups of a
+    parent's industry, added to H1 and H3 and interacted with the score
+    `[DATA: public industry-by-occupation employment matrix to define the
+    parent-industry match, for example the BLS OEWS industry-occupation
+    tables, mapped from the parents' NACE or NAICS codes]`.
+
+Not carried forward: ownership-adjusted parent dominance (it belongs to the
+cross-partner measures dropped at gate 4, decision 1); staggered estimators
+for S13 (single onset; section 2).
+
+### 6. Deviation policy
+
+1. The plan is versioned at approval (v1.0, the commit hash of the approved
+   gate file recorded in `docs/decisions.md`).
+2. Before any model touches real outcome data (gate 6 open), changes are
+   amendments: dated in `docs/decisions.md`, approved by the PI, recorded in
+   the gate file with the reason. This includes a change of the H4 measure
+   made from cell counts alone (section 7, point 2).
+3. After real outcomes have been seen, every departure is a deviation, dated
+   in `docs/decisions.md` with the label "Deviation from the pre-analysis plan
+   (exploratory)" or, for a correction of a coding or data error that leaves
+   the specification unchanged, "Correction". Each entry states what changed,
+   why, and whether the result was known when the change was made.
+4. Deviations never replace a planned result: the planned specification is
+   reported as planned, and the deviating one is shown apart, labeled
+   exploratory. Forced deviations (a model that cannot be estimated, a
+   variable that cannot be built) are reported with the reason and the
+   closest feasible specification.
+5. `reviews/gate-7-results.md` lists every deviation and correction, and
+   `code/quarto/analysis-report.qmd` has a section "Departures from the
+   pre-analysis plan".
+
+### 6a. Simulated recovery check (simulated data only)
+
+Simulated data only (`data/synthetic/estimate-recovery-domain-synthetic-2026-11-25.md`,
+written by `code/R/tests/check_recovery_domain.R` with
+`code/R/functions/simulate_domain_panel.R`; no staffing data read). IJV x
+domain x year cells with the 98 real O\*NET domain scores as fixed
+regressors, outcomes drawn log-linear in the shares (so the planted value is
+the Poisson estimand), a domain random effect common to all IJVs, and the S13
+exposure structure of `rescoring.md` 4.1 (24 exposed pairs, 231 exposed IJVs).
+The noise SDs and the REG prevalence are assumptions; power figures depend on
+them.
+
+1. Static, Poisson with offset (500 draws per world of 1,000 IJVs). The
+   estimator recovers the planted values: mean estimates 0.143 (H1; the
+   composite of the two parent-origin categories, planted 0.15 in IJVs with a
+   host-country parent), 0.050 (H2, planted 0.05), 0.154 (H3 `cd_host`,
+   planted 0.15); planted nulls average 0.000 to 0.008.
+2. Two-way clustering by IJV and domain does not give standard errors close
+   to the sampling SD: the SD of the estimates is 1.20 to 1.43 times the mean
+   two-way SE, and under the null world the one-sided 5 percent test rejects
+   in 9.6 percent (H1), 11.4 percent (H2) and 7.8 percent (H3) of draws;
+   95 percent intervals cover 84 to 88 percent. IJV-only errors are far worse
+   (SE ratio 1.5 to 4.3; one-sided rejection 13 to 35 percent under the null).
+   The shortfall persists with equal domain sizes (SE ratio 1.13 to 1.34) and
+   is not removed by a cluster score bootstrap by domain (one-sided rejection
+   8.4 to 11.4 percent under the null).
+3. The permutation test over domains holds its size (150 draws per world of
+   600 IJVs, 99 permutations: one-sided rejection 7.3 percent for H1 and 2.7
+   percent for H2 under the null, within the Monte Carlo tolerance of about
+   10 percent at 150 draws) and has power 0.82 (H1) and 0.77 (H2) at the
+   planted effects, against 0.90 and 0.87 for the over-rejecting two-way test
+   on the same draws.
+4. H4a (150 draws per cell). The cluster score bootstrap by pair holds its
+   size (6.7 percent with REG cells in 30 percent of IJVs, 4.7 percent with
+   10 percent). Power at a planted rise of 0.10, 0.20 and 0.30 in the log
+   local share of REG hiring: 0.33, 0.75 and 0.97 when 30 percent of IJVs have
+   a REG cell (about 52 exposed IJVs with REG cells in 15 pairs); 0.15, 0.37
+   and 0.58 when 10 percent do (about 17 exposed IJVs in 9 pairs). Minimum
+   detectable effect at 80 percent power: 0.21 and 0.35 on the log scale,
+   that is a rise of 23 and 42 percent in the local share of REG hiring.
+   Pair-clustered standard errors are 6 to 20 percent too small (the t test
+   rejects 6.7 to 8.0 percent under the null), which is why the bootstrap is
+   decisive.
+5. Event-study pre-test: with no planted pre-trend, the pair-clustered joint
+   Wald test of the 2010 to 2012 leads rejects at the 0.10 line in 21 to 34
+   percent of draws (14 to 24 percent at 0.05). Under the pre-trend rule of
+   section 2 as written, H4 would fail the rule in about a quarter of samples
+   with parallel trends (section 7, point 3).
+6. H4b (high-REG scenario only). Test (i) holds its size (7.3 percent) and has
+   power 0.30, 0.69 and 0.94 at 0.10, 0.20 and 0.30, close to H4a. The
+   composition condition (ii) rarely fires falsely (4 to 6 percent), but when
+   the planted rise is carried by parent-origin hires (parent share among
+   local REG hires multiplied by e) it detects this in only 23 percent of
+   draws, so H4b would be classified as supported in 67 percent of draws in
+   which it is false.
+7. Not simulated: C1 (the level panel and the Rule C contrast were decided
+   after the run was set up; they need a level-panel generator) and the level
+   part of H1 (covered at the function grain by the run of 2026-11-23).
+8. Run time 1,727 s on 14 workers, above the 15-minute target.
+
+### 7. Points for the PI before approval
+
+1. Static inference. The PI decided two-way clustering by IJV and domain as
+   the primary inference for H1 to H3. In the simulation these errors are 20
+   to 40 percent too small whenever outcomes carry a domain-level component,
+   which is almost certain with occupations, and the one-sided test has a
+   size of about 0.08 to 0.11 at nominal 0.05; the permutation test holds its
+   size. Proposal: make the permutation p-value (B = 999) decisive for H1 to
+   H3 and report the two-way and IJV-only errors. Under the plan as written,
+   core check (a) already prevents a support label on the two-way test alone,
+   but partial support could rest on it.
+2. H4a power depends on how many exposed IJVs have a REG cell with at least
+   five employees, which is unknown. With 52 such IJVs in 15 pairs the test
+   detects a 23 percent rise in the local share of REG hiring with 80 percent
+   power; with 17 IJVs in 9 pairs it needs a 42 percent rise. Proposal: before
+   approval, the PI instructs a count of REG cells (employees and hires only,
+   no origin categories) in exposed and control IJVs before and after 2021,
+   a feasibility count, not an outcome. If fewer than about 10 exposed pairs
+   contribute REG cells in both periods, the PI may switch the confirmatory
+   H4 measure to the broad list or to `law_gov_importance` as an amendment
+   before any outcome is seen.
+3. Pre-trend rule. The pair-clustered Wald pre-test over-rejects (21 to 34
+   percent at 0.10 with parallel trends planted). Proposal: compute the
+   pre-test from the cluster score bootstrap on one pooled 2010 to 2012 lead
+   (one degree of freedom), keeping the 0.10 line. Not yet simulated.
+4. C1 sign of (c). The PI's direction is that the fall of international
+   parent-origin hires is stronger where the EU parent is control-linked
+   under Rule C. The route-access reading predicts the opposite: a
+   control-linked IJV keeps the intra-company route, so its parent transfers
+   should fall less. The PI's direction holds if control-linked IJVs drew more
+   of their staff from the parent under free movement and the sponsored route
+   replaces that flow only in part and at higher cost. A one-sided
+   confirmatory test needs its sign fixed before approval; please confirm it.
+   C1 was not simulated; its power rests on the number of control-linked
+   exposed IJVs, which can be counted from the ownership data alone before
+   approval.
+5. H4b. Test (i) is nearly the same test as H4a, because local parent-origin
+   hires are a small share of local hires; the channel information sits in
+   the composition condition (ii), which has little power (23 percent against
+   a tripling of the parent share among local REG hires). H4b will rarely
+   discriminate between channels. The decision rule treats a significantly
+   positive (ii) as evidence against. A non-significant (ii) is reported as
+   an interval and not read as a null finding. The composition model has to
+   drop IJV x domain effects (it separates with them).
+6. Wild cluster bootstrap for Poisson. No installed package does this
+   (`fwildclusterboot` is not installed and covers linear models only). The
+   plan uses a cluster score bootstrap with the null imposed, written by the
+   agent (`score_boot()`). It held size for H4a and H4b in the simulation but
+   needs review and a methods source.
+7. GB-IE is one country pair and therefore one cluster; its contrast cannot be
+   tested at the pair level and is read descriptively.
+8. `dyad`: the codebook's identifier table defines it as the pair of parent HQ
+   countries, while the S13 design clusters by parent-host pair; the plan
+   proposes the host plus the largest-equity foreign parent, and gate 5
+   should revise the codebook entry. The number of control pairs is not yet
+   counted, and the bootstrap depends on it.
+9. Proposed choices needing the PI's yes or no: H2 on all of `core_main` (not
+   only IJVs with a parent in Revelio); the variable names `exposed`,
+   `antic`, `reg`, `control_linked`, `uk_host`, `n_entrant`, `n_unknown`,
+   `n_intl_parent_home`; the precision rule for binning the leads; the 5
+   percent "small effect" reading; the Holm family of six with H4a and H4b
+   (i) counted separately.
+10. The three military domains (55-1, 55-2, 55-3) carry identical imputed
+    scores (overall means); they are dropped in core check (c).
+11. 30 exposed IJVs were formed from 2021 and have no pre-period; they add
+    nothing to the H4 and C1 contrasts, and robustness 15f keeps only IJVs
+    formed before 2016.
+
+### 8. Methods references still needed (`[CITE]`)
+
+None of the methods works is in `literature/references.bib`. Candidates to
+verify through `/references` (author-year only; not cited until verified):
+
+1. Poisson pseudo-maximum likelihood with fixed effects (the item already
+   open): Wooldridge (1999); Santos Silva and Tenreyro (2006); Correia,
+   Guimaraes and Zylkin (2020).
+2. Multiway clustering: Cameron, Gelbach and Miller (2011).
+3. Wild cluster bootstrap and few treated clusters: Cameron, Gelbach and
+   Miller (2008); MacKinnon and Webb (2017); Roodman, MacKinnon, Nielsen and
+   Webb (2019).
+4. Score bootstrap: Kline and Santos (2012).
+5. Randomization inference over the assignment of a regressor: Young (2019).
+6. Pre-trend tests and sensitivity: Roth (2022); Rambachan and Roth (2023).
+7. Holm (1979).
+8. Fractional response: Papke and Wooldridge (1996).
+9. Triple difference: Olden and Moen (2022).
+10. Staggered adoption (S06 fallback only): Sun and Abraham (2021); Callaway
+    and Sant'Anna (2021); Borusyak, Jaravel and Spiess (2024).
+11. Software: Berge (2018), `fixest`.
+12. Intersection-union tests for a joint directional claim (C1): Berger
+    (1982).
+13. Small-sample bias of cluster-robust variance estimators with a
+    cluster-level regressor (section 7, point 1): Bell and McCaffrey (2002);
+    Pustejovsky and Tipton (2018).
 
 ## Part C: S13 mobility channel, linked-entity rule
 
@@ -989,10 +1978,14 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
 | Deliverable | Path | Notes |
 |---|---|---|
 | Part A: hypotheses and measurement | this file | merged 2026-11-25 |
-| Part B: estimation | this file | in progress (quant-analyst) |
+| Part B: estimation | this file | merged 2026-11-25 |
 | Part C: S13 linked-entity rule | this file | merged 2026-11-25 |
 | Contingency scores and domains | `data/processed/contingency-scores-*-v1-2026-11-25.csv`, `code/R/07_contingency_scores.R` | O\*NET only; checks in `data/interim/contingency-scores-v1-2026-11-25.md` |
-| Simulated recovery check at the domain grain | `data/synthetic/estimate-recovery-domain-synthetic-2026-11-25.md` | in progress |
+| H4 feasibility count | `code/R/08_feasibility_reg_cells.R`, `data/interim/feasibility-reg-cells-2026-11-25.md` | structural counts only |
+| Pre-trend simulation | `code/R/tests/check_pretrend_pooled.R`, `data/synthetic/pretrend-pooled-synthetic-2026-11-25.md` | simulated data only |
+| Audit sample and worksheet (831 flagged IJVs) | `code/R/09_audit_parent_family_sample.R`, `data/interim/audit-parent-family-worksheet-2026-11-25.xlsx` (gitignored), `docs/coauthor-notes/audit-parent-family-guide-2026-11-25.qmd` | coding pending |
+| Outside-rater instrument | `docs/coauthor-notes/rater-instrument-2026-11-25.qmd`, `code/R/10_rater_sheet.R`, `data/interim/rater-sheet-*.xlsx` (gitignored) | licence question and comparison rule open |
+| Simulated recovery check at the domain grain | `data/synthetic/estimate-recovery-domain-synthetic-2026-11-25.md`, `code/R/tests/check_recovery_domain.R`, `code/R/functions/simulate_domain_panel.R` | simulated data only; 500 draws for the static tests, 150 for H4; the mobility test (C1) and the level part of H1 not simulated |
 
 ## Quality checks run
 
@@ -1008,7 +2001,30 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
   decided items; the domain count, the count of unrated codes, the S13
   window and the H4 moderator are corrected above; the rest are in
   part A6 (proposed edits).
-- Estimation and recovery checks: pending (part B).
+- Part B: no placeholders, no em dashes; its one citation key exists in
+  `literature/references.bib`; every methods reference is a `[CITE]`
+  marker (part B, section 8).
+- Simulated recovery (simulated data only): the Poisson estimator recovers
+  the planted effects for H1 to H3 (0.143, 0.050, 0.154 against 0.15, 0.05,
+  0.15). Two-way (IJV, domain) errors are 20 to 43 percent too small, with
+  one-sided size 0.078 to 0.114 at a nominal 0.05; IJV-only errors are
+  worse. The permutation test over domains holds its size (0.073 and 0.027)
+  with power 0.82 and 0.77. H4a: bootstrap size 0.067 and 0.047; the effect
+  detectable with 80 percent power is a 23 percent rise in the local share
+  of REG hiring if 30 percent of IJVs have a REG cell, and a 42 percent rise
+  if 10 percent do. The pair-clustered pre-trend Wald test rejects in 21 to
+  34 percent of draws at the 0.10 line with parallel trends.
+- Pooled-lead pre-trend test (simulated data only, 200 draws per cell,
+  `data/synthetic/pretrend-pooled-synthetic-2026-11-25.md`, scenario close to
+  the broad-list count: about 39 exposed IJVs in 13 pairs, 126 control
+  pairs): size 0.095 at the 0.10 line under parallel trends (0.080 to 0.150
+  across cells). Power against a linear pre-trend is low: 0.105, 0.135 and
+  0.19 for trends of 0.01, 0.02 and 0.03 per year, which put a bias of about
+  0.10, 0.21 and 0.31 into H4a; H4a then rejects falsely in 30, 70 and 94
+  percent of draws, as often among draws that pass the pre-test. H4a in this
+  scenario: bootstrap size 0.060, detectable effect at 80 percent power 0.234
+  on the log scale (a 26 percent rise); pair-clustered errors 10 to 27
+  percent too small, so the bootstrap stays decisive.
 
 ## Known weaknesses and uncertainties
 
@@ -1023,19 +2039,46 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
 - Part C: the wording in force on 1 January 2021 and in April 2022 is
   inferred from change tables (`[unverified]`); the data do not show which
   parents are parties to a JV agreement.
+- Static inference: the decided two-way clustering over-rejects in the
+  simulation whenever outcomes carry a domain-level component; only the
+  permutation test holds its size (part B, section 7, point 1).
+- H4a power: with the broad list, 38 exposed IJVs in 16 pairs carry REG
+  cells in both periods, close to the simulation's 30 percent scenario
+  (about 52 IJVs in 15 pairs, detectable rise about 23 percent); the test
+  remains modest in power. The mobility test rests on 59 control-linked
+  UK-hosted IJVs.
+- The pre-trend rule as written fails H4 in about a quarter of samples with
+  parallel trends (point 3).
+- H4b test (i) nearly duplicates H4a, and the composition condition has
+  little power, so H4b rarely separates the channels (point 5).
+- No package offers a wild cluster bootstrap for Poisson; the plan relies on
+  the agent's score bootstrap, which held size but needs review (point 6).
+- GB-IE is a single cluster, so its contrast is descriptive (point 7).
 - Open `[CITE]` and `[DATA]` markers are listed in parts A and B.
 
 ## Decisions required from the PI
 
-1. Settled on 2026-11-25: the mobility-channel contrast is Rule C (see
-   "Decisions in chat during stage 5", item 3).
-2. Settled on 2026-11-25: the mobility-channel term is a confirmatory test
-   on the level panel (see "Decisions in chat during stage 5", item 4).
-3. Settled on 2026-11-25: the seniority-to-level mapping (see "Decisions in
-   chat during stage 5", item 5).
-4. Settled on 2026-11-25: part A5 is kept and extended (see "Decisions in
-   chat during stage 5", item 6).
-5. Decisions from part B, once it is merged.
+Settled on 2026-11-25 (see "Decisions in chat during stage 5"):
+
+1. Mobility-channel contrast: Rule C (item 3).
+2. The mobility-channel test is confirmatory on the level panel (item 4).
+3. Seniority-to-level mapping (item 5).
+4. Part A5 kept and extended (item 6).
+5. Permutation p-value decisive for H1 to H3 (item 7).
+6. Feasibility count run; the broad list is the confirmatory H4 measure
+   (item 8).
+7. Pre-trend rule: the pooled-lead bootstrap test (item 9), simulated on
+   2026-11-25 ("Quality checks run").
+8. Part (c) of the mobility test two-sided and secondary (item 10).
+9. Mobility test labeled C1 (item 11).
+10. The six smaller choices of part B (item 12).
+
+11. Causal language for H4a: pre-test and `HonestDiD` bound (item 13).
+12. S13 control group: the 104 owner-linked IJVs dropped (item 14).
+
+No decision from parts A to C is open. Open before approval (see "Items
+this plan still has to settle"): the full texts and the G2 re-run, the audit
+of the 831 flagged IJVs, the outside raters, and the `[CITE]` markers.
 
 ## Proposed changes to earlier stages
 
