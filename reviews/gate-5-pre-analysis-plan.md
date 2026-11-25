@@ -14,7 +14,11 @@ The PI adopted S13 as the focal shock and S06 as the fallback, in chat on
 2026-11-24 ("Adopt S13, S06 fallback"), after `/shock-options rescore`.
 Recorded in `docs/decisions.md` (Decided, 2026-11-24).
 
-| | Focal: S13 | Fallback: S06 |
+Amended on 2026-11-25: S06 is retired as the fallback; S13 is the only
+confirmatory shock and is not replaced ("Decisions in chat during stage
+5", item 17). The S06 column below is kept as the record of the rescore.
+
+| | Focal: S13 | Fallback: S06 (retired 2026-11-25) |
 |---|---|---|
 | Shock | Brexit: end of the UK-EU transition period and of free movement | Staggered investment screening in OECD hosts |
 | Onset | 2021 (referendum 2016; 2016 to 2020 as anticipation window, proposed) | Host adoption year, 2017 onward (proposed lower bound) |
@@ -268,6 +272,34 @@ Recorded in `docs/decisions.md` (Decided, 2026-11-25).
     0.70; ratings stored gitignored. The PI asks WRDS or Revelio about sharing
     the group labels; otherwise the O\*NET-only workbook is used. PI: answers
     of 2026-11-25.
+16. Registration: no outside registry. After approval the plan is fixed by
+    an annotated Git tag `pap-v1.0` on the `main` commit that carries the
+    approved gate file, pushed to GitHub, with its hash recorded in
+    `docs/decisions.md` and the gate 6 file; amendments get new tags, and no
+    `pap-*` tag is moved or deleted. PI: "GitHub tag only".
+17. S06 is retired as the fallback shock. S13 is the only confirmatory
+    shock and is not replaced, whatever the panel build, the pre-trend
+    test or the results show; a failed pre-trend test falls under the
+    pre-trend rule and thin cells under the H4 fallback measures. S06 may
+    return only as a separate analysis labeled exploratory. PI: "Yes,
+    retire S06".
+18. Resource-dependence check (robustness 19) defined: parent industry from
+    Orbis NAICS 2017 (ultimate owner for holding parents); BLS OEWS
+    industry-by-occupation matrix, NAICS 4-digit, one fixed vintage; a
+    domain is core for a parent if its employment share in the parent's
+    industry is at least twice its share across all industries; any parent
+    for H1, the host-country parent for H3; the coordination reading holds
+    if the score keeps its sign and at least half its size. The PI's
+    acceptance is the go-ahead for the industry-code pull. PI: "Accept
+    all".
+19. Coverage of the resource-dependence check maximized (rule v2): own
+    primary, core and secondary Orbis codes, then the ultimate owner's, then
+    the Capital IQ industry tree through SIC to NAICS 2017 for Capital IQ
+    parents; holdings include NACE 70.1; available-case `rd_core` primary for
+    H1, complete-case beside it; OEWS match by 4-digit, combined, then
+    3-digit industry. 76.0 percent of parents and 93.5 percent of IJVs (at
+    least one parent) are covered. PI: "Pull Capital IQ too", "try to
+    maximise the saample".
 
 ### Items this plan still has to settle
 
@@ -275,7 +307,6 @@ Listed in the Open section of `docs/decisions.md`:
 - the audit of the 831 flagged IJVs (before the panel is built);
 - the outside raters (recruited by the PI) and their ratings (before the panel is built);
 - `[CITE]` markers for the O\*NET-based scores (targeted S10 search at the G2 re-run);
-- the S06 definitions, if the fallback is needed;
 - the methods `[CITE]` markers of part B, section 8, including the Poisson
   fixed-effects reference (through `/references`);
 - the full texts and the G2 re-run, before this gate is approved.
@@ -1509,10 +1540,10 @@ treat_reg = exposed x reg; cluster: dyad
   [CITE: sensitivity analysis for violations of parallel trends].
 - Staggered adoption: not relevant for S13, which has one common onset; the
   two-way fixed-effects event study with never-exposed controls carries no
-  forbidden comparisons, and `sunab` or `did::att_gt` would reproduce it. If
-  the fallback S06 (staggered host adoption from 2017) replaces S13, its
-  design is specified as a dated amendment with `sunab` (never-exposed cohort
-  coded 10000) and `did::att_gt` with not-yet-treated controls
+  forbidden comparisons, and `sunab` or `did::att_gt` would reproduce it.
+  S13 is not replaced by another shock (S06 retired as fallback, PI,
+  2026-11-25); a later exploratory S06 analysis would use `sunab` and
+  `did::att_gt` with not-yet-treated controls and be reported apart
   [CITE: heterogeneity-robust estimators for staggered adoption].
 
 Decision rule for the pre-trends (fixed before the data are seen):
@@ -1685,12 +1716,29 @@ robustness and exploratory results are not adjusted and are labeled.
     2026-11-25): (b) executive = seniority 7, middle_management = 5-6,
     professional = 3-4, operational = 1-2; (c) the seven seniority codes as
     one linear term.
-19. Resource dependence (gate 2, decisions 1 to 4; pfeffer1978external): an
-    indicator that the domain is among the leading occupation groups of a
-    parent's industry, added to H1 and H3 and interacted with the score
-    `[DATA: public industry-by-occupation employment matrix to define the
-    parent-industry match, for example the BLS OEWS industry-occupation
-    tables, mapped from the parents' NACE or NAICS codes]`.
+19. Resource dependence (gate 2, decisions 1 to 4; pfeffer1978external;
+    defined by the PI on 2026-11-25, chat items 18 and 19). Parent industry
+    (rule v2, `code/R/functions/parent_industry.R`): own Orbis primary NAICS
+    2017 code (not for a holding), core code, secondary code; then the
+    ultimate owner's codes in the same order; for Capital IQ parents the
+    Capital IQ industry tree mapped to SIC and through the Census
+    concordances to NAICS 2017 (modal 4-digit industry). Holding parents:
+    NAICS 5511 or NACE 64.2 or 70.1; holding codes are never used. Matrix:
+    BLS OEWS May 2021 national industry-specific estimates (the first
+    release based only on 2018 SOC data), matched by 4-digit industry, then
+    the OEWS combined industry, then the 3-digit industry. `rd_core` = 1 if the domain's
+    employment share in the parent's industry is at least twice its share
+    across all industries; `rd_ratio` = the log of that ratio (alternative
+    specification). H1: `rd_core` = 1 if the domain is core for any parent
+    with a code, with an indicator that some parent's code is missing
+    (available case, primary); all parents coded (complete case) beside it.
+    H3: the host-country parent's industry. `rd_core` and its interaction
+    with the score enter the H1 and H3 models. Reading rule, fixed before
+    the data are seen: the coordination reading holds if the score's
+    coefficient keeps its sign and at least half its size; otherwise the
+    paper reports that resource dependence accounts for part of the
+    pattern. Outside the Holm family. US industry structures are a stated
+    limitation, as for O\*NET.
 
 Not carried forward: ownership-adjusted parent dominance (it belongs to the
 cross-partner measures dropped at gate 4, decision 1); staggered estimators
@@ -1699,7 +1747,10 @@ for S13 (single onset; section 2).
 ### 6. Deviation policy
 
 1. The plan is versioned at approval (v1.0, the commit hash of the approved
-   gate file recorded in `docs/decisions.md`).
+   gate file recorded in `docs/decisions.md`) and fixed by the annotated Git
+   tag `pap-v1.0` on that commit, pushed to GitHub; there is no outside
+   registry (PI, 2026-11-25). Amendments before gate 6 are tagged
+   `pap-v1.1`, `pap-v1.2` and so on; a `pap-*` tag is never moved or deleted.
 2. Before any model touches real outcome data (gate 6 open), changes are
    amendments: dated in `docs/decisions.md`, approved by the PI, recorded in
    the gate file with the reason. This includes a change of the H4 measure
@@ -1864,7 +1915,8 @@ verify through `/references` (author-year only; not cited until verified):
 7. Holm (1979).
 8. Fractional response: Papke and Wooldridge (1996).
 9. Triple difference: Olden and Moen (2022).
-10. Staggered adoption (S06 fallback only): Sun and Abraham (2021); Callaway
+10. Staggered adoption (only for an exploratory S06 analysis; S06 retired as
+    fallback on 2026-11-25): Sun and Abraham (2021); Callaway
     and Sant'Anna (2021); Borusyak, Jaravel and Spiess (2024).
 11. Software: Berge (2018), `fixest`.
 12. Intersection-union tests for a joint directional claim (C1): Berger
@@ -2054,6 +2106,9 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
 - No package offers a wild cluster bootstrap for Poisson; the plan relies on
   the agent's score bootstrap, which held size but needs review (point 6).
 - GB-IE is a single cluster, so its contrast is descriptive (point 7).
+- Registration rests on a Git tag in a public repository, not on a registry
+  entry: a tag can be moved or deleted and history rewritten, so a reviewer
+  may give it less weight as evidence of timing (PI, 2026-11-25, chat item 16).
 - Open `[CITE]` and `[DATA]` markers are listed in parts A and B.
 
 ## Decisions required from the PI

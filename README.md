@@ -113,6 +113,9 @@ Rscript code/R/wrds/13_quality_flags.R synthetic       # quality flags on the si
 Rscript code/R/wrds/13_quality_flags.R v3              # the same flags on the real matched dataset (no WRDS connection)
 Rscript code/R/tests/synthetic_onet.R                  # simulated twin of the O*NET extracts (needs the synthetic spells)
 Rscript code/R/wrds/14_wrds_onet_code.R v3             # Revelio O*NET codes for the JV positions and the role lookup (one to two hours)
+Rscript code/R/tests/synthetic_parent_industry.R      # simulated twin of the parent industry pull and a test of the holding rule
+Rscript code/R/wrds/15_wrds_parent_industry.R         # Orbis industry codes of the parents and owners; runs 16 if needed; resolves rule v2 (about two minutes)
+Rscript code/R/wrds/16_wrds_ciq_parent_industry.R     # Capital IQ industry tree for the Capital IQ parents (called by 15 if missing)
 Rscript code/R/07_contingency_scores.R                 # contingency scores and domains from O*NET alone (no staffing data)
 Rscript code/R/08_feasibility_reg_cells.R              # stage 5 feasibility count for H4: REG cells by exposure group, structural counts only
 Rscript code/R/09_audit_parent_family_sample.R         # audit worksheet: 100 of the IJVs filed in a parent's Revelio family (seed 20261125; never overwrites a coded sheet)
@@ -138,6 +141,9 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `13_quality_flags.R [version\|synthetic]` | step 09 (steps 03 and 12 for histories and headcounts), or the synthetic tables | `data/interim/quality-flags-*.md`, or `data/synthetic/quality-flags-synthetic-*.md` |
 | `tests/synthetic_onet.R` | `tests/synthetic_matched.R` | `data/synthetic/revelio-role-lookup-v3-synthetic-*.parquet`, `revelio-jv-positions-onet-synthetic-*.parquet` |
 | `14_wrds_onet_code.R [version] [lookup] [positions] [coverage]` | step 09, WRDS | `data/raw/revelio-role-lookup-v3-*.parquet`, `data/raw/revelio-jv-positions-onet-*/` (parquet parts), `data/interim/wrds-onet-log-*.md` |
+| `tests/synthetic_parent_industry.R` | none | `data/synthetic/orbis-parent-industry-synthetic-*.parquet`, `ijv-parents-guo-synthetic-*.parquet` |
+| `15_wrds_parent_industry.R [pull] [secondary] [resolve]` | step 09, WRDS; step 16; `data/raw/external/census-naics-concordances-*/` | `data/raw/orbis-parent-industry-*.parquet`, `orbis-parent-industry-core-secondary-*.parquet`, `data/interim/parent-industry-v2-*.csv`, `data/interim/wrds-parent-industry-log-*.md` |
+| `16_wrds_ciq_parent_industry.R` | step 09, WRDS | `data/raw/ciq-parent-industry-tree-*.parquet`, `ciq-industry-subtype-*.parquet`, `ciq-industry-to-sic-*.parquet` |
 | `07_contingency_scores.R` | step 14 (lookup) and the O\*NET 31.0 download | `data/processed/contingency-scores-occupation-*.csv`, `contingency-scores-domain-*.csv`, `data/interim/contingency-scores-*.md` |
 | `08_feasibility_reg_cells.R` | steps 07 and 14, `06_shock_exposure.R` | `data/interim/feasibility-reg-cells-*.md` (aggregate counts) |
 | `09_audit_parent_family_sample.R [overwrite]` | steps 03 and 09 | `data/interim/audit-parent-family-worksheet-*.xlsx` and `.csv` (licensed, gitignored); coding guide `docs/coauthor-notes/audit-parent-family-guide-*.qmd` |
