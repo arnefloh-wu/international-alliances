@@ -1,0 +1,75 @@
+---
+title: "Pre-analysis plan: decision sheet"
+subtitle: "Data step, sample rules, estimators and inference, literature follow-up"
+date: 2026-11-24
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides. Sources, all read on 2026-11-24: `docs/decisions.md` (Open), `reviews/gate-5-pre-analysis-plan.md` ("Items this plan still has to settle"), `reviews/gate-4-pilot.md` ("Staffing tabulations", "Data quality flags"), `data/synthetic/estimate-recovery-synthetic-2026-11-23.md`, `literature/shock-scan/rescoring.md` (section 9), and the two EBSCO memos in `literature/search/`. Independence rule (`CLAUDE.md` rule 8): this sheet uses only pooled data-quality rates and simulated results. It uses no staffing outcome by occupation, by function or by exposure.
+
+**Where things stand.**
+
+- Gates 1, 2 (provisional), 4 and 5a are approved. G3 is waived.
+- The focal shock is S13, with S06 as the fallback. The scores come from O\*NET, and the panel unit is IJV × occupation group × year.
+- Stage 5 can start, but the plan cannot be finished. Eight items in the gate 5 file are still open, and the EBSCO run added two items on the literature.
+
+**Why these now.** Decision 1 is on the critical path. Without the `onet_code` pull there are no scores, and without scores the plan cannot state its tests. Decisions 2 to 7 are rules the plan has to fix before any outcome is estimated. Decisions 9 and 10 settle what the G2 re-run has to change.
+
+**What approval unlocks.**
+
+- `/data-collector` for the O\*NET step.
+- `/research-workflow hypotheses`, which drafts the full pre-analysis plan into `reviews/gate-5-pre-analysis-plan.md`.
+- The G2 re-run, once the full texts are read.
+
+## A. Data step and sample
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 1 | O\*NET data step (route-to-G5 decision 3) | (a) Go ahead now: a WRDS pull of `onet_code` for the positions already in the spells extract, run on the PI's computer, plus a download of the public O\*NET database to `data/raw/external/`. (b) Wait until the plan is drafted | **(a).** It is the only licensed pull still needed before the panel, and it adds one column to an existing extract. The pull reports coverage and the O\*NET-SOC version, which fills the two `[DATA]` gaps the plan has to state. If fewer than 70% of positions carry a code (threshold proposed here, fixed before the pull), `role_k50` is mapped to O\*NET by title, as the documented fallback. The O\*NET licence is checked at download |
+| 2 | Window for labor market entrants | (a) Three years between the end of education and the hire (467,895 entrants). (b) One year (387,121). (c) Five years (502,142) | **(a) as primary, (b) and (c) as robustness.** The pilot report notes that the window "matters little". Three years keeps the rule the tabulations already used, so the frame stays the same from gate 4 to the panel |
+| 3 | IJVs whose matched entity lies inside a parent's Revelio family (831 of 7,460) | (a) Keep them, and drop them in a robustness check. (b) Have a person audit a random sample of 100 on names, ownership and location, with a decision rule fixed in advance. (c) Drop them | **(b), then (a).** The flag cannot tell a real IJV filed under its parent apart from a parent unit matched as the IJV. Rule written before the audit: if more than 20 of the 100 are parent units, the flagged IJVs leave the main sample and return as robustness; otherwise they stay, and dropping them is the robustness check. The audit uses names and ownership only, never staffing counts |
+| 4 | Prior employers not mapped to a Revelio company (14.2% of history positions; 30.8% before 2000, 9.6% from 2020) | (a) Hiring flows from 2010 on in the main sample. (b) The cell's unmapped share as a control. (c) Report it only as a limitation | **(a), with (b) and the full period as robustness.** An unmapped parent counts as an independent hire, so early years understate parent origin. From 2010 the unmapped share is 17.2% or lower, and the pilot already found flows from about 2010 far better observed. The S13 clean pre-period (2013 to 2015) lies inside this window. Stocks are reported as descriptives only |
+
+## B. Estimators and inference
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 5 | Primary estimator for share outcomes | (a) Poisson on the category count with the log of the cell denominator as offset (`fepois`). (b) Fractional logit on the share (`feglm`, quasibinomial). (c) Linear model on the share. (d) Linear model with the score as categories | **(a) as primary, (b) and (c) as robustness.** In the simulation, linear models on shares rejected a planted null in 8.4 to 8.8% of draws at a nominal 5%. Poisson and the fractional logit stayed close to the nominal level (7.0 to 7.2%). Poisson with high-dimensional fixed effects avoids the incidental-parameter problem that affects the fractional logit with IJV × year effects `[CITE: Poisson fixed-effects consistency, e.g. a methods reference on incidental parameters in fixed-effects count models]`. The linear model stays as robustness because readers can interpret its coefficients in percentage points. Add a wild cluster bootstrap wherever a test rests on fewer than about 50 clusters, such as the H3 boundary test with 67 IJVs in the contrast group |
+| 6 | Clustering for the occupation-level scores (static models) | (a) Two-way by IJV and occupation group. (b) IJV only. (c) Either, plus the permutation test over occupation groups | **(a) as primary, (b) reported, and the permutation test kept as a check.** The scores are common to every IJV within an occupation group. Occupation × year effects cannot be added, because they would absorb the scores, so occupation-wide shocks stay in the error. With about 50 occupation groups, two-way clustering is workable; with nine functions it was not. Shock models keep the clustering already decided for S13: by country pair, with a wild cluster bootstrap |
+| 7 | Level panel and `coord_role` | (a) The level part of H1 stays exploratory: Mintzberg as the source for `coord_role`, clustered errors, and the limitation stated, with no permutation test. (b) Look for a measured `coord_role` to make it confirmatory | **(a).** The permutation test over four levels cannot return a p-value below 1/3, and no external measure for Revelio seniority levels is in sight. The plan reports the level results in a separate exploratory section. No confirmatory claim rests on them |
+
+## C. Shock detail
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 8 | S13: does a minority-held IJV count as a linked entity for the UK intra-company route? | (a) The agent settles it at stage 5 from the public Home Office guidance and writes the rule and its source into the plan. (b) The PI or a co-author checks it | **(a).** If the guidance is unclear, the plan treats it in both directions. The mobility-channel term is estimated with minority-held IJVs coded as linked, then as not linked. The confirmatory H4 test does not depend on it, because the mobility channel is the competing pattern, not the hypothesis |
+
+## D. Literature follow-up from the EBSCO run
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 9 | Scope of screening criterion (e), and the language rule for EB-S3-01 | (e): (a) only work on foreign units, subsidiaries and IJVs; (b) any test of contingency theory, domestic included. EB-S3-01: waive the rule or keep it | **(e) = (a)**, recorded in the protocol as v1.3. The three records the screenings disagree on stay excluded. Classic domestic contingency work enters as theory sources through the synthesis, as `lawrence1967organization` and `thompson1967organizations` already do. **Waive the rule for EB-S3-01 only, flagged in the notes.** The novelty check has already read it, and it concerns JV localization in Japan |
+| 10 | Gap-statement narrowing and the G2 re-run | (a) Accept the narrowing of claims (a), (b) and (c) and the new H3 mechanism wording ("the largest and cheapest pool of such hires"). Re-run G2 after the four must-read full texts are read, and add the cited works to `references.bib` through `/references` once verified. (b) Wait for the full texts before deciding | **(a).** The abstracts alone already show the claims are too broad, and narrowing them costs nothing. The full texts decide only whether they need narrowing further. G2 is re-run before gate 5 is approved, so the plan and the theory section start from the same gap statement |
+
+## Also open, not on this sheet
+
+- **Waiting on the PI's own action:** the Zotero import (or API credentials) and the four must-read full texts.
+- **Not needed now:** the S06 fallback definitions (only if S13 is abandoned) and section ownership among co-authors (stage 8).
+- **Stale since gate 2:** the Consensus upgrade and the Web of Science API key. The agent proposes moving these to Decided as "not pursued" when it records this sheet.
+
+## How to record the decision
+
+As before: tell the agent which recommendations to accept or change. The agent will:
+
+- record them in `docs/decisions.md`;
+- carry decisions 2 to 8 into `reviews/gate-5-pre-analysis-plan.md` under "Decisions carried in before stage 5";
+- write decision 9 into the protocol;
+- hand decision 10 to the G2 re-run.
+
+Decision 1 starts a licensed WRDS pull, so the agent asks once more before it runs. No gate status is changed.
+
+## PI decision
+
+Arne Floh, 2026-11-25, in chat: "Accept all". Recorded by the agent in `docs/decisions.md` (Decided, 2026-11-25). Decisions 1 to 8 are carried into `reviews/gate-5-pre-analysis-plan.md`, decision 9 into `literature/search/protocol.md` (v1.3) and `screening.csv`, and decision 10 into the open item on the G2 re-run. The licensed `onet_code` pull of decision 1 waits for the PI's final go-ahead. No gate status was changed.

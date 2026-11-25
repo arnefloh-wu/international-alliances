@@ -173,6 +173,18 @@ Two extracts from `code/R/wrds/12_wrds_headcount_education.R` (pulled 2026-11-23
 | `data/raw/orbis-jv-headcounts-2026-11-23.parquet` | one row per Orbis key-financials record with a headcount, for the Orbis-sourced IJVs of `core_main` (44,493 rows, 4,860 IJVs) | `jv_bvdid`, `conscode` (U1, U2 unconsolidated; C1, C2 consolidated; LF limited financials), `filing_type`, `closdate`, `closdate_year`, `nr_months`, `empl`, `orbis_library` (large, medium) |
 | `data/raw/revelio-education-full-2026-11-23/part-NNNN.parquet` | one row per education record of a hired person (7,613,952 rows, 3,302,616 people); one part per block of 5,000 user ids in ascending order, 753 parts | `user_id`, `education_number`, `startdate`, `enddate` (years, stored as 1 January), `degree`, `university_country`. University names and fields of study were not pulled |
 
+## O\*NET codes (2026-11-25)
+
+Two extracts from `code/R/wrds/14_wrds_onet_code.R` (pulled 2026-11-25, licensed, local only) and one public download link positions to O\*NET occupations for the contingency scores (pre-analysis plan rules, decision 1). Revelio's `onet_code` follows the O\*NET-SOC 2019 taxonomy (checked on the lookup: 2019 codes such as 15-1252.00 and 15-2051.00 are present, 2010 codes such as 15-1132.00 are not). The values `On Leave`, `Retired` and `unknown` in `onet_code` are not occupations and are treated as missing. Positions no longer in `revelio.individual_positions` (3.1%) take the code of their `role_k17000_v3` from the lookup (PI, 2026-11-25); the panel carries the route as `onet_source` (`position` or `lookup`).
+
+| File | Grain | Columns |
+|---|---|---|
+| `data/raw/revelio-role-lookup-v3-2026-11-25.parquet` | one row per Revelio role (17,000 rows) | `role_k17000_v3` to `role_k10_v3` (the nine taxonomy levels), `onet_code`, `onet_title` |
+| `data/raw/revelio-jv-positions-onet-2026-11-25/part-NNNN.parquet` | one row per JV position of `ijv-employee-spells-v3-2026-10-09.parquet` found in `revelio.individual_positions`; one part per block of 5,000 position ids in ascending order | `position_id`, `onet_code` |
+| `data/raw/external/onet-db-31-0-2026-11-25/db_31_0_text.zip` | the O\*NET 31.0 database, text files, unchanged (O\*NET-SOC 2019 taxonomy) | as published by the O\*NET Resource Center; licence CC BY 4.0, credit "O\*NET 31.0 Database, U.S. Department of Labor, Employment and Training Administration (USDOL/ETA)" |
+
+Synthetic twins: `data/synthetic/revelio-role-lookup-v3-synthetic-2026-11-25.parquet` and `revelio-jv-positions-onet-synthetic-2026-11-25.parquet` (`code/R/tests/synthetic_onet.R`, seed 20261125), on the positions of the synthetic spell table, with made-up codes in major group 99.
+
 ## Quality flags and synthetic data (2026-11-23)
 
 Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quality_flags.R [version|synthetic]` in `data/interim/quality-flags-<run>.md`. They are computed on read and stored nowhere: the raw and processed tables are not changed and no row is dropped. The flags of the sample table (`flag_pre_formation_10y`, `flag_holding_vehicle`, defined above) are counted alongside.
