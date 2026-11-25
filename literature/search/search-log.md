@@ -358,3 +358,34 @@ The novelty check of the three blocks is `ebsco-novelty-check-2026-11-24.md` (li
 ## Protocol v1.3 recode (added by the orchestrator, 2026-11-25)
 
 By the PI's decision of 2026-11-25 (pre-analysis plan rules sheet, decision 9; protocol v1.3), criterion (e) admits only work on foreign units, subsidiaries and IJVs. The three S7-staffing records on which the two screenings disagreed for this reason keep their first decisions. The language rule is waived for EB-S3-01 (Inamura 2024), recoded from exclude (D_language) to include under (a) and (b). Block counts after the recode: S3-local 3 include, 1 exclude; EBSCO run total 11 include, 8 unsure, 119 exclude.
+
+## S10 targeted O\*NET search for the G2 re-run (2026-11-25)
+
+Agent: literature-searcher. Protocol v1.3, stream S10, criterion (h). Basis: `docs/decisions.md`, Open row "G2 re-run"; `docs/coauthor-notes/score-construction-decision-sheet-2026-11-25.qmd`. Full query log, candidate tables and recommendations: `s10-onet-targeted-2026-11-25.md`.
+
+Purpose: sources for three markers in the pre-analysis plan (`reviews/gate-5-pre-analysis-plan.md`, A2.4): (1) `[CITE: a study that uses O*NET task measures as contingency, interdependence or external-contact scores]`, (2) `[CITE: O*NET content model documentation]`, (3) `[CITE: cross-country transferability of O*NET task measures]`.
+
+### Sources and access
+
+| Source | Access | Queries | Notes |
+|---|---|---|---|
+| Consensus | not available | 0 | `mcp__Consensus__search` was not exposed in this session (as at stage 2, 2026-11-24); plan upgrade not pursued (2026-11-25) |
+| WebSearch | agent | 16 (T01-T03, T05, T06, T09-T13, T15, T17, T18, T27-T29) | 10 results each |
+| WebFetch | agent | 8 page checks (T04, T14, T16, T30-T34; 11 fetches, 2 of them failed) | measurement and documentation checks, not searches |
+| OpenAlex API | agent | 9 searches (T07, T08, T19-T25) and 1 forward-citation query (T26) | substitute for Consensus; relevance ranked; top 8 to 15 screened per search, all 54 citing works for T26 |
+| Crossref API | agent | DOI checks of all candidates | one title query returned HTTP 429 and was redone by DOI |
+| Web of Science, EBSCO, Google Scholar | not run | 0 | no agent access |
+
+### Results
+
+| Marker | Candidates listed | Verified on Crossref | Recommended |
+|---|---|---|---|
+| 1 | 5 ranked, 6 more noted | all ranked | Oldenski 2012, JIE, 10.1016/j.jinteco.2011.12.012; Dierdorff & Ellington 2008, JAP, 10.1037/0021-9010.93.4.883 (O\*NET elements to be confirmed from full text) |
+| 2 | 3 | 1 (NRC 2010); 2 are web documents without DOI | existing bib entries suffice for the content model; add a data citation for the O\*NET 31.0 Database (CC BY 4.0 attribution) |
+| 3 | 5 ranked, 6 more noted | all ranked | Taylor, Li, Shi & Borman 2008, Personnel Psychology, 10.1111/j.1744-6570.2008.00106.x; Lewandowski et al. 2022, WBER, 10.1093/wber/lhac005 |
+
+Not found: a study that uses O\*NET elements as contingency scores for staffing, integration or control in subsidiaries or IJVs, and a validation outside the US of the O\*NET work context items used by the plan. Both are weak evidence of absence (agent-run sources only). The O\*NET Resource Center report of August 2026 on the work context domain proposes new codes for the three job-interaction elements and the deletion of Contact With Others (details in the memo).
+
+### Records
+
+No rows were added to `screening.csv` and nothing was added to `references.bib` (run brief). The memo lists which candidates are already in the sheet (OA-S6-16, OA-S6-28, OA-S6-36, OA-S6-39, OA-S6-51, OA-S6-63) and which would be new S10 rows if the PI accepts them. No PRISMA counts above change.

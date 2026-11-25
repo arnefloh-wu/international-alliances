@@ -128,7 +128,7 @@ The rater section names neither the hypotheses nor any expected direction, does 
 
 ## Reliability rule
 
-Agreement is computed per scale as ICC(2,k), the intraclass correlation for a two-way random-effects model (groups and raters both treated as random), absolute agreement, for the average of the k = 3 raters `[CITE: methods source for the ICC(2,k) form, two-way random effects, absolute agreement, average measures]`. With n = 50 groups,
+Agreement is computed per scale as ICC(2,k), the intraclass correlation for a two-way random-effects model (groups and raters both treated as random), absolute agreement, for the average of the k = 3 raters `(Shrout & Fleiss, 1979; McGraw & Wong, 1996, who call the same form ICC(A,k); keys `shrout1979intraclass`, `mcgraw1996forming`)`. With n = 50 groups,
 
 $$\text{ICC}(2,k) = \frac{MS_R - MS_E}{MS_R + (MS_C - MS_E)/n},$$
 

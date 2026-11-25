@@ -300,16 +300,22 @@ Recorded in `docs/decisions.md` (Decided, 2026-11-25).
     3-digit industry. 76.0 percent of parents and 93.5 percent of IJVs (at
     least one parent) are covered. PI: "Pull Capital IQ too", "try to
     maximise the saample".
+20. PI updates: the audit is coded by Arne Floh (PI), so the PI's ten-case
+    check falls away (who checks instead is open); the licence for sharing
+    the `role_k50` labels is confirmed, so the full rater workbook is used;
+    three raters are recruited; the four must-read full texts are read,
+    which unblocks the G2 re-run (none tests H3 or contingency fit in a
+    two-parent unit: "None did"); the available-case `rd_core` is confirmed
+    as primary for H1. PI: "Audit: Arne Floh, Licence confirmed, full
+    texts read, H1 confirmed, 3 raters recruited."
 
 ### Items this plan still has to settle
 
 Listed in the Open section of `docs/decisions.md`:
-- the audit of the 831 flagged IJVs (before the panel is built);
-- the outside raters (recruited by the PI) and their ratings (before the panel is built);
+- the audit of the 831 flagged IJVs, coded by the PI (before the panel is built);
+- the ratings of the three recruited outside raters (before the panel is built);
 - `[CITE]` markers for the O\*NET-based scores (targeted S10 search at the G2 re-run);
-- the methods `[CITE]` markers of part B, section 8, including the Poisson
-  fixed-effects reference (through `/references`);
-- the full texts and the G2 re-run, before this gate is approved.
+- the G2 re-run, before this gate is approved (the full texts are read).
 
 ## Part A: Hypotheses and measurement
 
@@ -440,13 +446,14 @@ parent-specific knowledge. In an IJV with a host-country parent, the
 parents' host-country workforce, above all the host-country parent's own,
 is the largest and cheapest pool of such hires, though not the only one
 (staff who combine intra-firm and local knowledge are also found among
-former inpatriates and similar groups, as the novelty check notes for
-units with one parent). Where coordination dependence is low, the second
+former inpatriates and self-initiated expatriates in units with one parent;
+`georgopoulos2024mediating`). Where coordination dependence is low, the second
 kind of knowledge is not needed and the open market offers more candidates
 at lower cost `[CITE: recruitment source choice, internal versus external labor markets]`.
 The contribution therefore rests on the channel through a second
 organizational source and on the within-IJV domain slope, not on the
-knowledge-combination step (`ebsco-novelty-check-2026-11-24.md`, verdict a).
+knowledge-combination step (`ebsco-novelty-check-2026-11-24.md`, verdict a;
+`gap-statement.md`, revision of 2026-11-25).
 
 **Instantiation (confirmatory).** In IJVs with a host-country parent and
 at least one parent in Revelio, within the same IJV-year, the rate of local
@@ -638,10 +645,19 @@ The scores are fixed from O\*NET alone, before any panel exists
 across domains (`data/interim/contingency-scores-v1-2026-11-25.md`).
 O\*NET's content model is documented in
 `nationalcenterforonetdevelopmentonet` and assessed in `handel2016onet`;
-its development in `peterson1999occupational`. Still open:
-`[CITE: a study that uses O*NET task measures as contingency, interdependence or external-contact scores]`
-and `[CITE: cross-country transferability of O*NET task measures]`; US
-ratings applied to IJVs mostly outside the US are a stated limitation.
+its development in `peterson1999occupational`; the data are the O\*NET 31.0
+Database (`nationalcenterforonetdevelopment2026onet`, CC BY 4.0, credited to
+USDOL/ETA). O\*NET measures of within-firm communication, customer contact and
+interdependence have been used to explain how firms organize activities and
+how occupations differ in interdependence (`oldenski2012export`;
+`dierdorff2008its`; which elements they use is to be checked in the full
+texts). US job information carries over to other countries with small to
+moderate differences for generalized work activities
+(`taylor2008transportability`), but task content within an occupation differs
+markedly across countries, above all in poorer ones (`lewandowski2022technology`;
+`caunedo2023technology`), so US ratings applied to IJVs mostly outside the US
+are a stated limitation; no validation outside the US of the work-context
+items used here was found (`literature/search/s10-onet-targeted-2026-11-25.md`).
 Convergent-validity checks: outside raters on the 50 `role_k50` groups
 (ICC(2,k) of at least 0.70 for use) and the function ordering of
 `kim2003global` (gate 2, decision 4). Rival-account check: whether a
@@ -1101,10 +1117,10 @@ parent in Revelio before the cell rule.
   (pre-analysis plan rules, decision 5). The coefficient `b` is the change in
   the log expected share; consistency needs only the conditional mean to be
   correct, not a Poisson distribution, and clustered errors absorb
-  overdispersion [CITE: consistency of the Poisson pseudo-maximum-likelihood estimator with high-dimensional fixed effects for non-count and overdispersed outcomes].
+  overdispersion (`wooldridge1999distributionfree`; `santossilva2006log`; `santossilva2011further`; `correia2020fast`).
   No switch to negative binomial.
 - Robustness estimators: fractional logit (`feglm`, `quasibinomial("logit")`,
-  weights = denominator) [CITE: fractional response model] and linear
+  weights = denominator) (`papke1996econometric`, a cross-sectional estimator; the fixed-effects version is used as a robustness check only) and linear
   (`feols`, weighted by the denominator, unweighted reported).
 - Effect size: `100 * (exp(b) - 1)` percent change in the share per one
   occupation-level SD, also per domain interquartile range; percentage points
@@ -1143,10 +1159,8 @@ Models: Poisson (decisive); fractional logit; linear, weighted (robustness).
 Inference: permutation test over domains, decisive (PI, 2026-11-25,
   amending pre-analysis plan rules, decision 6): B = 999 reassignments of the
   score rows, both scores together, statistic the Poisson coefficient,
-  one-sided p = (1 + #{b* >= b}) / (B + 1) [CITE: randomization inference
-  for the assignment of a regressor across groups]. Clustered two-way by IJV
-  and domain (t with G - 1 = 97 df) [CITE: multiway cluster-robust
-  inference] and IJV-only errors are reported.
+  one-sided p = (1 + #{b* >= b}) / (B + 1) (`young2019channeling`; `phipson2010permutation`). Clustered two-way by IJV
+  and domain (t with G - 1 = 97 df) (`cameron2011robust`) and IJV-only errors are reported.
 Test: coefficient on coord_dependence > 0, one-sided, Holm-adjusted across
   the confirmatory family (section 4).
 Effect size: percent and percentage-point change in the parent-origin share
@@ -1305,15 +1319,14 @@ Fixed effects: IJV x domain absorbs every time-invariant difference between
   uniform across domains, sterling and demand.
 Identifying variation: the change from 2010-2015 to 2021-2025 in the gap
   between REG and the other domains of the same IJV, exposed against control
-  IJVs (a triple difference [CITE: triple-difference estimator and its
-  identifying assumption]).
+  IJVs (a triple difference `olden2022triple`).
 Models: Poisson (decisive); fractional logit; linear, weighted (robustness).
 Inference: clustered by dyad (parent-host pair); the decisive p-value comes
   from a wild cluster bootstrap by dyad with the null imposed, implemented
   for the Poisson model as a cluster score bootstrap (restricted fit,
   Rademacher weights, B = 9,999; code/R/functions/simulate_domain_panel.R,
-  score_boot()) [CITE: wild cluster bootstrap with few clusters]
-  [CITE: score bootstrap for nonlinear models]; the test rests on about 24
+  score_boot()) (`cameron2008bootstrapbased`; `mackinnon2017wild`; `mackinnon2018wild`; `roodman2019fast`)
+  (`kline2012score`); the test rests on about 24
   exposed pairs, below the 50-cluster line of decision 5. Dyad-clustered and
   IJV-clustered t tests are reported as checks. The number of exposed pairs
   that contribute REG cells in both periods is reported.
@@ -1532,19 +1545,18 @@ treat_reg = exposed x reg; cluster: dyad
   beside H4a in every case.
 - Power of the pre-test: report the linear pre-trend slope that the pooled
   test would detect with 80 percent power, and the bias in the H4a estimate
-  that such an undetected trend would produce [CITE: power of pre-trend tests
-  and the bias that conditioning on passing them can introduce]. Sensitivity
+  that such an undetected trend would produce (`roth2022pretest`). Sensitivity
   of H4a to bounded violations of parallel trends: the relative-magnitude
   bound with M-bar = 1 decides causal language (PI, 2026-11-25); the bound
   over a grid of M-bar values and the smoothness bound are reported
-  [CITE: sensitivity analysis for violations of parallel trends].
+  (`rambachan2023more`).
 - Staggered adoption: not relevant for S13, which has one common onset; the
   two-way fixed-effects event study with never-exposed controls carries no
   forbidden comparisons, and `sunab` or `did::att_gt` would reproduce it.
   S13 is not replaced by another shock (S06 retired as fallback, PI,
   2026-11-25); a later exploratory S06 analysis would use `sunab` and
   `did::att_gt` with not-yet-treated controls and be reported apart
-  [CITE: heterogeneity-robust estimators for staggered adoption].
+  (`sun2021estimating`; `callaway2021differenceindifferences`; `borusyak2024revisiting`).
 
 Decision rule for the pre-trends (fixed before the data are seen):
 
@@ -1629,8 +1641,7 @@ carry no support label. The levels part of H1 is exploratory.
 
 Policy (proposed): Holm's step-down procedure across the six confirmatory
 family members (H1, H2, H3, H4a, H4b test (i), C1 with its intersection-union
-p-value) at a family-wise error rate of 0.05 [CITE: Holm step-down
-procedure] [CITE: intersection-union test]. The H4b composition condition
+p-value) at a family-wise error rate of 0.05 (`holm1979simple`) (`berger1982multiparameter`). The H4b composition condition
 (ii) is a condition, not a test in the family; the two components of C1
 enter through one p-value, the larger of the two, which controls the error
 of the joint claim without a further adjustment. Reasons: (1) each of the six is a claim
@@ -1897,33 +1908,53 @@ them.
     nothing to the H4 and C1 contrasts, and robustness 15f keeps only IJVs
     formed before 2016.
 
-### 8. Methods references still needed (`[CITE]`)
+### 8. Methods references (verified 2026-11-25)
 
-None of the methods works is in `literature/references.bib`. Candidates to
-verify through `/references` (author-year only; not cited until verified):
+Verified by the reference-manager on 2026-11-25 and added to
+`literature/references.bib` (record: `literature/zotero/verification-2026-11-25-methods.md`;
+Zotero import file `literature/zotero/import-2026-11-25-methods.ris`). The
+markers in this part now carry the keys.
 
-1. Poisson pseudo-maximum likelihood with fixed effects (the item already
-   open): Wooldridge (1999); Santos Silva and Tenreyro (2006); Correia,
-   Guimaraes and Zylkin (2020).
-2. Multiway clustering: Cameron, Gelbach and Miller (2011).
-3. Wild cluster bootstrap and few treated clusters: Cameron, Gelbach and
-   Miller (2008); MacKinnon and Webb (2017); Roodman, MacKinnon, Nielsen and
-   Webb (2019).
-4. Score bootstrap: Kline and Santos (2012).
-5. Randomization inference over the assignment of a regressor: Young (2019).
-6. Pre-trend tests and sensitivity: Roth (2022); Rambachan and Roth (2023).
-7. Holm (1979).
-8. Fractional response: Papke and Wooldridge (1996).
-9. Triple difference: Olden and Moen (2022).
+1. Poisson pseudo-maximum likelihood with fixed effects: `wooldridge1999distributionfree`;
+   `santossilva2006log`; `santossilva2011further` (overdispersion and many
+   zeros; added); `correia2020fast`.
+2. Multiway clustering: `cameron2011robust`.
+3. Wild cluster bootstrap and few treated clusters: `cameron2008bootstrapbased`;
+   `mackinnon2017wild` (unequal cluster sizes); `mackinnon2018wild` (few treated
+   clusters, which fits the roughly 24 exposed dyads; added); `roodman2019fast`
+   (author order Roodman, Nielsen, MacKinnon and Webb).
+4. Score bootstrap: `kline2012score`.
+5. Randomization inference over the assignment of a regressor:
+   `young2019channeling`; the (1 + #) / (B + 1) rule: `phipson2010permutation`
+   (added).
+6. Pre-trend tests and sensitivity: `roth2022pretest`; `rambachan2023more`.
+7. Holm step-down: `holm1979simple` (no DOI; verified from zbMATH Open).
+8. Fractional response: `papke1996econometric`. It is the cross-sectional
+   quasi-likelihood estimator and does not cover a logit with
+   high-dimensional fixed effects, which the plan uses as a robustness check
+   only.
+9. Triple difference: `olden2022triple` (Olden and Møen).
 10. Staggered adoption (only for an exploratory S06 analysis; S06 retired as
-    fallback on 2026-11-25): Sun and Abraham (2021); Callaway
-    and Sant'Anna (2021); Borusyak, Jaravel and Spiess (2024).
-11. Software: Berge (2018), `fixest`.
-12. Intersection-union tests for a joint directional claim (C1): Berger
-    (1982).
+    fallback on 2026-11-25): `sun2021estimating`;
+    `callaway2021differenceindifferences`; `borusyak2024revisiting`.
+11. Software: `berge2026fixest` (the citation the `fixest` CRAN page now asks
+    for; arXiv preprint) and `berge2018efficient` (FENmlm, the predecessor;
+    discussion paper, no DOI). Package versions are cited once `renv.lock`
+    exists.
+12. Intersection-union test for C1: `berger1982multiparameter`.
 13. Small-sample bias of cluster-robust variance estimators with a
-    cluster-level regressor (section 7, point 1): Bell and McCaffrey (2002);
-    Pustejovsky and Tipton (2018).
+    cluster-level regressor (section 7, point 1): `bell2002bias` (no DOI;
+    verified from the Statistics Canada catalogue record, to be rechecked
+    against the PDF); `pustejovsky2018smallsample` (a corrigendum appeared in
+    2023, DOI 10.1080/07350015.2023.2174123; check before relying on CR2 with
+    Satterthwaite degrees of freedom).
+14. ICC(2,k) for the outside raters: `shrout1979intraclass`;
+    `mcgraw1996forming` (who call the same form ICC(A,k)).
+
+Verified but not added (DOIs in the verification record): MacKinnon,
+Nielsen and Webb (2021) on two-way clustering; Weidner and Zylkin (2021) on
+incidental-parameter bias in fixed-effects Poisson models; Goodman-Bacon
+(2021); the R packages `did` and `HonestDiD`.
 
 ## Part C: S13 mobility channel, linked-entity rule
 
@@ -2053,9 +2084,9 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
   decided items; the domain count, the count of unrated codes, the S13
   window and the H4 moderator are corrected above; the rest are in
   part A6 (proposed edits).
-- Part B: no placeholders, no em dashes; its one citation key exists in
-  `literature/references.bib`; every methods reference is a `[CITE]`
-  marker (part B, section 8).
+- Part B: no placeholders, no em dashes; its methods references are
+  verified keys in `literature/references.bib` (27 added on 2026-11-25;
+  part B, section 8).
 - Simulated recovery (simulated data only): the Poisson estimator recovers
   the planted effects for H1 to H3 (0.143, 0.050, 0.154 against 0.15, 0.05,
   0.15). Two-way (IJV, domain) errors are 20 to 43 percent too small, with
@@ -2085,7 +2116,16 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
   direction but not blind in measurement (part A5).
 - `coord_dependence` measures coordination inside the organization, not
   dependence on the IJV's parents (route to gate 5, decision 3).
-- O\*NET rates US occupations; transfer to IJVs elsewhere is `[CITE]`.
+- O\*NET rates US occupations; transfer to IJVs elsewhere is supported for
+  generalized work activities (`taylor2008transportability`) but not tested
+  for the work-context items, and task content varies across countries
+  (`lewandowski2022technology`; `caunedo2023technology`).
+- O\*NET's work-context domain is being revised: a report of August 2026
+  proposes new codes for the three job-interaction elements (4.C.1.b.1.e, f
+  and g) and deletes Contact With Others (4.C.1.a.4)
+  (`literature/search/s10-onet-targeted-2026-11-25.md`). The plan is tied to
+  the O\*NET 31.0 Database as downloaded on 2026-11-25 (hash in
+  `data/data-log.md`), so later releases do not change the scores.
 - H4 rests on few exposed country pairs (23 to 24 after thresholds), so
   its power is limited; part B reports it.
 - Part C: the wording in force on 1 January 2021 and in April 2022 is

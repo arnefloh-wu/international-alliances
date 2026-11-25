@@ -172,6 +172,186 @@ stated from the standard reading of a canonical work and marked "to verify"
   domain-characteristics section still says the scores come from the
   qualitative memo; both should be updated at stage 5 or 6. Not edited.
 
+### G2 re-run, 2026-11-25: proposed changes to `docs/research-brief.md`
+
+Drafted by the literature-synthesizer at the G2 re-run and merged by the
+orchestrator on 2026-11-25. Basis: the narrowing of gap-statement claims (a),
+(b) and (c) and the new H3 mechanism wording (PI, 2026-11-25, `docs/decisions.md`,
+"Pre-analysis plan rules, decisions 9 and 10"), after the PI's reading of the
+four must-read full texts, none of which tests H3 or contingency fit in a
+two-parent unit ("PI updates before gate 5", item 4). The same narrowing is
+applied in `literature/synthesis/gap-statement.md` and `theory-outline.md`
+(revision notes of 2026-11-25). Two departures from the accepted wording need
+the PI's confirmation (see P3): "wholly owned subsidiaries" became
+"multinational subsidiaries", because the source the agent could read does not
+state the ownership of the units in `li2024origin`; and "or alliance-level
+performance", which had no source, was replaced by two works from the corpus
+(`barden2005influence`, `han2019management`). Line numbers refer to the brief as
+of 2026-11-25. `docs/research-brief.md` is not edited; the PI decides.
+
+#### P1. H3 mechanism (section "Hypotheses", H3, lines 134 to 138)
+
+Old:
+"Mechanism: a locally embedded function that also depends on coordination
+with the parents needs two things from a hire, host-specific knowledge and
+parent-specific knowledge. Only a hire from a parent's host-country
+workforce brings both. Where coordination dependence is low, the second is
+not needed and the wider market offers more candidates at lower cost."
+
+New:
+"Mechanism: a locally embedded function that also depends on coordination
+with the parents needs two things from a hire, host-specific knowledge and
+parent-specific knowledge. In an IJV with a host-country parent, the
+parents' host-country workforce, above all the host-country parent's own,
+is the largest and cheapest pool of hires who bring both, though not the
+only one: subsidiaries with one parent find such staff among former
+inpatriates and self-initiated expatriates (`georgopoulos2024mediating`).
+Where coordination dependence is low, the second is not needed and the
+wider market offers more candidates at lower cost. The contribution of H3
+therefore rests on the channel through a second organizational source and
+on the within-IJV slope, not on the knowledge-combination step. (Revised at
+the G2 re-run, 2026-11-25; `docs/decisions.md`.)"
+
+Consistency: same wording as gate 5, A1.3, and A1.5 row 7.
+
+#### P2. Hypothesis table, H3 row, column "Novelty" (line 155)
+
+Old: "High"
+
+New: "High for the channel and the within-IJV slope; the knowledge-combination step has a one-parent analog (`georgopoulos2024mediating`)"
+
+#### P3. "Theoretical Contribution", first paragraph, first sentence (lines 74 to 77)
+
+Old:
+"Research on the staffing of foreign units separates parent-country from
+host-country nationals and explains the mix by control, knowledge transfer
+and institutional distance (`gong2003subsidiary`, `gaur2007institutional`,
+`harzing2001whos`)."
+
+New:
+"Research on the staffing of foreign units mainly separates parent-country
+from host-country nationals and explains the mix by control, knowledge
+transfer and institutional distance (`gong2003subsidiary`,
+`gaur2007institutional`, `harzing2001whos`). Where it adds organizational
+origin, it does so for the top position of multinational subsidiaries, as
+general manager successors from inside or outside the subsidiary
+(`li2024origin`), or for categories of expatriate
+(`georgopoulos2024mediating`), not for the wider workforce of an IJV."
+
+Note: the novelty check proposed "wholly owned subsidiaries"; the abstract
+of `li2024origin` does not state ownership, so "multinational subsidiaries"
+is used. The PI, who read the full text, can restore "wholly owned" if the
+paper's sample warrants it (same choice in `gap-statement.md`).
+
+#### P4. "Theoretical Contribution", second paragraph, last sentence (lines 91 to 94)
+
+Old:
+"The contribution to contingency reasoning in international business is the
+interorganizational case: the unit has two sources of integration, and
+localization and independence from the parents are separate outcomes."
+
+New:
+"Contingency reasoning in international business has been developed mainly
+for units with one parent and, where it has reached the IJV, for the
+partners' control systems (`groot2000control`). The contribution is the
+interorganizational case for staffing: the unit has two organizational
+sources of staff and a market, and localization and independence from the
+parents are separate outcomes."
+
+#### P5. Appendix B, "Gaps considered", Empirical, second item (lines 350 to 354)
+
+Old:
+"- Staffing research classifies by nationality (parent-country, host-country)
+  and has no organizational-origin dimension. Evidence:
+  `gong2003subsidiary`, `gaur2007institutional`. Why IJV: with a
+  host-country parent, local and parent-origin are no longer opposites.
+  **Carried into H3.**"
+
+New:
+"- Staffing research classifies mainly by nationality (parent-country,
+  host-country). Where it adds organizational origin, it does so for
+  subsidiary general manager successors or for categories of expatriate,
+  not for an IJV's wider workforce, and nationality data cannot show whether
+  foreign staff came from a parent. Evidence: `gong2003subsidiary`,
+  `gaur2007institutional`, `li2024origin`, `georgopoulos2024mediating`,
+  `inamura2024effect`. Why IJV: with a host-country parent, local and
+  parent-origin are no longer opposites. **Carried into H3.**"
+
+(Appendix B is a list in a working brief, not manuscript prose; the list
+format is kept.)
+
+#### P6. Appendix B, "Gaps considered", Empirical, third item (lines 355 to 357)
+
+Old:
+"- Differentiation across activities is documented for control, not for
+  hiring sources. Evidence: `choi2004split`, `mohedanosuanes2021control`.
+  Why IJV: split control is an IJV phenomenon. **Carried into H1.**"
+
+New:
+"- Differentiation across activities is documented for control, not for
+  hiring sources. Differences between top management and employees are
+  documented for nationality-based localization at the level of the unit.
+  Within the bounds of the search, no study compares hiring sources across
+  functions and levels inside the same IJV. Evidence: `choi2004split`,
+  `mohedanosuanes2021control`, `inamura2024effect`, `harzing2001whos`. Why
+  IJV: split control is an IJV phenomenon. **Carried into H1.**"
+
+#### P7. Appendix C, "Tensions from `docs/theory-framework.md`", items 2 and 3 (lines 458 to 461)
+
+Old:
+"2. Single-organization origin: the organizational-origin dimension is the
+   interorganizational element. A unit with two parents has two internal
+   sources and a market, and H3 exists only because of that.
+3. Contingencies and bargaining power: see the table above."
+
+New:
+"2. Single-organization origin: the organizational-origin dimension is the
+   interorganizational element. Contingency reasoning has reached the IJV
+   for the partners' control systems (`groot2000control`), not for sources
+   of staff. A unit with two parents has two internal sources and a market,
+   and H3 exists only because of that.
+3. Contingencies and bargaining power: see the table above. The
+   power-based position has an explicit IJV precedent: case evidence holds
+   that partner power, not contingencies, decides HRM localization in IJVs
+   (`wilson2006dynamics`). The theory section answers it: power settles who
+   decides at the level of the IJV, whereas the hypotheses concern
+   differences between domains inside the same IJV-year."
+
+#### P8. Appendix C, "Theory record for H3", version 1 (lines 412 to 413)
+
+Old:
+"Fit then calls for hires who bring both, and those are
+found in a parent's host-country workforce."
+
+New:
+"Fit then calls for hires who bring both, and the largest and cheapest pool
+of them, though not the only one, is a parent's host-country workforce."
+
+Reason: the same "only" logic as the H3 mechanism (P1), stated implicitly.
+
+#### P9. Appendix B, "Boundary condition", third item (lines 367 to 369), optional
+
+Old:
+"- Executive staffing studies concentrate on the top position. Evidence:
+  `harzing2001whos`, `thompson2004empirical`. Why IJV: weak. Secondary;
+  feeds the level part of H1."
+
+New:
+"- Executive staffing studies concentrate on the top position, including
+  work that crosses nationality with inside or outside origin (`li2024origin`). Evidence: `harzing2001whos`,
+  `thompson2004empirical`, `li2024origin`. Why IJV: weak. Secondary; feeds
+  the level part of H1."
+
+#### Checked and left unchanged in the brief
+
+"Reading note on evidence" (lines 20 to 30) could add that five works bearing
+on the novelty claims were read in full or in key sections at the G2 re-run;
+optional. The H1 mechanism ("A parent-origin hire brings both", line 109)
+concerns parent-origin hires in general, not the local channel, and was not
+covered by the novelty check; left as is. The "IJV-specific" column of the
+hypothesis table (H3: "The cell exists at scale only where there is a
+host-country parent") is consistent with the narrowed wording.
+
 ## Reference verification (2026-11-24)
 
 Agent: reference-manager (reference step of `/lit-synthesis`). Input:
