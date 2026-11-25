@@ -206,6 +206,31 @@ Written by `code/R/07_contingency_scores.R` from the O\*NET 31.0 Database and th
 | `law_gov_importance` | O\*NET importance of law-and-government knowledge (1 to 5), the continuous H4 robustness measure |
 | `job_zone` | O\*NET job zone (1 to 5); at the domain level the unweighted mean, the skill-level control of the planned robustness check |
 
+## Parent industry (2026-11-25)
+
+For the resource-dependence check (robustness 19 of the pre-analysis plan;
+definition in `docs/decisions.md`, 2026-11-25). Built by
+`code/R/wrds/15_wrds_parent_industry.R` and `16_wrds_ciq_parent_industry.R` with
+`code/R/functions/parent_industry.R`.
+
+| File | Unit | Columns |
+|---|---|---|
+| `data/raw/orbis-parent-industry-2026-11-25.parquet` | one row per Orbis industry row (several per company possible), untouched | `bvdid`, `nace2_main_section`, `nacepcod2` (primary NACE Rev. 2), `naicspcod2017` (primary NAICS 2017), `orbis_lib` (`l`, `m`, `s`) |
+| `data/raw/orbis-parent-industry-core-secondary-2026-11-25.parquet` | as above, with core and secondary codes | adds `naceccod2`, `nacescod2`, `naicsccod2017` (core, often 4 digits), `naicsscod2017` (secondary), `orbis_library` |
+| `data/raw/ciq-parent-industry-tree-2026-11-25.parquet` | one row per Capital IQ company and industry node | `companyid`, `companyindustryid`, `subtypeid`, `primaryflag`, `chartypeid` |
+| `data/raw/ciq-industry-subtype-2026-11-25.parquet`, `ciq-industry-to-sic-2026-11-25.parquet` | Capital IQ industry tree; Capital IQ industry to SIC | `subtypeid`, `subtypevalue`, `childlevel`, `leafflag`, `subparentid`; `subtypeid`, `siccode` |
+| `data/raw/external/census-naics-concordances-2026-11-25/` | five Census concordances, unchanged | SIC 1987 to NAICS 2002; NAICS 2002 to 2007, 2007 to 2012, 2012 to 2017, 2022 to 2017 |
+| `data/interim/parent-industry-v2-2026-11-25.csv` | one row per direct parent (15,672); rule v2 | `parent_bvdid`, `parent_guo`, `ciq_companyid`, `orbis_lib`, `naics_direct`, `nace_direct`, `holding` (NAICS 5511, NACE 64.2 or 70.1), `own_code`, `own_src`, `guo_code`, `guo_src`, `ciq_naics4`, `rd_naics` (code used, NAICS 2017), `rd_naics4`, `rd_naics_source` (`own primary`, `own core`, `own secondary`, `ultimate owner ...`, `capital iq`, `holding unresolved`, `missing`), `flag_multi_rows`, `flag_code_conflict`, `flag_not_in_orbis_industry`, `flag_naics_short`, `flag_naics_missing`, `flag_holding_unresolved`. `parent-industry-v1-2026-11-25.csv` (first run, primary codes only) has the earlier column set |
+| `data/raw/external/oesm21in4.zip` | BLS OEWS May 2021 national industry-specific estimates, unchanged | per file: `NAICS`, `NAICS_TITLE`, `I_GROUP`, `OCC_CODE` (SOC 2018), `O_GROUP` (`total`, `major`, `minor`, `broad`, `detailed`), `TOT_EMP`, `PCT_TOTAL` and wage columns |
+
+Pick rule: Orbis large before medium before small, then rows with a NAICS
+code, then by NACE and NAICS code. Capital IQ parents (`parent_bvdid`
+starting with `CIQ`) take their code from the Capital IQ industry tree
+(rule v2 in `docs/decisions.md`).
+Planned panel variables (pre-analysis plan, robustness 19): `rd_core` (1 if
+the domain's employment share in the parent's industry is at least twice its
+share across all industries) and `rd_ratio` (log of that ratio).
+
 ## Quality flags and synthetic data (2026-11-23)
 
 Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quality_flags.R [version|synthetic]` in `data/interim/quality-flags-<run>.md`. They are computed on read and stored nowhere: the raw and processed tables are not changed and no row is dropped. The flags of the sample table (`flag_pre_formation_10y`, `flag_holding_vehicle`, defined above) are counted alongside.

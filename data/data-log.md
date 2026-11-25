@@ -176,3 +176,68 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 - Missing in the sample: the Revelio name of the family head for 9 IJVs (not in the company extract); website 7, LEI 68. The Revelio name of every matched entity and of the parent's matched entity is present
 - Output: `data/interim/audit-parent-family-worksheet-2026-11-25.xlsx` and `.csv` (licensed row-level data, gitignored, verified with `git check-ignore`). No staffing counts, employee numbers or Orbis headcounts in the worksheet
 - Handling: the script never overwrites an existing worksheet (argument `overwrite` to force); coded copies are saved next to it with the coder's initials
+
+## Collection Event: 2026-11-25 (Orbis industry codes of the IJV parents)
+- Purpose: parent industry for the resource-dependence check (robustness 19 of the pre-analysis plan, gate 5)
+- PI go-ahead: in chat on 2026-11-25, "Accept all" on the definition of the check, which named the pull (`docs/decisions.md`, Decided, "Resource-dependence check"); "Yes, run both"
+- Source: WRDS, `bvd_orbis_large`, `bvd_orbis_medium`, `bvd_orbis_small`, tables `ob_industry_classifications_{l,m,s}`
+- Script: `code/R/wrds/15_wrds_parent_industry.R` (`Rscript code/R/wrds/15_wrds_parent_industry.R`), rule in `code/R/functions/parent_industry.R`
+- Frame and sample: matched dataset v3 (2026-10-09), all 15,672 direct parents of the 7,460 `core_main` IJVs and their 13,295 ultimate owners (22,434 distinct ids)
+- Columns pulled: `bvdid`, `nace2_main_section`, `nacepcod2`, `naicspcod2017`; no names, descriptions or financials
+- Output: `data/raw/orbis-parent-industry-2026-11-25.parquet` (45,873 rows for 14,240 of the 22,434 ids; all rows kept) and `data/interim/parent-industry-v1-2026-11-25.csv` (one row per parent); log `data/interim/wrds-parent-industry-log-2026-11-25.md`
+- Flags (of 15,672 parents): absent from the industry table 3,802 (24.3%), of which 2,798 are Capital IQ parents with no BvD id; several industry rows 8,175 (52.2%); conflicting rows 5,098 (32.5%); holding parents 3,533 (22.5%), resolved through the ultimate owner 836 (5.3%), unresolved 2,697 (17.2%: owner without a code 1,444, own ultimate owner 918, owner also a holding 335); codes under four digits 26 (0.2%). Usable code (`rd_naics`) for 9,086 parents (58.0%); 7,460 IJVs, 3,123 (41.9%) with a code for every parent and 5,504 (73.8%) for at least one
+- Handling: licensed, local only, gitignored. Pooled counts only; nothing tabulated by exposure, function or occupation
+- Collector: orchestrator (Claude), on the PI's computer
+- Notes: the first run's check that every code has six digits failed (Orbis stores 98 parents' codes at two to five digits); the rule now keeps codes of four or more digits and flags shorter ones (`flag_naics_short`). Capital IQ parents need another source; superseded the same day by rule v2 below
+
+## Collection Event: 2026-11-25 (BLS OEWS industry-by-occupation estimates)
+- Purpose: occupation-by-industry matrix for the resource-dependence check
+- PI go-ahead: as above; the PI downloaded the file by hand because bls.gov refuses scripted downloads
+- Source: U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics, May 2021 national industry-specific estimates, https://www.bls.gov/oes/special-requests/oesm21in4.zip (linked from https://www.bls.gov/oes/tables.htm). Vintage: May 2021 is the first OEWS release based only on data collected under the 2018 SOC (https://www.bls.gov/oes/soc_2018.htm, read 2026-11-25); May 2019 and 2020 are hybrids. Public domain (U.S. government work)
+- Output: `data/raw/external/oesm21in4.zip` (31,451,833 bytes, sha256 61d1eb0a77e8be523786d5bb2b1e32b41ea8c3cecf4f1ca990ab4080e7e2c04e), unchanged; it holds sector, 3-digit, 4-digit, 5- and 6-digit and ownership files (`nat4d_M2021_dl.xlsx`: 250 industry codes, of which 14 are OEWS combinations such as `3250A1`)
+- Match (structural, no staffing data): of 9,060 parents with a 4-digit code, 5,590 (61.7%) match a published OEWS 4-digit industry as coded; with the 3-digit industry as fallback, 8,664 (95.6%); 396 (4.4%) match neither (government, codes under NAICS 2022, some agriculture). The 14 combined industries list their 4-digit members in the title and are not yet used
+- Handling: public data, gitignored with the rest of `data/raw/`; reproducible from the URL and the hash
+
+## Synthetic Data: 2026-11-25 (parent industry)
+- Files: `data/synthetic/orbis-parent-industry-synthetic-2026-11-25.parquet`, `ijv-parents-guo-synthetic-2026-11-25.parquet` (300 parents)
+- Generator: `code/R/tests/synthetic_parent_industry.R` (seed 20261125), which also tests `code/R/functions/parent_industry.R`
+- Schema source: the columns of the real pull and of `ijv-parents-v3` (`parent_bvdid`, `parent_guo`)
+- Simulated, not derived: made-up ids with the prefix SYN and codes from a short made-up list; every row has `synthetic = TRUE`
+- Failure modes seeded (all caught): several industry rows with conflicting codes, one company in two libraries, parent without a NAICS code, parent absent from the industry table, holding parent with a usable ultimate owner, holding whose owner is a holding, holding that is its own owner, holding without an owner, holding by NACE 6420 only, four-digit and three-digit codes
+
+## Collection Event: 2026-11-25 (Orbis core and secondary industry codes; rule v2)
+- Purpose: maximize the coverage of the resource-dependence check (PI: "try to maximise the saample")
+- PI go-ahead: covered by the industry-code go-ahead of 2026-11-25; scope widened in chat ("Pull Capital IQ too", "try to maximise the saample")
+- Source: WRDS, `ob_industry_classifications_{l,m,s}` in the three current Orbis libraries; the `_old` libraries were tried and are not licensed (permission denied)
+- Script: `code/R/wrds/15_wrds_parent_industry.R` step `secondary`
+- Columns pulled: `bvdid`, `nace2_main_section`, `nacepcod2`, `naceccod2`, `nacescod2`, `naicspcod2017`, `naicsccod2017`, `naicsscod2017`
+- Output: `data/raw/orbis-parent-industry-core-secondary-2026-11-25.parquet` (45,873 rows for 14,240 of 19,051 Orbis ids)
+- Handling: licensed, local only, gitignored
+
+## Collection Event: 2026-11-25 (Capital IQ industry tree of the Capital IQ parents)
+- Purpose: industry for the 2,798 parents that come from Capital IQ and have no BvD id
+- PI go-ahead: in chat on 2026-11-25, "Pull Capital IQ too"
+- Source: WRDS, `ciq_common.ciqcompanyindustrytree`, `ciq_common.ciqsubtype` (whole industry tree), `ciq_common.ciqindustrytosic` (whole map); `ciq.wrds_entity_info` (direct NAICS) reads from `ciq_ratings`, which is not licensed (permission denied)
+- Script: `code/R/wrds/16_wrds_ciq_parent_industry.R`
+- Columns pulled: `companyid`, `companyindustryid`, `subtypeid`, `primaryflag`, `chartypeid`; `subtypeid`, `subtypevalue`, `childlevel`, `leafflag`, `subparentid`; `subtypeid`, `siccode`
+- Output: `data/raw/ciq-parent-industry-tree-2026-11-25.parquet` (41,529 rows for 2,352 of 2,798 companies, all with a primary industry), `ciq-industry-subtype-2026-11-25.parquet` (17,981 rows), `ciq-industry-to-sic-2026-11-25.parquet` (1,760 rows, 786 Capital IQ industries)
+- Handling: licensed, local only, gitignored
+
+## Collection Event: 2026-11-25 (Census NAICS concordances)
+- Purpose: SIC 1987 to NAICS 2017 for the Capital IQ parents, and NAICS 2022 to 2017 for Orbis codes coded under NAICS 2022
+- PI go-ahead: in chat on 2026-11-25, "Yes, download" (five files named before download)
+- Source: U.S. Census Bureau, https://www.census.gov/naics/?68967 (concordances tab), public domain
+- Output: `data/raw/external/census-naics-concordances-2026-11-25/`, unchanged: `1987_SIC_to_2002_NAICS.xls` (406,016 bytes, sha256 fcb8ad7e4162a4d95c39ebe51c12e8ec20dfa6a31f2e81bf8fb1de08fbedc937), `2002_to_2007_NAICS.xls` (161,280; a4b00b2195e318420962ba52b77f3c3122e83d893a9f804e820c151847ec85b1), `2007_to_2012_NAICS.xls` (171,520; 302b8abcd78881f1ea5aa4c6c9104811bf8fa10d57b48d492939de5cacc8cfc5), `2012_to_2017_NAICS.xlsx` (58,543; 17f463f7e8385df1cc762fadf0dd5c25910aa27034ca96275a906608399188f5), `2022_to_2017_NAICS.xlsx` (61,577; 76ed2d5bc8cd3443dc86f0c3225b83e6d187f3fc47d4c5696c911a3234f1716f)
+
+## Derived data: 2026-11-25 (parent industry, rule v2)
+- Script: `code/R/wrds/15_wrds_parent_industry.R` step `resolve`, rule in `code/R/functions/parent_industry.R` (decision "coverage rule v2" in `docs/decisions.md`)
+- Output: `data/interim/parent-industry-v2-2026-11-25.csv` (one row per parent; v1 of the first run kept)
+- Code source (15,672 parents): own primary 8,248; own secondary 729; ultimate owner primary 781; ultimate owner secondary 37; Capital IQ tree 2,121; holding unresolved 2,154; missing 1,602. Capital IQ: primary industry 2,352, SIC reached 2,213, NAICS 2017 4-digit 2,125
+- Coverage: 11,916 parents (76.0%) with a code, 11,876 with a 4-digit code, 40 short codes, 286 distinct 4-digit industries; 7,460 IJVs, 6,976 (93.5%) with a code for at least one parent, 4,442 (59.5%) for every parent. OEWS match: 4-digit 7,917, combined industry 1,597, 3-digit 2,193, none 209; 11,707 parents (74.7%) matched
+- Checks: one row per parent; no holding code used; 4-digit codes where set. The simulated test caught a bug in the NAICS 2017 validity check for codes under six digits before the real run
+- Handling: licensed, gitignored; pooled counts only
+
+## Synthetic Data: 2026-11-25 (parent industry, rule v2)
+- Generator: `code/R/tests/synthetic_parent_industry.R` (seed 20261125), rewritten for rule v2; files as in the entry above (240 Orbis parents plus 6 Capital IQ parents)
+- Made up: ids with the prefix SYN, NAICS codes in sector 99, concordances and a small Capital IQ industry tree in the same code space; every row has `synthetic = TRUE`
+- Failure modes and fallbacks seeded (all caught): conflicting rows, two libraries, parent absent (owner's code), holding with a core code, with a secondary code only, falling back to its owner, owner also a holding, own owner, NACE 64.20 with a dot, head office NACE 70.10, NAICS 2022 code, four- and three-digit codes, Capital IQ parents reached through an exact SIC code, a SIC group code and a parent node, and without a primary industry
