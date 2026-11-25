@@ -110,6 +110,22 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 - Handling: kept under `data/raw/` (gitignored) like the other raw files. No staffing outcome is read by exposure status
 - Collector: PI's computer, shock-evaluator agent
 
+## Collection Event: 2026-11-25 (O\*NET codes and the O\*NET database)
+- Purpose: O\*NET data step of the pre-analysis plan (pre-analysis plan rules, decision 1): link JV positions to O\*NET occupations for the contingency scores `coord_dependence` and `local_embeddedness`
+- PI go-ahead: 2026-11-25, "Yes, run the pull" (`docs/decisions.md`); the O\*NET download was accepted with decision 1 ("Accept all", 2026-11-25)
+- Source: (1) WRDS `revelio.individual_role_lookup_v3`; (2) WRDS `revelio.individual_positions`; (3) O\*NET 31.0 Database, text files, https://www.onetcenter.org/dl_files/database/db_31_0_text.zip, licence CC BY 4.0 (credit: O\*NET 31.0 Database, U.S. Department of Labor, Employment and Training Administration)
+- Script: `code/R/wrds/14_wrds_onet_code.R v3 [lookup] [positions] [coverage]` for (1) and (2); (3) downloaded by hand with curl and saved unchanged
+- Frame and sample: frame v3, `core_main`; the 4,973,926 positions of `ijv-employee-spells-v3-2026-10-09.parquet`. Prior employers' positions in the career histories were not pulled; the scores attach to the JV positions only
+- Columns pulled: lookup: the nine role taxonomy levels, `onet_code`, `onet_title`. Positions: `position_id`, `onet_code`. No names, titles of people, salaries or free text
+- Output: `data/raw/revelio-role-lookup-v3-2026-11-25.parquet` (17,000 roles, 1,010 distinct codes); `data/raw/revelio-jv-positions-onet-2026-11-25/` (995 parts, 4,817,442 positions); `data/raw/external/onet-db-31-0-2026-11-25/db_31_0_text.zip` (13,183,034 bytes; sha256 6883548adf5fde64cf6f801b35d15519c9225f2732c3cab0e281c652d16b23a9)
+- Checks: no repeated position id; no position outside the spells extract; one lookup row per role
+- Coverage: 4,817,442 of the 4,973,926 spell positions (96.9%) are still in `individual_positions`; 4,805,804 (96.6%) carry an occupation code after the non-occupation values are set to missing (unknown 10,842, Retired 344, On Leave 141). By start year: before 2000 97.1%, 2000 to 2009 97.3%, 2010 to 2014 97.2%, 2015 to 2019 96.9%, 2020 on 95.9%. The 70% threshold of decision 1 is met, so the position-level code is the primary link and the title mapping of `role_k50` is not needed
+- Taxonomy: O\*NET-SOC 2019 (2019 codes such as 15-1252.00 and 15-2051.00 are present in the lookup, 2010 codes such as 15-1132.00 are not); 1,005 distinct occupation codes among the positions, 149 of them with a suffix other than .00. O\*NET 31.0 uses the same taxonomy
+- Lookup route: through `role_k17000_v3`, 99.8% of spell positions get a code, and it agrees with the position-level code for 100.0% of the 4,805,671 positions that have both
+- Handling: licensed extracts local only, gitignored; the O\*NET file is public and kept under `data/raw/external/` (gitignored) like the other raw files. Coverage was counted pooled and by start year only, not by occupation, function or exposure
+- Collector: PI's computer, orchestrator following the data-collector skill
+- Notes: run log `data/interim/wrds-onet-log-2026-11-25.md`. The position pull took about ten minutes. 156,484 spell positions (3.1%) are no longer in `individual_positions`, probably because Revelio has revised its position table since the extract of 2026-10-09; they keep a code through the lookup route (open item in `docs/decisions.md`)
+
 ## Quality flags: 2026-11-23
 - Purpose: first run of the flag code on the matched dataset v3 (`core_main`), the career histories and the annual headcounts. No new data were pulled
 - Script: `code/R/wrds/13_quality_flags.R v3`, functions in `code/R/functions/quality_flags.R`; the same code caught all 18 seeded failures in the synthetic tables first
@@ -135,3 +151,10 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 - Schema source: draft for the gate-5 measurement specification (hiring flows per cell in the staffing categories of `docs/research-brief.md`); the function column is `fn`. Functions, levels and contingency scores are placeholders
 - Simulated, not derived: every value is drawn from a distribution. Two aggregate levels were matched to `reviews/gate-4-pilot.md` so the cells are as sparse as in the real data (about four hires per cell and year; parent-origin hires about 3 percent of observed hires in IJVs with a parent in Revelio). No function-level, level-level or year pattern of the real data was used
 - Planted effects (logit scale): local share +0.25 per point of local embeddedness; local parent-origin share +0.40 per point of coordination dependence in IJVs with a host-country parent and 0 without; international parent-origin share +0.30 per point; parent-origin share +0.50 at levels with a coordination role; shock +0.20 on the local share and +0.30 per point of embeddedness after exposure, staggered 2016 to 2020 over 12 of 40 parent-country pairs; planted nulls for coordination dependence on the local share, the shock on the channel, and the scores on unobserved histories
+
+## Synthetic Data: 2026-11-25 (O\*NET extracts)
+- Files: `data/synthetic/revelio-role-lookup-v3-synthetic-2026-11-25.parquet` (1,970 roles), `revelio-jv-positions-onet-synthetic-2026-11-25.parquet` (8,879 rows)
+- Generator: `code/R/tests/synthetic_onet.R` (seed 20261125), on the positions of `ijv-employee-spells-synthetic-2026-11-23.parquet`
+- Schema source: the two real extracts of 2026-11-25 (`data/codebook.md`, "O\*NET codes"); the synthetic lookup keeps `role_k17000_v3`, `role_k50_v3`, `onet_code` and `onet_title`
+- Simulated, not derived: made-up codes in major group 99 and roles with the prefix SYN; no real row, role or code was read. Every row has `synthetic = TRUE`
+- Failure modes seeded (all found by the generator's checks): positions without a code (120), non-occupation codes "On Leave", "Retired", "unknown" (30), repeated position id (8), spell positions absent from the pull (25), a lookup role without a code (1), a spell role missing from the lookup (1). The run showed that the coverage step of `14_wrds_onet_code.R` counted non-occupation codes as valid; it was corrected before the coverage on the real pull was recorded

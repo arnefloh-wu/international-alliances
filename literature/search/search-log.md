@@ -354,3 +354,7 @@ Two further agents screened the S7-staffing export independently in halves (reco
 | W03 publication-type check | 2026-11-24 | WebSearch (second screener) | journal version of OA-S7-63 (Zinn et al., AOM Proceedings 2007) | Zinn, Feng, Mor, Intrator & Grabowski 2008, Health Care Management Review 33(2), 113-123, DOI 10.1097/01.HMR.0000304506.12556.52 (from search results; not verified on Crossref). OA-S7-63 recoded to `F_duplicate`; the journal article added as WS-S7-01 (unsure, criterion (e) scope) |
 
 The novelty check of the three blocks is `ebsco-novelty-check-2026-11-24.md` (literature-synthesizer). It supersedes task 5 of `ebsco-run-2026-11-24.md` where the two differ.
+
+## Protocol v1.3 recode (added by the orchestrator, 2026-11-25)
+
+By the PI's decision of 2026-11-25 (pre-analysis plan rules sheet, decision 9; protocol v1.3), criterion (e) admits only work on foreign units, subsidiaries and IJVs. The three S7-staffing records on which the two screenings disagreed for this reason keep their first decisions. The language rule is waived for EB-S3-01 (Inamura 2024), recoded from exclude (D_language) to include under (a) and (b). Block counts after the recode: S3-local 3 include, 1 exclude; EBSCO run total 11 include, 8 unsure, 119 exclude.

@@ -1,7 +1,7 @@
 # Literature search protocol
 
 Project: Differentiated international integration in IJVs (JIBS).
-Version: 1.2, 2026-11-24 (adds stream S10, the function-level question in S2, the mechanism-support rule, the rule on proceedings, working papers and dissertations, and the priorities of the manual runs; decided by the PI at gate 2 on 2026-11-24). Owner: literature-searcher agent, approved at G1; v1.2 changes decided at G2.
+Version: 1.3, 2026-11-25 (narrows criterion (e) to work on foreign units, subsidiaries and IJVs, and waives the language rule for one record; decided by the PI on 2026-11-25). Owner: literature-searcher agent, approved at G1; v1.2 changes decided at G2.
 
 ## Version history
 
@@ -10,6 +10,7 @@ Version: 1.2, 2026-11-24 (adds stream S10, the function-level question in S2, th
 | 1.0 | 2026-10-02 | Streams S1 to S6, databases, inclusion criteria (a) to (d), screening codes. Run the same day. | Workflow setup, G1 |
 | 1.1 | 2026-10-02 | Adds the theory hierarchy and streams S7 to S9, inclusion criteria (e) to (g) and the microfoundations rule. Former version line: "Version: 1.1, 2026-10-02 (v1.0 run the same day; v1.1 adds the theory hierarchy and streams S7 to S9). Owner: literature-searcher agent, approved at G1." | Theory hierarchy decision of 2026-10-02, G1 |
 | 1.2 | 2026-11-24 | (1) New stream S10, occupational task data, with inclusion criterion (h) and aim point (f), mapped to search block S6-task. (2) S2 adds the function-level question and a matching note on criterion (a). (3) Mechanism-support rule for hiring-source records (`scope:`). (4) Proceedings, working papers and dissertations admitted when no peer-reviewed version exists. (5) Priorities of the manual runs. (6) Notes that the hypotheses are H1 to H4 of `docs/research-brief.md` since gate 4. Earlier text is kept. | Gate 2 decision sheet of 2026-11-24 (`docs/coauthor-notes/gate-2-decision-sheet-2026-11-24.qmd`), decisions 2, 8 and 9; PI answer "Accept all" |
+| 1.3 | 2026-11-25 | (1) Criterion (e) admits only work on foreign units, subsidiaries and IJVs; domestic tests of contingency theory are theory sources for the synthesis, not corpus includes. (2) The language rule (exclusion criterion (d)) is waived for EB-S3-01 only. Former version line: "Version: 1.2, 2026-11-24 (adds stream S10, the function-level question in S2, the mechanism-support rule, the rule on proceedings, working papers and dissertations, and the priorities of the manual runs; decided by the PI at gate 2 on 2026-11-24). Owner: literature-searcher agent, approved at G1; v1.2 changes decided at G2." | Pre-analysis plan rules decision sheet (`docs/coauthor-notes/pre-analysis-plan-rules-decision-sheet-2026-11-24.qmd`), decision 9; PI answer "Accept all" |
 
 ## Aim
 
@@ -162,6 +163,21 @@ Amendments in v1.2 (gate 2, 2026-11-24, decisions 8 and 9):
   the sole-support rule apply to it. This answers the open item of
   2026-10-02 on proceedings, working papers and dissertations
   (`docs/decisions.md`).
+
+Amendments in v1.3 (2026-11-25, decision 9 of the pre-analysis plan rules sheet):
+
+- Criterion (e) admits a paper on structural contingency theory, contingency
+  fit or misfit, or structural adjustment only if it studies foreign units,
+  subsidiaries, IJVs or alliances. Domestic tests of contingency theory are
+  excluded as `E_offtopic` with the phrase "domestic contingency test"; the
+  classic domestic works the theory section needs (for example
+  `lawrence1967organization`, `thompson1967organizations`) enter as theory
+  sources through the synthesis. This settles the three disagreements of the
+  second screening of the EBSCO S7-staffing block (2026-11-24): the first
+  decisions stand.
+- Exclusion criterion (d) (language) is waived for EB-S3-01 (Inamura 2024,
+  in Japanese), which the novelty check read in full. The waiver covers that
+  record only and is flagged in its screening notes.
 
 ## Screening
 

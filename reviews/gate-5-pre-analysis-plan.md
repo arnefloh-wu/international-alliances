@@ -66,17 +66,58 @@ The PI accepted all seven recommendations of
    sensitivity check.
 7. The S13 design above is accepted as proposed.
 
+### Pre-analysis plan rules (decided by the PI on 2026-11-25)
+
+The PI accepted all ten recommendations of
+`docs/coauthor-notes/pre-analysis-plan-rules-decision-sheet-2026-11-24.qmd`
+("Accept all"). Recorded in `docs/decisions.md` (Decided, 2026-11-25).
+Decisions 9 and 10 concern the literature and go to the protocol and the G2
+re-run. The rest are carried into this plan:
+
+1. O\*NET data step: the WRDS pull of `onet_code` and the public O\*NET
+   download go ahead. The licensed pull runs after the PI confirms it once
+   more. If fewer than 70% of positions carry a code, `role_k50` is mapped to
+   O\*NET by title.
+2. Labor market entrants: three-year window. One and five years are the
+   robustness checks.
+3. IJVs inside a parent's Revelio family (831): a person audits a random 100
+   on names, ownership and location only. If more than 20 are parent units,
+   the flagged IJVs leave the main sample and return as robustness.
+   Otherwise they stay, and dropping them is the robustness check.
+4. Main sample: hiring flows from 2010 on. The robustness checks are the
+   cell's unmapped-employer share as a control, and the full period. Stocks
+   are descriptive only.
+5. Primary estimator for share outcomes: Poisson on the category count with
+   the log of the cell denominator as offset. The fractional logit and the
+   linear model are robustness checks. A wild cluster bootstrap is added
+   wherever a test rests on fewer than about 50 clusters.
+6. Static models are clustered two-way by IJV and occupation group, with
+   IJV-only errors reported and the permutation test over occupation groups
+   kept as a check. Shock models keep the S13 clustering by country pair,
+   with a wild cluster bootstrap.
+7. The level part of H1 stays exploratory: `mintzberg1979structuring` as
+   the source of `coord_role`, clustered errors, the limitation stated, and
+   no permutation test over levels. It is reported in a separate exploratory
+   section.
+8. S13 linked entity: settled at stage 5 from the public Home Office
+   guidance. If the guidance is unclear, the mobility-channel term is
+   estimated both ways (minority-held IJVs coded as linked, then as not
+   linked).
+
+O\*NET data step, done on 2026-11-25 (`data/data-log.md`): 96.6% of the JV
+positions carry a position-level occupation code (O\*NET-SOC 2019), so the
+70% rule is met. The 3.1% of positions no longer in Revelio's position table
+take the code of their role through the role lookup (PI, 2026-11-25), with
+the route recorded as `onet_source` and their exclusion as a robustness check.
+
 ### Items this plan still has to settle
 
 Listed in the Open section of `docs/decisions.md`:
-- clustering for the occupation-level regressors;
-- a source for `coord_role` per level;
-- the O\*NET data step and its coverage;
-- the UK intra-company route for minority-held IJVs;
+- the audit of the 831 flagged IJVs (before the panel is built);
+- the UK intra-company route for minority-held IJVs (decision 8, at stage 5);
 - the S06 definitions, if the fallback is needed;
-- the estimators for share outcomes and the inference for the level panel;
-- the window for labor market entrants;
-- the unmapped prior employers.
+- `[CITE: methods reference for the consistency of Poisson with high-dimensional fixed effects]`;
+- the full texts and the G2 re-run, before this gate is approved.
 
 ## Deliverables
 
