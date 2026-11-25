@@ -158,3 +158,21 @@ of 2026-10-08 were stratified by exposure group as a sampling design.
 - Schema source: the two real extracts of 2026-11-25 (`data/codebook.md`, "O\*NET codes"); the synthetic lookup keeps `role_k17000_v3`, `role_k50_v3`, `onet_code` and `onet_title`
 - Simulated, not derived: made-up codes in major group 99 and roles with the prefix SYN; no real row, role or code was read. Every row has `synthetic = TRUE`
 - Failure modes seeded (all found by the generator's checks): positions without a code (120), non-occupation codes "On Leave", "Retired", "unknown" (30), repeated position id (8), spell positions absent from the pull (25), a lookup role without a code (1), a spell role missing from the lookup (1). The run showed that the coverage step of `14_wrds_onet_code.R` counted non-occupation codes as valid; it was corrected before the coverage on the real pull was recorded
+
+## Derived data: 2026-11-25 (contingency scores from O\*NET)
+- Purpose: the static contingency scores and the H4 domain, fixed before any panel exists (score construction sheet, PI decisions of 2026-11-25)
+- Script: `code/R/07_contingency_scores.R` (no WRDS connection)
+- Inputs: the O\*NET 31.0 Database (`data/raw/external/onet-db-31-0-2026-11-25/db_31_0_text.zip`, public, CC BY 4.0) and the O\*NET codes in Revelio's taxonomy (`data/raw/revelio-role-lookup-v3-2026-11-25.parquet`, codes only). No staffing data were read
+- Output: `data/processed/contingency-scores-occupation-v1-2026-11-25.csv` (1,016 codes) and `contingency-scores-domain-v1-2026-11-25.csv` (98 domains); checks in `data/interim/contingency-scores-v1-2026-11-25.md`
+- Checks: alpha 0.76 (`local_embeddedness`) and 0.81 (`coord_dependence`) on 910 and 911 rated occupations; the two scores correlate 0.37 (broad sets 0.51); correlation with job zone 0.39 and 0.21. Of the 1,007 codes in Revelio's taxonomy, 103 lack O\*NET ratings: 68 imputed from the broad group, 18 from the minor group, and 17 military codes (major group 55), which O\*NET does not rate at all, from the mean of all rated occupations (PI, 2026-11-25). 96 distinct domain values of `local_embeddedness`; the three military domains share the overall mean
+- Handling: derived from public data; written under `data/processed/` (gitignored) and rebuilt by the script
+
+## Derived data: 2026-11-25 (audit sample of IJVs filed in a parent's Revelio family)
+- Purpose: worksheet for the person audit of the IJVs whose matched Revelio entity lies inside a parent's Revelio family (PI decisions of 2026-11-25, "Pre-analysis plan rules, decisions 2 to 4" and "Contingency scores, decisions 8 to 10"); coding guide `docs/coauthor-notes/audit-parent-family-guide-2026-11-25.qmd`
+- Script: `code/R/09_audit_parent_family_sample.R` (no WRDS connection). The flag is `flag_jv_in_parent_family` from `flag_ijvs()` in `code/R/functions/quality_flags.R`, called as in `13_quality_flags.R v3`
+- Inputs: matched dataset v3 (IJV and parent tables; spell table read for its reference years only, as `flag_ijvs()` requires), `data/interim/full-parent-groups-v3-2026-10-09.csv`, `data/raw/revelio-companies-full-v3-2026-10-09.csv.gz` (Revelio company names)
+- Draw: Mersenne-Twister, Inversion, Rejection; `set.seed(20261125)`; `sample()` of 100 from the flagged `jv_bvdid` sorted with `method = "radix"`; the ten PI cases with the same seed from the 100 sampled ids, sorted the same way. A rerun reproduced the same draw
+- Counts: 831 of 7,460 `core_main` IJVs flagged (auto tier 818, manual 13); 100 sampled (Orbis 68, Capital IQ 32; auto 98, manual 2); 10 PI cases. In the sample, the entity lies in the family of parent A for 71 IJVs, of parent B for 21, of A and B for 5, and of a third or fourth parent for 3; 8 entities lie in two parents' families
+- Missing in the sample: the Revelio name of the family head for 9 IJVs (not in the company extract); website 7, LEI 68. The Revelio name of every matched entity and of the parent's matched entity is present
+- Output: `data/interim/audit-parent-family-worksheet-2026-11-25.xlsx` and `.csv` (licensed row-level data, gitignored, verified with `git check-ignore`). No staffing counts, employee numbers or Orbis headcounts in the worksheet
+- Handling: the script never overwrites an existing worksheet (argument `overwrite` to force); coded copies are saved next to it with the coder's initials

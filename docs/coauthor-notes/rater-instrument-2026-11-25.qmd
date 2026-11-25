@@ -1,0 +1,161 @@
+---
+title: "Rating job groups on two characteristics of the work"
+subtitle: "Instrument for outside raters, with notes for the PI"
+date: 2026-11-25
+format:
+  docx: default
+rater_version: false
+---
+
+<!--
+Drafted by the agent on 2026-11-25 for PI decision 8 of 2026-11-25
+(docs/decisions.md, "Contingency scores, decisions 8 to 10"; route to gate 5,
+decision 3). Definitions follow docs/theory-framework.md (contingency families)
+and docs/research-brief.md (H1, H2 wording of the two contingencies).
+
+Two renderings:
+  quarto render docs/coauthor-notes/rater-instrument-2026-11-25.qmd --to docx
+    -> full version with Part B for the PI
+  quarto render docs/coauthor-notes/rater-instrument-2026-11-25.qmd --to docx -M rater_version:true -M subtitle:"Instructions for raters" --output rater-instrument-raters-2026-11-25.docx
+    -> rater version (Part A only)
+
+The definitions, anchors and instructions in Part A are repeated verbatim in
+the "definitions" sheet of the workbook written by code/R/10_rater_sheet.R,
+which warns if the two texts differ. Keep each of those texts on one line.
+
+This file is tracked in a public repository. It must not contain the Revelio
+group labels; the workbook in data/interim/ (gitignored) carries them.
+-->
+
+# Part A: Instructions for raters
+
+## What this is about
+
+We are researchers in international business. We study how international joint ventures are organized. An international joint venture is a separate company owned by two or more parent companies, at least one of them based in another country than the joint venture.
+
+We ask you to describe 50 groups of jobs on two characteristics of the work. The first is how much the work depends on coordination with the parent companies. The second is how much the work depends on the country in which the joint venture operates. There are no right or wrong answers. We want your expert judgment.
+
+Three raters take part. Each rates alone. We combine the three sets of ratings and check how far they agree. Your ratings are used only in combined form. We will not publish your name unless you agree to be thanked by name.
+
+**What you need to do.** Read the two definitions and their anchors below. Then open the workbook, go through the 50 groups in the "ratings" sheet, and enter two ratings for each group. The "definitions" sheet of the workbook repeats this page. The task takes about 60 to 90 minutes. You may split it into several sittings.
+
+**Please work alone.** Do not discuss the groups or your ratings with the other raters or with anyone else. If you have a question about the procedure, ask the person who sent you the materials. The answer will be sent to all raters.
+
+## Scale 1: Dependence on coordination with the parents (`coord_dependence`)
+
+**Definition.** How much the work in this group depends on coordination with the joint venture's parent companies and their other units.
+
+High dependence means that the work is tightly linked to what the parents do, needs knowledge that is specific to a parent (its technology, products, systems, routines or internal contacts), and involves decisions that are taken jointly with a parent or need its approval.
+
+Low dependence means that the work can be done inside the joint venture with general professional knowledge, and decisions are taken locally.
+
+Only coordination with the parents and their units counts. Coordination inside the joint venture, for example within a team or with other departments, does not count.
+
+| Score | What it looks like | Examples of work |
+|:--:|------------|------------|
+| 1 | Very low. The work is done inside the joint venture with general professional knowledge. It needs no knowledge specific to a parent, and decisions are taken locally without parent input. | Keeping a site clean and secure; running a staff canteen; handling routine local correspondence. |
+| 2 | Low. Occasional contact with a parent, for example to apply a group-wide policy, but the work itself does not depend on it. | |
+| 3 | Moderate. Regular but bounded coordination. The work uses a parent's systems or standards and reports to a parent from time to time. Some decisions need a parent's approval. Knowledge specific to a parent helps but can be learned on the job within a few months. | Processing payroll in a parent's accounting system; selling a product line supplied by a parent within price ranges the parent sets. |
+| 4 | High. Frequent coordination with a parent in day-to-day work; many decisions are agreed with a parent. | |
+| 5 | Very high. The work cannot be done without continuous coordination with a parent. It is tightly linked to a parent's own activities, needs deep knowledge of a parent's technology, routines or internal networks, and major decisions are taken jointly with a parent. | Adapting a component so that it fits a parent's product platform; transferring a parent's proprietary production process to the joint venture; planning output together with a parent that buys most of it. |
+
+## Scale 2: Dependence on the host country (`local_embeddedness`)
+
+**Definition.** How much the work in this group depends on the host country, the country in which the joint venture operates.
+
+High dependence means that the work relies on dealings with host-country authorities, regulators and other institutions, with local customers, suppliers or communities, and with the local labor market and its rules, and that it needs knowledge of local law, language, business practices and politics.
+
+Low dependence means that the work would be much the same in any country.
+
+| Score | What it looks like | Examples of work |
+|:--:|------------|------------|
+| 1 | Very low. The work would be essentially the same in any country. It involves little contact with people or institutions outside the company in the host country and needs no knowledge of local law, institutions or language beyond the basics. | Writing software to an international technical standard; analyzing samples under an international laboratory protocol; maintaining a design model in a global engineering tool. |
+| 2 | Low. Some local contacts or local rules, but the core of the work transfers across countries without change. | |
+| 3 | Moderate. The work regularly involves local customers, suppliers or authorities, or must follow some country-specific rules, but the core skills transfer across countries after some adaptation. | Keeping the books under local accounting rules; buying supplies from local vendors; running a production line that must meet local safety rules. |
+| 4 | High. Frequent dealings with people or institutions outside the company in the host country; local knowledge is needed for most tasks. | |
+| 5 | Very high. The work depends on the host country. It involves constant dealings with local authorities, regulators, courts, unions, customers or communities and needs deep knowledge of local law, institutions, language and networks. Someone without that knowledge could not do it. | Obtaining permits and licenses from local authorities; negotiating with local unions under local labor law; representing the company before local regulators or courts. |
+
+## How to rate
+
+1. Setting: think of an international joint venture in general, a separate company owned by two or more parent companies, at least one of them based in another country than the joint venture. Do not think of one particular company.
+2. Rate the typical work of each group. Rate the work itself, not the people who do it or the seniority of the job.
+3. Give both ratings for every group, as whole numbers from 1 to 5. Use the whole range of the scale. The two scales are separate: a group can be high on both, low on both, or high on one and low on the other.
+4. The occupations listed for a group are examples of what the group contains, the most common first.
+5. Confidence (optional): 1 to 3. Comment (optional): anything that helps us read your rating, for example that a group is too mixed or that a listed occupation does not fit.
+6. Work alone. Do not discuss the groups or your ratings with the other raters. Do not use numerical ratings from occupational databases; you may look up what an occupation does.
+
+The confidence item uses three steps:
+
+| Confidence | Meaning |
+|:--:|------------|
+| 1 | Low: I know little about this kind of work, or the group is too mixed to rate. |
+| 2 | Moderate. |
+| 3 | High: I know this kind of work well. |
+
+**The workbook.** Each row of the "ratings" sheet is one group. The columns are:
+
+| Column | Content | Who fills it in |
+|---|---|---|
+| `group_id` | G01 to G50 | given |
+| `group_label` | [short name of the job group], if your workbook has this column | given |
+| `top_onet_titles` | [up to five occupation titles from the US O\*NET classification; the number of further occupations in the group] | given |
+| `coord_dependence` | 1 to 5 | you |
+| `local_embeddedness` | 1 to 5 | you |
+| `confidence` | 1 to 3, optional | you |
+| `comment` | free text, optional | you |
+
+Please rate every group. If you are unsure, give your best judgment and enter 1 for confidence. You may go back and change your own earlier ratings. Rate the groups in the order given. It helps to reread the definitions after the first ten groups.
+
+When you are done, save the workbook under the name you were given and return it to the person who sent it to you.
+
+Thank you for your help.
+
+::: {.content-visible unless-meta="rater_version"}
+
+{{< pagebreak >}}
+
+# Part B: Notes for the PI (not for raters)
+
+Part B is left out of the rater version (see the rendering note in the source file). Raters receive Part A and their copy of the workbook, nothing else.
+
+## Purpose and status
+
+The ratings are the robustness check for the O\*NET-based contingency scores fixed by `code/R/07_contingency_scores.R` (route to gate 5, decision 3, 2026-11-24; contingency scores, decision 8, 2026-11-25). They enter the robustness set of the pre-analysis plan (Part B, section 5, item 6) at the `role_k50` grain and serve as a convergent-validity check on the O\*NET scores (Part A2.4). They are not the primary measure.
+
+The rater scales target the constructs as theorized, not the O\*NET elements. This matters most for `coord_dependence`. The O\*NET elements (coordinating the work and activities of others, coordinating or leading others, working with a work group or team) measure coordination in general, whereas the construct in H1, H3 and H4 is dependence on coordination with the parents and on parent-specific knowledge (task and coordination families of `docs/theory-framework.md`). The rater scale therefore excludes coordination inside the joint venture. A modest correlation between the rater and O\*NET coordination scores would be informative in itself, because it would indicate how far the generic O\*NET measure departs from the theorized one. `local_embeddedness` follows the environmental family (host institutions, labor markets, customers, regulators, political sensitivity), which the O\*NET elements cover more closely. Resource dependence on the parents is not rated, in line with the 2026-11-24 update of the theory framework.
+
+The rater section names neither the hypotheses nor any expected direction, does not mention staffing or hiring, and does not mention the O\*NET scores. The last point keeps raters from consulting the measure they are meant to check; the instructions also ask them not to use numerical ratings from occupational databases.
+
+## Reliability rule
+
+Agreement is computed per scale as ICC(2,k), the intraclass correlation for a two-way random-effects model (groups and raters both treated as random), absolute agreement, for the average of the k = 3 raters `[CITE: methods source for the ICC(2,k) form, two-way random effects, absolute agreement, average measures]`. With n = 50 groups,
+
+$$\text{ICC}(2,k) = \frac{MS_R - MS_E}{MS_R + (MS_C - MS_E)/n},$$
+
+where $MS_R$ is the mean square between groups, $MS_C$ the mean square between raters and $MS_E$ the residual mean square of the two-way ANOVA without interaction. In R this is `irr::icc(x, model = "twoway", type = "agreement", unit = "average")` on the 50 x 3 matrix of one scale (`irr` is installed). The consistency form, which some software reports under similar names, ignores mean differences between raters and is not the decided statistic.
+
+The decided rule is that the ratings are used only if ICC(2,k) is at least 0.70. The agent reads it as applying to each scale separately: a scale that reaches 0.70 is used as the mean of the three raters per group, and a scale that does not is not used and its ICC is reported. The confidence item and the comments are not used to weight or drop ratings in the ICC; they are read to diagnose disagreement.
+
+Three points are not yet decided and are best fixed before the ratings arrive. First, missing ratings: the agent proposes that raters are asked to complete any blank cell before the ICC is computed, and that a group still incomplete after that is dropped from the ICC and from the rater score, with the count reported. Second, no second round: if a scale falls below 0.70, raters are not re-briefed and no further raters are added, because a second attempt chosen after seeing the result would turn the threshold into a target. A reserve rater may replace only a rater who withdraws before submitting. Third, the comparison with O\*NET: the plan says that scores at the `role_k50` grain are "aggregated to that grain from the occupation scores" but does not say how. The taxonomy does not partition the O\*NET codes: 739 of the 1,007 codes are linked to more than one group, and 2,044 of the 3,943 group-code links rest on a single `role_k17000_v3` entry (12% of entries). An unweighted mean over the distinct codes would give such marginal links the same weight as a group's core occupations and pull the 50 group scores together. The agent therefore proposes the mean of the occupation scores weighted by the number of `role_k17000_v3` entries per code within the group, which is a taxonomy count and uses no staffing weights, with the unweighted mean as a check, and a Spearman correlation between the rater means and that score, per scale, as the convergent-validity statistic. A code counts in every group it is linked to. These are proposals for the gate 5 file, not edits to it. If the robustness models in the panel use the positions' own `role_k50` assignment, the same weighting question does not arise there, because each position carries one group.
+
+## Rater eligibility
+
+Raters come from outside the author team (Arne Floh, Alexander Mohr, Can Thanyi) and have not seen the staffing tabulations of 2026-11-23 in any form, including presentations, the research brief, the gate files and the decision sheets of this project. They should have expertise in international business, international human resource management or organization design, for example as doctoral or postdoctoral researchers in these fields or as managers with experience in joint ventures or cross-border subsidiaries, and should read English well. The agent suggests that each rater confirms in a short written note (an email is enough) that they have not seen any staffing results of the project, that they will rate alone, and that they have no stake in the results; the note is kept with the ratings. Whether raters are paid or thanked by name is for the PI to decide.
+
+## What raters receive
+
+Each rater receives the rater version of this document (Part A only) and one copy of the workbook, named by rater (for example `rater-A-2026-11-25.xlsx`, `rater-B-...`, `rater-C-...`), with the rows in the same order for all. They do not receive the hypotheses, the research brief, the pre-analysis plan, the O\*NET scores, any staffing figure, or the names or ratings of the other raters. The workbook comes from `code/R/10_rater_sheet.R` in two variants in `data/interim/`: `rater-sheet-2026-11-25.xlsx` with the group labels and `rater-sheet-onet-only-2026-11-25.xlsx` without them (see the licence question below). Both have a "ratings" sheet and a "definitions" sheet that repeats Part A's definitions, anchors and rules. The rows are in a fixed random order (seed 20261125), so that related groups are not adjacent and the ids carry no information. Each group is described by up to five O\*NET occupations linked to it in the Revelio taxonomy, ranked by the number of fine-grained taxonomy entries (`role_k17000_v3`) per occupation code within the group, followed by the number of further occupations. These counts come from the taxonomy only; no position or staffing file is read.
+
+Returned workbooks contain the group labels if the first variant is used, so they belong in a gitignored folder, for example `data/raw/rater-ratings/`. The ICC and the rater means would be computed by a script written when the ratings arrive.
+
+## Timing
+
+Ratings are collected and the ICC computed before the panel is built, that is before `/panel-build` runs after gate 6 (decision 8 and open item of 2026-11-25 in `docs/decisions.md`). The instrument and the workbook can go out as soon as the PI has approved the wording and settled the licence question. A deadline of about two weeks after sending is realistic for a 60 to 90 minute task.
+
+## Licence question
+
+The group labels (`role_k50_v3`) are part of Revelio Labs' taxonomy, which the project uses under the WRDS licence for Revelio data. Sending them to three people outside the author team may count as sharing licensed content with third parties and **may need clearance under the Revelio licence** (through WRDS or Revelio) before the workbook with labels goes out. For this reason this document, which is tracked in a public repository, shows placeholders only, and the workbook with labels is written to the gitignored `data/interim/` folder.
+
+The alternative is to describe each group only by its O\*NET occupation titles with an opaque group id, which is the second workbook (`rater-sheet-onet-only-2026-11-25.xlsx`). O\*NET titles are public under CC BY 4.0, which requires attribution (for example a line in the instructions that the titles come from the O\*NET database of the U.S. Department of Labor). Two caveats apply. Which O\*NET occupations sit together in a group is still derived from the Revelio taxonomy, so the second variant lowers the licence exposure but may not remove it entirely. And without a label some mixed groups are harder to read, which may lower confidence and agreement. The agent recommends asking WRDS or Revelio whether sharing the 50 labels with three named academic raters for a research rating task is permitted; if the answer is no or slow, use the O\*NET-only variant and add the attribution line to Part A before sending.
+
+:::

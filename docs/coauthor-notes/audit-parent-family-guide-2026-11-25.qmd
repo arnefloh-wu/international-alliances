@@ -1,0 +1,52 @@
+---
+title: "Audit of IJVs filed inside a parent's Revelio family: coding guide"
+subtitle: "100 sampled cases, worksheet of 2026-11-25"
+date: 2026-11-25
+format:
+  docx: default
+---
+
+## Purpose
+
+Each IJV in the main sample (`core_main`, 7,460 IJVs) is matched to one Revelio company, and its staff are the people Revelio records at that company. For 831 IJVs the matched Revelio company sits inside the Revelio family (the corporate group) of one of the IJV's parents. That can be correct: Revelio often files a joint venture under one of its owners. It can also be a wrong match, where the company we picked is the parent's own subsidiary, branch or division rather than the joint venture. In that case we would count parent employees as IJV employees. This audit estimates how often the second case occurs. A script drew 100 of the 831 IJVs at random with a fixed seed (`code/R/09_audit_parent_family_sample.R`, seed 20261125), and you code each of them.
+
+## The rule fixed before the audit
+
+The PI fixed the consequence before any case was coded (`docs/decisions.md`, 2026-11-25). If more than 20 of the 100 cases are coded `parent_own_unit`, all 831 flagged IJVs leave the main sample and return as a robustness check. If 20 or fewer are, they stay in the main sample and dropping them becomes the robustness check. The rule counts the verdict `parent_own_unit` only. The counts of the other verdicts are reported to the PI alongside it. If more than 20 cases are coded `cannot_tell`, the PI recodes those cases before the rule is applied. Please code each case on its own evidence and do not keep a running tally.
+
+## Verdicts
+
+Choose one verdict per row in the column `verdict` (the cell has a drop-down list).
+
+| Verdict | Use it when | Typical cues |
+|---|---|---|
+| `ijv_filed_under_parent` | the Revelio company is the joint venture itself, filed by Revelio under a parent's group | the Revelio name equals or abbreviates the IJV name; the location is the IJV's host country; the Revelio website or LinkedIn page describes the joint venture; a JV-style name that combines both parents (for example "Alpha Beta Motors") |
+| `parent_own_unit` | the Revelio company is a parent's own company, subsidiary, branch, plant or division, not the joint venture | the Revelio name is the parent's name or the name of a parent subsidiary that is wholly owned (registry or LEI record); the location is a parent site outside the venture; the website is the parent's own domain with no mention of the venture |
+| `other_wrong_match` | the Revelio company is neither the IJV nor a parent's own unit | a company with a similar name but a different business or country; a different joint venture of the same parent; a former name that now belongs to another firm |
+| `cannot_tell` | the evidence does not support any of the three verdicts above | the sources conflict, or nothing can be found; say in `evidence` what you checked |
+
+Two cases need care. If the IJV has since become a wholly owned subsidiary of one parent (a buyout), code `ijv_filed_under_parent` when the Revelio company is the same legal entity as the venture, and note the buyout and its year in `evidence`. If the Revelio company is a parent's local subsidiary that holds the parent's stake in the venture (a holding company), code `parent_own_unit`.
+
+## What the worksheet shows you
+
+Each row gives the IJV as Orbis or Capital IQ records it (name, host country, formation year, website, LEI, parents A and B with country and equity share) and the matched Revelio company (`rcid_jv`, `revelio_jv_name`, its headquarters country, website and LinkedIn page). The columns starting with `family_` describe the parent whose Revelio family contains the matched company: the parent's name, country and share, the head of the Revelio family (`family_head_name`, empty for 9 rows where the company extract does not carry the name), the Revelio company matched to that parent by name (`family_parent_rcid_name`), and the size of the parent's Revelio family. Where two parents' families contain the company, both are listed, separated by semicolons. `jv_entity_matched_to_parent_name` is TRUE when the matched company is itself one of the companies found by searching for the parent's name, a strong but not decisive cue for `parent_own_unit`. Match method and score show how the automatic match was made.
+
+## Sources to use and not to use
+
+Use public identity evidence: national company registries (for example Companies House, or OpenCorporates as a search aid), the LEI record and its parent relationships at search.gleif.org, the websites of the IJV and the parents (about pages, location lists, press releases on the venture), the Revelio company's website and the company section of its LinkedIn page (name, location, description), and news reports on the venture's formation or buyout.
+
+Do not use the project's staffing data or any employee count: not the tabulations, not Orbis headcounts, and not the employee figures or people lists on LinkedIn. Do not open individual people's profiles. The verdict rests on who the company is, not on how many people work there, so that the audit stays independent of the outcomes it protects.
+
+## How to record a case
+
+In `evidence`, write one or two sentences on what you checked and what decided the case, for example "Registry: Revelio entity is a 100% subsidiary of parent A, located at parent's plant in Germany; no JV reference." In `source_urls`, paste the links you relied on, separated by spaces. Enter your initials in `coder` and the date in `date` (YYYY-MM-DD). Leave `pi_check` empty.
+
+## PI check
+
+Ten rows carry `pi_check_case = TRUE`; the same script drew them with the same seed. Code them like every other row. After you hand the worksheet back, the PI reviews your verdict and evidence for those ten rows and enters in `pi_check` either "agree" or his own verdict with a short reason.
+
+## Where the worksheet is and how to hand it back
+
+The worksheet is `data/interim/audit-parent-family-worksheet-2026-11-25.xlsx` in the project's Dropbox folder, with a CSV copy of the same name. It holds licensed Orbis, Capital IQ and Revelio data. It must stay inside the project folder: do not email it outside the author team, do not upload it to any website, cloud tool or AI service, and do not copy it to another repository. The folder is excluded from Git, so it never reaches GitHub.
+
+Work on a copy saved in the same folder as `audit-parent-family-worksheet-2026-11-25-<your initials>.xlsx`, and leave the original untouched. When all 100 rows are coded, tell the PI that the file is in place. The PI then checks the ten marked cases, and the agent counts the verdicts and applies the 20-of-100 rule.
