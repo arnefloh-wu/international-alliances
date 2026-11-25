@@ -1,0 +1,509 @@
+TY  - JOUR
+AU  - Wooldridge, Jeffrey M.
+TI  - Distribution-free estimation of some nonlinear panel data models
+T2  - Journal of Econometrics
+PY  - 1999
+DA  - 1999/05
+VL  - 90
+IS  - 1
+SP  - 77
+EP  - 97
+DO  - 10.1016/S0304-4076(98)00033-5
+N1  - Extra (move to the Extra field after import): Citation Key: wooldridge1999distributionfree | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Santos Silva, J. M. C.
+AU  - Tenreyro, Silvana
+TI  - The log of gravity
+T2  - The Review of Economics and Statistics
+PY  - 2006
+DA  - 2006/11
+VL  - 88
+IS  - 4
+SP  - 641
+EP  - 658
+DO  - 10.1162/rest.88.4.641
+N1  - Extra (move to the Extra field after import): Citation Key: santossilva2006log | Verified: 2026-11-25 crossref | Crossref lists the first author as 'Silva, J. M. C. Santos'; surname is Santos Silva. Pin this key; a DOI import gives silva2006log
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Santos Silva, J. M. C.
+AU  - Tenreyro, Silvana
+TI  - Further simulation evidence on the performance of the Poisson pseudo-maximum likelihood estimator
+T2  - Economics Letters
+PY  - 2011
+DA  - 2011/08
+VL  - 112
+IS  - 2
+SP  - 220
+EP  - 222
+DO  - 10.1016/j.econlet.2011.05.008
+N1  - Extra (move to the Extra field after import): Citation Key: santossilva2011further | Verified: 2026-11-25 crossref | Recommended addition, not in the gate 5 list
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+KW  - recommended-addition
+ER  - 
+
+TY  - JOUR
+AU  - Correia, Sergio
+AU  - Guimarães, Paulo
+AU  - Zylkin, Tom
+TI  - Fast Poisson estimation with high-dimensional fixed effects
+T2  - The Stata Journal
+PY  - 2020
+DA  - 2020/03
+VL  - 20
+IS  - 1
+SP  - 95
+EP  - 115
+DO  - 10.1177/1536867X20909691
+N1  - Extra (move to the Extra field after import): Citation Key: correia2020fast | Verified: 2026-11-25 crossref | Online first: 2020-03-24
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Cameron, A. Colin
+AU  - Gelbach, Jonah B.
+AU  - Miller, Douglas L.
+TI  - Robust inference with multiway clustering
+T2  - Journal of Business & Economic Statistics
+PY  - 2011
+DA  - 2011/04
+VL  - 29
+IS  - 2
+SP  - 238
+EP  - 249
+DO  - 10.1198/jbes.2010.07136
+N1  - Extra (move to the Extra field after import): Citation Key: cameron2011robust | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Cameron, A. Colin
+AU  - Gelbach, Jonah B.
+AU  - Miller, Douglas L.
+TI  - Bootstrap-based improvements for inference with clustered errors
+T2  - The Review of Economics and Statistics
+PY  - 2008
+DA  - 2008/08
+VL  - 90
+IS  - 3
+SP  - 414
+EP  - 427
+DO  - 10.1162/rest.90.3.414
+N1  - Extra (move to the Extra field after import): Citation Key: cameron2008bootstrapbased | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - MacKinnon, James G.
+AU  - Webb, Matthew D.
+TI  - Wild bootstrap inference for wildly different cluster sizes
+T2  - Journal of Applied Econometrics
+PY  - 2017
+DA  - 2017/03
+VL  - 32
+IS  - 2
+SP  - 233
+EP  - 254
+DO  - 10.1002/jae.2508
+N1  - Extra (move to the Extra field after import): Citation Key: mackinnon2017wild | Verified: 2026-11-25 crossref | Online first: 2016-02-21
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - MacKinnon, James G.
+AU  - Webb, Matthew D.
+TI  - The wild bootstrap for few (treated) clusters
+T2  - The Econometrics Journal
+PY  - 2018
+DA  - 2018/06/01
+VL  - 21
+IS  - 2
+SP  - 114
+EP  - 135
+DO  - 10.1111/ectj.12107
+N1  - Extra (move to the Extra field after import): Citation Key: mackinnon2018wild | Verified: 2026-11-25 crossref | Online first: 2018-05-06 | Recommended addition, not in the gate 5 list
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+KW  - recommended-addition
+ER  - 
+
+TY  - JOUR
+AU  - Roodman, David
+AU  - Nielsen, Morten Ørregaard
+AU  - MacKinnon, James G.
+AU  - Webb, Matthew D.
+TI  - Fast and wild: Bootstrap inference in Stata using boottest
+T2  - The Stata Journal
+PY  - 2019
+DA  - 2019/03
+VL  - 19
+IS  - 1
+SP  - 4
+EP  - 60
+DO  - 10.1177/1536867X19830877
+N1  - Extra (move to the Extra field after import): Citation Key: roodman2019fast | Verified: 2026-11-25 crossref | Online first: 2019-03-14
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Kline, Patrick
+AU  - Santos, Andres
+TI  - A score based approach to wild bootstrap inference
+T2  - Journal of Econometric Methods
+PY  - 2012
+DA  - 2012/08/24
+VL  - 1
+IS  - 1
+SP  - 23
+EP  - 41
+DO  - 10.1515/2156-6674.1006
+N1  - Extra (move to the Extra field after import): Citation Key: kline2012score | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Young, Alwyn
+TI  - Channeling Fisher: Randomization tests and the statistical insignificance of seemingly significant experimental results
+T2  - The Quarterly Journal of Economics
+PY  - 2019
+DA  - 2019/05/01
+VL  - 134
+IS  - 2
+SP  - 557
+EP  - 598
+DO  - 10.1093/qje/qjy029
+N1  - Extra (move to the Extra field after import): Citation Key: young2019channeling | Verified: 2026-11-25 crossref | Online first: 2018-11-21
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Phipson, Belinda
+AU  - Smyth, Gordon K.
+TI  - Permutation P-values should never be zero: Calculating exact P-values when permutations are randomly drawn
+T2  - Statistical Applications in Genetics and Molecular Biology
+PY  - 2010
+DA  - 2010/10/31
+VL  - 9
+IS  - 1
+DO  - 10.2202/1544-6115.1585
+N1  - Extra (move to the Extra field after import): Citation Key: phipson2010permutation | Verified: 2026-11-25 crossref | Recommended addition, not in the gate 5 list | Article number not verified (not in Crossref), left out
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+KW  - recommended-addition
+ER  - 
+
+TY  - JOUR
+AU  - Roth, Jonathan
+TI  - Pretest with caution: Event-study estimates after testing for parallel trends
+T2  - American Economic Review: Insights
+PY  - 2022
+DA  - 2022/09/01
+VL  - 4
+IS  - 3
+SP  - 305
+EP  - 322
+DO  - 10.1257/aeri.20210236
+N1  - Extra (move to the Extra field after import): Citation Key: roth2022pretest | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Rambachan, Ashesh
+AU  - Roth, Jonathan
+TI  - A more credible approach to parallel trends
+T2  - Review of Economic Studies
+PY  - 2023
+DA  - 2023/09/05
+VL  - 90
+IS  - 5
+SP  - 2555
+EP  - 2591
+DO  - 10.1093/restud/rdad018
+N1  - Extra (move to the Extra field after import): Citation Key: rambachan2023more | Verified: 2026-11-25 crossref | Online first: 2023-02-15
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Holm, Sture
+TI  - A simple sequentially rejective multiple test procedure
+T2  - Scandinavian Journal of Statistics
+PY  - 1979
+VL  - 6
+SP  - 65
+EP  - 70
+N1  - Extra (move to the Extra field after import): Citation Key: holm1979simple | Verified: 2026-11-25 database record (zbMATH Open, Zbl 0402.62058) | zbMATH Open: Zbl 0402.62058 | No resolvable DOI; issue number not verified, left out
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Papke, Leslie E.
+AU  - Wooldridge, Jeffrey M.
+TI  - Econometric methods for fractional response variables with an application to 401(k) plan participation rates
+T2  - Journal of Applied Econometrics
+PY  - 1996
+DA  - 1996/11
+VL  - 11
+IS  - 6
+SP  - 619
+EP  - 632
+DO  - 10.1002/(SICI)1099-1255(199611)11:6<619::AID-JAE418>3.0.CO;2-1
+N1  - Extra (move to the Extra field after import): Citation Key: papke1996econometric | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Olden, Andreas
+AU  - Møen, Jarle
+TI  - The triple difference estimator
+T2  - The Econometrics Journal
+PY  - 2022
+DA  - 2022/09/14
+VL  - 25
+IS  - 3
+SP  - 531
+EP  - 553
+DO  - 10.1093/ectj/utac010
+N1  - Extra (move to the Extra field after import): Citation Key: olden2022triple | Verified: 2026-11-25 crossref | Online first: 2022-03-09
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Sun, Liyang
+AU  - Abraham, Sarah
+TI  - Estimating dynamic treatment effects in event studies with heterogeneous treatment effects
+T2  - Journal of Econometrics
+PY  - 2021
+DA  - 2021/12
+VL  - 225
+IS  - 2
+SP  - 175
+EP  - 199
+DO  - 10.1016/j.jeconom.2020.09.006
+N1  - Extra (move to the Extra field after import): Citation Key: sun2021estimating | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Callaway, Brantly
+AU  - Sant'Anna, Pedro H. C.
+TI  - Difference-in-differences with multiple time periods
+T2  - Journal of Econometrics
+PY  - 2021
+DA  - 2021/12
+VL  - 225
+IS  - 2
+SP  - 200
+EP  - 230
+DO  - 10.1016/j.jeconom.2020.12.001
+N1  - Extra (move to the Extra field after import): Citation Key: callaway2021differenceindifferences | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Borusyak, Kirill
+AU  - Jaravel, Xavier
+AU  - Spiess, Jann
+TI  - Revisiting event-study designs: Robust and efficient estimation
+T2  - Review of Economic Studies
+PY  - 2024
+DA  - 2024/11/08
+VL  - 91
+IS  - 6
+SP  - 3253
+EP  - 3285
+DO  - 10.1093/restud/rdae007
+N1  - Extra (move to the Extra field after import): Citation Key: borusyak2024revisiting | Verified: 2026-11-25 crossref | Online first: 2024-02-06
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - RPRT
+AU  - Bergé, Laurent
+TI  - Efficient estimation of maximum likelihood models with multiple fixed-effects: The R package FENmlm
+T3  - DEM Discussion Paper Series
+PY  - 2018
+PB  - Department of Economics at the University of Luxembourg
+M3  - Discussion Paper
+VL  - 18-13
+UR  - https://ideas.repec.org/p/luc/wpaper/18-13.html
+N1  - Extra (move to the Extra field after import): Citation Key: berge2018efficient | Verified: 2026-11-25 repository record (RePEc/IDEAS, RePEc:luc:wpaper:18-13) | RePEc: RePEc:luc:wpaper:18-13 | Discussion paper; no peer-reviewed version found in Crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+KW  - working-paper
+ER  - 
+
+TY  - UNPB
+AU  - Bergé, Laurent R.
+AU  - Butts, Kyle
+AU  - McDermott, Grant
+TI  - fixest: A fast and feature-rich framework for econometric estimations in R
+PY  - 2026
+DA  - 2026/04/03
+PB  - arXiv
+M3  - Preprint
+DO  - 10.48550/arXiv.2601.21749
+UR  - https://arxiv.org/abs/2601.21749
+N1  - Extra (move to the Extra field after import): Citation Key: berge2026fixest | Verified: 2026-11-25 doi record (DataCite) and repository record (arXiv) | arXiv: 2601.21749v2 (2026-04-03); v1 2026-01-29 titled 'Fast and user-friendly econometrics estimations: The R package fixest' | Preprint; requested citation of the fixest package on CRAN (version 0.14.2) | Recommended addition, not in the gate 5 list
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+KW  - recommended-addition
+KW  - working-paper
+ER  - 
+
+TY  - JOUR
+AU  - Berger, Roger L.
+TI  - Multiparameter hypothesis testing and acceptance sampling
+T2  - Technometrics
+PY  - 1982
+DA  - 1982/11
+VL  - 24
+IS  - 4
+SP  - 295
+EP  - 300
+DO  - 10.1080/00401706.1982.10487790
+N1  - Extra (move to the Extra field after import): Citation Key: berger1982multiparameter | Verified: 2026-11-25 crossref | Also JSTOR DOI 10.2307/1267823 (same article)
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Bell, Robert M.
+AU  - McCaffrey, Daniel F.
+TI  - Bias reduction in standard errors for linear regression with multi-stage samples
+T2  - Survey Methodology
+PY  - 2002
+DA  - 2002/12
+VL  - 28
+IS  - 2
+SP  - 169
+EP  - 181
+UR  - https://www150.statcan.gc.ca/n1/en/catalogue/12-001-X20020029058
+N1  - Extra (move to the Extra field after import): Citation Key: bell2002bias | Verified: 2026-11-25 websearch (Statistics Canada catalogue record 12-001-X20020029058 and the article PDF header 'Survey Methodology, December 2002, Vol. 28, No. 2, pp. 169-181' seen in a logged search result | Statistics Canada catalogue 12-001-X20020029058 | Verification from a logged search result; direct page fetch blocked (403)
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Pustejovsky, James E.
+AU  - Tipton, Elizabeth
+TI  - Small-sample methods for cluster-robust variance estimation and hypothesis testing in fixed effects models
+T2  - Journal of Business & Economic Statistics
+PY  - 2018
+DA  - 2018/10/02
+VL  - 36
+IS  - 4
+SP  - 672
+EP  - 683
+DO  - 10.1080/07350015.2016.1247004
+N1  - Extra (move to the Extra field after import): Citation Key: pustejovsky2018smallsample | Verified: 2026-11-25 crossref | Online first: 2017-06-12 | Corrigendum: Journal of Business & Economic Statistics 41(2), 650-652 (2023), doi 10.1080/07350015.2023.2174123
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - Shrout, Patrick E.
+AU  - Fleiss, Joseph L.
+TI  - Intraclass correlations: Uses in assessing rater reliability
+T2  - Psychological Bulletin
+PY  - 1979
+VL  - 86
+IS  - 2
+SP  - 420
+EP  - 428
+DO  - 10.1037/0033-2909.86.2.420
+N1  - Extra (move to the Extra field after import): Citation Key: shrout1979intraclass | Verified: 2026-11-25 crossref
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
+
+TY  - JOUR
+AU  - McGraw, Kenneth O.
+AU  - Wong, S. P.
+TI  - Forming inferences about some intraclass correlation coefficients
+T2  - Psychological Methods
+PY  - 1996
+DA  - 1996/03
+VL  - 1
+IS  - 1
+SP  - 30
+EP  - 46
+DO  - 10.1037/1082-989X.1.1.30
+N1  - Extra (move to the Extra field after import): Citation Key: mcgraw1996forming | Verified: 2026-11-25 crossref | Correction: Psychological Methods 1(4), 390 (1996), doi 10.1037/1082-989X.1.4.390
+N1  - Presence in the Zotero group library not checked (no API credentials in this run). Search the library for the DOI or title before import; if the item exists, update it and pin the key instead of importing a duplicate.
+KW  - verified
+KW  - verified:2026-11-25
+KW  - gate5-methods
+ER  - 
