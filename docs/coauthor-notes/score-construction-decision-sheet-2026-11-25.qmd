@@ -1,0 +1,91 @@
+---
+title: "Contingency scores: decision sheet"
+subtitle: "O*NET elements, aggregation, domain grain, the H4 list, raters, audit and the start of stage 5"
+date: 2026-11-25
+format:
+  docx: default
+  html: default
+---
+
+Prepared by the agent for the PI. The recommendations are the agent's view; the PI decides.
+
+**Sources**, all read on 2026-11-25:
+
+- `docs/decisions.md`;
+- `reviews/gate-5-pre-analysis-plan.md`;
+- `literature/synthesis/theory-outline.md` and `memo-methods-employment-data.md`;
+- the O\*NET 31.0 Database in `data/raw/external/` (public, CC BY 4.0);
+- the Revelio role lookup of 2026-11-25. Only its taxonomy was used: which codes exist, not how many positions hold them.
+
+**Independence rule** (`CLAUDE.md` rule 8): every number on this sheet comes from O\*NET's own ratings of occupations. No staffing count, by occupation, function or exposure, was read. Once the panel is built, these rules cannot be changed without a dated departure.
+
+**Where things stand.**
+
+- **Fixed already:** the scores come from O\*NET (route to gate 5, decision 3), and the O\*NET link covers 96.6% of JV positions.
+- **Not yet fixed:**
+  - which O\*NET elements make up each score, and how they are combined;
+  - what to do with occupations that O\*NET does not rate;
+  - which occupation grouping defines the domain;
+  - which occupations form the H4 list of regulatory-facing occupations.
+- **Further open items:** the protocol for the outside raters, and who audits the 831 flagged IJVs.
+
+**What approval unlocks.**
+
+- Script `code/R/07_contingency_scores.R` writes the scores from O\*NET alone, before any panel exists.
+- `/research-workflow hypotheses` drafts the pre-analysis plan with the measures fixed.
+- The audit worksheet is prepared.
+
+## Checks run on O\*NET (no staffing data)
+
+- **What the scores are computed on:** 910 O\*NET occupations with ratings on all eleven candidate elements.
+- **Scales:** importance (1 to 5) for work activities and knowledge, and the context rating (1 to 5) for work context. Each element was standardized across occupations.
+- **Agreement between elements:** Cronbach's alpha measures how closely the elements of one score move together. "Corr." is the correlation between the two scores, which should be low if they measure different things.
+
+| Candidate | Elements | Alpha | Corr. with the other score |
+|---|---|---|---|
+| `local_embeddedness`, broad | law and government (knowledge); communicating with people outside the organization; establishing and maintaining interpersonal relationships; performing for or working directly with the public; dealing with external customers or the public (context) | 0.84 | 0.51 |
+| `coord_dependence`, broad | coordinating the work and activities of others; communicating with supervisors, peers or subordinates; developing and building teams; working with a work group or team; coordinating or leading others; impact of decisions on co-workers or company results | 0.86 | 0.51 |
+| `local_embeddedness`, narrow | law and government; communicating with people outside the organization; dealing with external customers or the public | 0.76 | 0.37 |
+| `coord_dependence`, narrow | coordinating the work and activities of others; coordinating or leading others; working with a work group or team | 0.81 | 0.37 |
+
+**What the checks show:**
+
+- **The broad sets do not separate well.** They share elements that load on both scores: "establishing and maintaining interpersonal relationships" correlates 0.57 with "developing and building teams". So the two broad scores correlate 0.51. The narrow sets keep acceptable alphas and cut that correlation to 0.37.
+- **Local embeddedness partly tracks skill level.** The broad score correlates 0.40 with O\*NET's job zone, its five-step scale of the preparation an occupation requires.
+- **Some occupations have no ratings.** Of the 1,007 O\*NET codes in Revelio's lookup, 102 are not rated by O\*NET. They include several large catch-alls: managers, all other; business operations specialists, all other; financial and investment analysts. None of these 102 has a rated ".00" parent occupation.
+- **Taxonomy sizes:** 98 SOC minor groups, and 50 Revelio `role_k50` groups.
+
+## Decisions
+
+| # | Decision | Options | Recommendation |
+|---|---|---|---|
+| 1 | Elements of the two scores | (a) The narrow sets above. (b) The broad sets. (c) A single element each: law and government, and coordinating the work and activities of others | **(a) as primary, (b) as robustness.** The narrow sets separate the two constructs better (correlation 0.37 against 0.51) and still reach alpha 0.76 and 0.81. "Law and government" carries the regulatory side of local embeddedness. The other two elements carry the external-contact side, which the theory outline names. Known weak point, already accepted at route-to-G5 decision 3: O\*NET measures coordination inside the organization, not dependence on the IJV's parents |
+| 2 | Scales and combination | (a) Importance (knowledge, activities) and context rating (work context). Each element is standardized across the rated occupations without weights, the elements are averaged, and the average is standardized again. (b) The same, weighted by US employment. (c) Importance times level | **(a).** It is simple, it uses only O\*NET, and it does not let US employment shares weight a sample that is mostly outside the US. Level ratings are kept for a check: the score from level instead of importance, reported in the appendix |
+| 3 | Occupations O\*NET does not rate (102 of 1,007 codes in the lookup) | (a) The mean score of the rated occupations in the same SOC broad group (first five digits), or in the minor group if the broad group has none, flagged as `score_imputed`. (b) Leave them without a score | **(a), with dropping the imputed positions as robustness.** (b) would drop large catch-all occupations, such as "managers, all other", that matter for an IJV. That would cost more cells than the imputation risks |
+| 4 | Grain of the domain variable | (a) SOC minor groups (98). The score of a group is the unweighted mean of its occupations' scores, so it is fixed by O\*NET alone. (b) Revelio `role_k50` (50). (c) Detailed occupations (about 1,000) | **(a) as primary, with (b) and the nine functions as robustness.** The scores and the domains then sit on one external, documented taxonomy, with enough distinct values for two-way clustering. A position-weighted group score would depend on each IJV's staffing mix, so it is not used. (c) makes the cells too sparse |
+| 5 | The H4 list of regulatory-facing occupations (route-to-G5 decision 4) | Narrow, 16 codes: lawyers; judicial law clerks; arbitrators, mediators and conciliators; paralegals and legal assistants; title examiners; legal support workers, all other; legal secretaries; regulatory affairs managers; compliance managers; compliance officers; environmental compliance inspectors; regulatory affairs specialists; customs brokers; tax examiners and revenue agents; tax preparers; labor relations specialists. Broad: adds accountants and auditors, human resources specialists, logisticians (three codes), and equal opportunity officers | **Narrow as primary. Broad and the continuous law-and-government score as robustness.** All 16 codes are in Revelio's lookup. O\*NET rates 15 of them ("legal support workers, all other" is not rated). All 15 score above the O\*NET median (2.36) on the importance of law-and-government knowledge, and 14 score above the 90th percentile (3.44). The broad list catches corporate tax, employment law and customs work filed under general job titles, but it adds much work that Brexit did not change. Public-sector-only occupations (customs and border officers, government property inspectors) are left out |
+| 6 | How the H4 list meets the grain | (a) The listed occupations form one domain of their own, taken out of their minor groups. The other 98 minor groups stay as they are. (b) The share of listed positions in each minor group as the treatment intensity | **(a).** The mechanism is about these occupations, and most of them sit inside mixed minor groups (business operations specialists, financial specialists). (a) keeps the H4 contrast sharp and the static domains intact. The static scores of the carved-out domain are computed the same way as in decision 4 |
+| 7 | Skill level as a competing account | (a) The domain's mean job zone as a control, in a planned robustness check. (b) As a control in the primary model. (c) Not addressed | **(a).** Local embeddedness partly tracks skill level (correlation 0.40 with job zone), and a reviewer will ask whether the score only picks up white-collar work. In the primary model a control would also absorb part of what the theory predicts, so it belongs in a stated robustness check with the plan saying why |
+| 8 | Outside raters (the robustness check of route-to-G5 decision 3) | (a) Three raters outside the author team who have not seen the staffing tabulations. They rate the 50 `role_k50` groups on two anchored five-point scales with written definitions; agreement is reported as ICC(2,k), with 0.70 as the threshold for use. (b) The same for the nine functions. (c) Drop the rater check | **(a).** Fifty groups give enough variation to compare with O\*NET. The nine functions give too little. The agent drafts the instrument and the definitions from `docs/theory-framework.md`; the PI recruits the raters. Ratings are collected before the panel is built |
+| 9 | Who audits the 831 flagged IJVs (pre-analysis plan rules, decision 3) | (a) A co-author or a research assistant codes the 100 sampled cases on a worksheet the agent prepares (names, ownership, location, Revelio entity and family; no staffing counts). The PI checks ten of them. (b) The PI codes all 100. (c) The agent codes them | **(a).** The decision of 2026-11-25 asks for a person, so (c) is ruled out. A second person checking ten cases shows whether the coding is reliable. The sample is drawn by a script with a fixed seed |
+| 10 | Start of stage 5 | (a) Start `/research-workflow hypotheses` now. The plan is drafted with the measures above; the G2 re-run feeds the theory text in later. (b) Wait for the full texts and the G2 re-run | **(a).** Measures and estimators are fixed, and the full texts change the framing of the contribution, not the tests. Gate 5 is still not approved before the G2 re-run |
+
+## What is still missing
+
+- **Two citation gaps:** `[CITE: O*NET content model documentation]` and `[CITE: a study that uses O*NET task measures as contingency, interdependence or external-contact scores]`. The second is the more serious, because the methods memo found no precedent in the corpus. A targeted search in economics and industrial-organizational psychology is proposed for the G2 re-run, as stream S10.
+- **US ratings:** O\*NET ratings describe US occupations. Their use for IJVs outside the US needs `[CITE: cross-country transferability of O*NET task measures]`, and the plan has to state it as a limitation.
+
+## How to record the decision
+
+As before: tell the agent which recommendations to accept or change. The agent will:
+
+- record them in `docs/decisions.md`;
+- carry them into `reviews/gate-5-pre-analysis-plan.md`;
+- add the new fields to `data/codebook.md` (`score_imputed`, the regulatory flag, the job-zone control);
+- write `code/R/07_contingency_scores.R` from O\*NET alone.
+
+No gate status is changed.
+
+## PI decision
+
+Arne Floh, 2026-11-25, in chat: "Accept all". Recorded by the agent in `docs/decisions.md` (Decided, 2026-11-25) and carried into `reviews/gate-5-pre-analysis-plan.md`. The scores were written the same day by `code/R/07_contingency_scores.R` from O\*NET alone. One case the sheet did not cover: O\*NET rates no military occupation (major group 55), so 17 codes in Revelio's taxonomy have no broad or minor group to borrow from and were first left without a score. The PI decided the same day ("Use the overall mean") that they take the mean of all rated occupations. No gate status was changed.

@@ -113,6 +113,7 @@ Rscript code/R/wrds/13_quality_flags.R synthetic       # quality flags on the si
 Rscript code/R/wrds/13_quality_flags.R v3              # the same flags on the real matched dataset (no WRDS connection)
 Rscript code/R/tests/synthetic_onet.R                  # simulated twin of the O*NET extracts (needs the synthetic spells)
 Rscript code/R/wrds/14_wrds_onet_code.R v3             # Revelio O*NET codes for the JV positions and the role lookup (one to two hours)
+Rscript code/R/07_contingency_scores.R                 # contingency scores and domains from O*NET alone (no staffing data)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -134,6 +135,7 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `13_quality_flags.R [version\|synthetic]` | step 09 (steps 03 and 12 for histories and headcounts), or the synthetic tables | `data/interim/quality-flags-*.md`, or `data/synthetic/quality-flags-synthetic-*.md` |
 | `tests/synthetic_onet.R` | `tests/synthetic_matched.R` | `data/synthetic/revelio-role-lookup-v3-synthetic-*.parquet`, `revelio-jv-positions-onet-synthetic-*.parquet` |
 | `14_wrds_onet_code.R [version] [lookup] [positions] [coverage]` | step 09, WRDS | `data/raw/revelio-role-lookup-v3-*.parquet`, `data/raw/revelio-jv-positions-onet-*/` (parquet parts), `data/interim/wrds-onet-log-*.md` |
+| `07_contingency_scores.R` | step 14 (lookup) and the O\*NET 31.0 download | `data/processed/contingency-scores-occupation-*.csv`, `contingency-scores-domain-*.csv`, `data/interim/contingency-scores-*.md` |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 

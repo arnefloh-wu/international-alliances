@@ -185,6 +185,27 @@ Two extracts from `code/R/wrds/14_wrds_onet_code.R` (pulled 2026-11-25, licensed
 
 Synthetic twins: `data/synthetic/revelio-role-lookup-v3-synthetic-2026-11-25.parquet` and `revelio-jv-positions-onet-synthetic-2026-11-25.parquet` (`code/R/tests/synthetic_onet.R`, seed 20261125), on the positions of the synthetic spell table, with made-up codes in major group 99.
 
+## Contingency scores (2026-11-25)
+
+Written by `code/R/07_contingency_scores.R` from the O\*NET 31.0 Database and the list of O\*NET codes in Revelio's taxonomy, before any panel exists (PI decisions of 2026-11-25, `docs/coauthor-notes/score-construction-decision-sheet-2026-11-25.qmd`). No staffing data are read. Checks in `data/interim/contingency-scores-v1-2026-11-25.md`.
+
+| File | Grain | Columns |
+|---|---|---|
+| `data/processed/contingency-scores-occupation-v1-2026-11-25.csv` | one row per O\*NET-SOC code in O\*NET 31.0 or in Revelio's taxonomy (1,016 rows) | `onet_code`, `onet_title`, `in_revelio`, `soc_minor` (NN-N), `soc_broad` (NN-NNN), `domain`, `regulatory_narrow`, `regulatory_broad`, `score_imputed`, `imputed_from` (rated, broad group, minor group, overall mean), the six scores, `law_gov_importance`, `job_zone` |
+| `data/processed/contingency-scores-domain-v1-2026-11-25.csv` | one row per domain (98: 97 SOC minor groups and `REG`) | `domain`, the six scores, `law_gov_importance`, `job_zone`, `n_occupations`, `n_rated`, `n_in_revelio`, `all_imputed` |
+
+| Variable | Definition |
+|---|---|
+| `local_embeddedness` | mean of three standardized O\*NET elements: law and government (2.C.8.b, knowledge, importance); communicating with people outside the organization (4.A.4.a.3, activity, importance); dealing with external customers or the public (4.C.1.b.1.f, context); standardized again across the rated occupations (mean 0, SD 1) |
+| `coord_dependence` | the same for coordinating the work and activities of others (4.A.4.b.1, activity, importance), coordinating or leading others (4.C.1.b.1.g, context), and working with a work group or team (4.C.1.b.1.e, context) |
+| `*_broad` | broad sets (robustness): local embeddedness adds 4.A.4.a.4 and 4.A.4.a.8; coordination dependence adds 4.A.4.a.2, 4.A.4.b.2 and 4.C.3.a.2.a |
+| `*_lv` | level scale in place of importance for knowledge and activities (appendix check); context elements keep their context rating |
+| `score_imputed` | the occupation is not rated by O\*NET on all elements; missing scores take the mean of the rated occupations in its SOC broad group, else its minor group, else all rated occupations (`imputed_from`); the last applies only to the military occupations (major group 55), which O\*NET does not rate (PI, 2026-11-25) |
+| `domain` | SOC minor group, except the 16 occupations of the narrow H4 list, which form the domain `REG`. A domain's score is the unweighted mean of its rated occupations |
+| `regulatory_narrow`, `regulatory_broad` | H4 lists of regulatory-facing occupations (codes in `docs/decisions.md`, 2026-11-25) |
+| `law_gov_importance` | O\*NET importance of law-and-government knowledge (1 to 5), the continuous H4 robustness measure |
+| `job_zone` | O\*NET job zone (1 to 5); at the domain level the unweighted mean, the skill-level control of the planned robustness check |
+
 ## Quality flags and synthetic data (2026-11-23)
 
 Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quality_flags.R [version|synthetic]` in `data/interim/quality-flags-<run>.md`. They are computed on read and stored nowhere: the raw and processed tables are not changed and no row is dropped. The flags of the sample table (`flag_pre_formation_10y`, `flag_holding_vehicle`, defined above) are counted alongside.
