@@ -187,7 +187,9 @@ the PI's confirmation (see P3): "wholly owned subsidiaries" became
 state the ownership of the units in `li2024origin`; and "or alliance-level
 performance", which had no source, was replaced by two works from the corpus
 (`barden2005influence`, `han2019management`). Line numbers refer to the brief as
-of 2026-11-25. `docs/research-brief.md` is not edited; the PI decides.
+of 2026-11-25. Accepted by the PI on 2026-11-25 ("approve all decision of gate 5"), together with
+the two departures; P1 to P9 were applied to `docs/research-brief.md` the same
+day by the orchestrator, with a dated revision note at the top of the brief.
 
 #### P1. H3 mechanism (section "Hypotheses", H3, lines 134 to 138)
 
