@@ -1,7 +1,7 @@
 # Gate 5: Pre-analysis plan
 
-Status: PENDING
-Approved by:
+Status: APPROVED
+Approved by: Arne Floh, 2026-11-25, in chat ("approve all decision of gate 5"); line set by the agent on the PI's instruction. The plan is fixed as v1.0 by the annotated Git tag `pap-v1.0`, created on the PI's instruction once this file is on `main`
 Stage: 5 Pre-analysis plan (`/research-workflow hypotheses`)
 Agent: orchestrator with quant-analyst
 Date produced: 2026-11-25, draft (parts A, B and C merged). File opened on 2026-11-24 to carry in the focal shock decision
@@ -308,6 +308,13 @@ Recorded in `docs/decisions.md` (Decided, 2026-11-25).
     two-parent unit: "None did"); the available-case `rd_core` is confirmed
     as primary for H1. PI: "Audit: Arne Floh, Licence confirmed, full
     texts read, H1 confirmed, 3 raters recruited."
+21. Gate approval: the PI approves all decisions of gate 5. This confirms
+    the two departures from the accepted gap-statement wording
+    ("multinational subsidiaries" for `li2024origin`; the IJV-control works
+    `barden2005influence` and `han2019management` in place of the unsourced
+    "alliance-level performance"), accepts the nine proposed changes to
+    `docs/research-brief.md` (gate 2 file, P1 to P9, applied the same day),
+    and approves this plan. PI: "approve all decision of gate 5".
 
 ### Items this plan still has to settle
 
@@ -315,7 +322,8 @@ Listed in the Open section of `docs/decisions.md`:
 - the audit of the 831 flagged IJVs, coded by the PI (before the panel is built);
 - the ratings of the three recruited outside raters (before the panel is built);
 - `[CITE]` markers for the O\*NET-based scores (targeted S10 search at the G2 re-run);
-- the G2 re-run, before this gate is approved (the full texts are read).
+- the G2 re-run: done on 2026-11-25 (gap statement narrowed, research-brief
+  changes accepted and applied).
 
 ## Part A: Hypotheses and measurement
 
@@ -2153,6 +2161,7 @@ Suggested plan wording: "Under the Home Office sponsor guidance in force from 20
 
 ## Decisions required from the PI
 
+All settled; the gate was approved on 2026-11-25 (chat item 21).
 Settled on 2026-11-25 (see "Decisions in chat during stage 5"):
 
 1. Mobility-channel contrast: Rule C (item 3).

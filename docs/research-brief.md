@@ -10,6 +10,14 @@ entrants (`docs/decisions.md`). Gate 5 fixes the final set; the rest of
 this brief is unchanged and some passages below still describe gate 4 as
 pending.
 
+Revised on 2026-11-25 at the G2 re-run: the H3 mechanism, the H3
+novelty cell, the Theoretical Contribution and Appendices B and C are
+narrowed as accepted by the PI on approving the gate 5 decisions
+(`reviews/gate-2-synthesis.md`, "G2 re-run, 2026-11-25", P1 to P9;
+`docs/decisions.md`). Gate 5 approved the final hypothesis set
+(`reviews/gate-5-pre-analysis-plan.md`), which governs where this brief
+differs.
+
 Assumes: gate 1 approved; gates 4 and 5a pending; gates 2, 3 and 5 not
 reached. No literature synthesis (Stage 2) and no interview recoding
 (Stage 3) exist yet. This brief revises the idea in
@@ -71,10 +79,14 @@ Two definitional points need a decision (see Decisions for the PI):
 
 ## Theoretical Contribution
 
-Research on the staffing of foreign units separates parent-country from
-host-country nationals and explains the mix by control, knowledge transfer
-and institutional distance (`gong2003subsidiary`, `gaur2007institutional`,
-`harzing2001whos`). In a wholly owned subsidiary the two dimensions used
+Research on the staffing of foreign units mainly separates parent-country
+from host-country nationals and explains the mix by control, knowledge
+transfer and institutional distance (`gong2003subsidiary`,
+`gaur2007institutional`, `harzing2001whos`). Where it adds organizational
+origin, it does so for the top position of multinational subsidiaries, as
+general manager successors from inside or outside the subsidiary
+(`li2024origin`), or for categories of expatriate
+(`georgopoulos2024mediating`), not for the wider workforce of an IJV. In a wholly owned subsidiary the two dimensions used
 here largely coincide: staff from the parent come from abroad, and local
 staff come from the market. An IJV with a host-country parent breaks this
 coincidence. It can localize by hiring from its local parent, which leaves
@@ -88,10 +100,12 @@ environment. Organizational origin follows its dependence on coordination
 with the parents and on parent-specific knowledge. The staffing
 configuration of an IJV is therefore differentiated across functions and
 levels on two axes, and a change in one contingency moves staffing along one
-axis without moving it along the other. The contribution to contingency
-reasoning in international business is the interorganizational case: the
-unit has two sources of integration, and localization and independence from
-the parents are separate outcomes.
+axis without moving it along the other. Contingency reasoning in international business has been developed mainly
+for units with one parent and, where it has reached the IJV, for the
+partners' control systems (`groot2000control`). The contribution is the
+interorganizational case for staffing: the unit has two organizational
+sources of staff and a market, and localization and independence from the
+parents are separate outcomes.
 
 ## Hypotheses
 
@@ -133,9 +147,16 @@ coordination dependence is high and through the open host labor market
 where it is low.
 Mechanism: a locally embedded function that also depends on coordination
 with the parents needs two things from a hire, host-specific knowledge and
-parent-specific knowledge. Only a hire from a parent's host-country
-workforce brings both. Where coordination dependence is low, the second is
-not needed and the wider market offers more candidates at lower cost.
+parent-specific knowledge. In an IJV with a host-country parent, the
+parents' host-country workforce, above all the host-country parent's own,
+is the largest and cheapest pool of hires who bring both, though not the
+only one: subsidiaries with one parent find such staff among former
+inpatriates and self-initiated expatriates (`georgopoulos2024mediating`).
+Where coordination dependence is low, the second is not needed and the
+wider market offers more candidates at lower cost. The contribution of H3
+therefore rests on the channel through a second organizational source and
+on the within-IJV slope, not on the knowledge-combination step. (Revised at
+the G2 re-run, 2026-11-25; `docs/decisions.md`.)
 Boundary condition: the relationship is weaker or absent in IJVs without a
 host-country parent.
 
@@ -152,7 +173,7 @@ holding its position on the organizational axis.
 |---|---|---|---|---|---|
 | H1 | Medium. Restates the original H1 and H3 as a hiring-source prediction | Pooled parent-origin share; stock and flow; function-year and level-year. Rests on Q3, Q5, Q6 (partly answered) | Parent-origin staff are 2 to 4 percent of person-years, and seconded staff are probably missed most where H1 expects the most. Bias runs against H1 | Partly. For a subsidiary this is the expatriate question with one parent | IJV x year fixed effects absorb ownership shares; the test uses variation across domains within the IJV |
 | H2 | Low | Local versus international among observed histories; stock and flow. Rests on Q2, Q3, Q6 (partly answered) | Low risk of a null; low interest alone | No. Holds for subsidiaries too | As H1 |
-| H3 | High | Local parent-origin against independent local hires; function-year; flow preferred. Rests on Q1, Q3, Q6 (open). **Provisional** | Sparsest cell of the frame. A null may reflect measurement, not theory | Yes. The cell exists at scale only where there is a host-country parent | As H1, plus the contrast with IJVs that have no host-country parent |
+| H3 | High for the channel and the within-IJV slope; the knowledge-combination step has a one-parent analog (`georgopoulos2024mediating`) | Local parent-origin against independent local hires; function-year; flow preferred. Rests on Q1, Q3, Q6 (open). **Provisional** | Sparsest cell of the frame. A null may reflect measurement, not theory | Yes. The cell exists at scale only where there is a host-country parent | As H1, plus the contrast with IJVs that have no host-country parent |
 | H4 | High | As H3, hiring flows, before and after a contingency change. Rests on Q1, Q3, Q6, Q7 (open). **Provisional** | Highest. Needs a shock with enough exposed IJVs and a sparse cell | Yes | Shock x domain interaction with IJV x function and function x year effects |
 
 ## Feasibility Dependencies
@@ -347,14 +368,21 @@ Empirical
   control is measured at the IJV or activity level. Evidence:
   `geringer1989control`, `liu2014metaanalysis`. Why IJV: two parents and the
   market are three possible sources.
-- Staffing research classifies by nationality (parent-country, host-country)
-  and has no organizational-origin dimension. Evidence:
-  `gong2003subsidiary`, `gaur2007institutional`. Why IJV: with a
-  host-country parent, local and parent-origin are no longer opposites.
-  **Carried into H3.**
+- Staffing research classifies mainly by nationality (parent-country,
+  host-country). Where it adds organizational origin, it does so for
+  subsidiary general manager successors or for categories of expatriate,
+  not for an IJV's wider workforce, and nationality data cannot show whether
+  foreign staff came from a parent. Evidence: `gong2003subsidiary`,
+  `gaur2007institutional`, `li2024origin`, `georgopoulos2024mediating`,
+  `inamura2024effect`. Why IJV: with a host-country parent, local and
+  parent-origin are no longer opposites. **Carried into H3.**
 - Differentiation across activities is documented for control, not for
-  hiring sources. Evidence: `choi2004split`, `mohedanosuanes2021control`.
-  Why IJV: split control is an IJV phenomenon. **Carried into H1.**
+  hiring sources. Differences between top management and employees are
+  documented for nationality-based localization at the level of the unit.
+  Within the bounds of the search, no study compares hiring sources across
+  functions and levels inside the same IJV. Evidence: `choi2004split`,
+  `mohedanosuanes2021control`, `inamura2024effect`, `harzing2001whos`. Why
+  IJV: split control is an IJV phenomenon. **Carried into H1.**
 
 Boundary condition
 - The link between host environment and local staffing may not hold in
@@ -364,9 +392,10 @@ Boundary condition
 - IJVs without a host-country parent cannot localize through a parent.
   Evidence: `[CITE: studies of IJVs formed by two foreign parents]`. Why
   IJV: specific. **Carried into H3 as the boundary condition.**
-- Executive staffing studies concentrate on the top position. Evidence:
-  `harzing2001whos`, `thompson2004empirical`. Why IJV: weak. Secondary;
-  feeds the level part of H1.
+- Executive staffing studies concentrate on the top position, including
+  work that crosses nationality with inside or outside origin (`li2024origin`). Evidence: `harzing2001whos`,
+  `thompson2004empirical`, `li2024origin`. Why IJV: weak. Secondary; feeds
+  the level part of H1.
 
 Mechanism
 - Why recruit from a parent instead of the market: control, knowledge
@@ -409,8 +438,8 @@ requirements. Dependence on the host environment makes host-specific
 knowledge and local acceptance valuable in a hire. Dependence on
 coordination with the parents makes parent-specific knowledge and ties
 valuable. The requirements are independent of each other, so a function can
-be high on both. Fit then calls for hires who bring both, and those are
-found in a parent's host-country workforce. Where only the first
+be high on both. Fit then calls for hires who bring both, and the largest and cheapest pool
+of them, though not the only one, is a parent's host-country workforce. Where only the first
 requirement is high, the open local market fits at lower cost. Change in the
 first requirement moves hiring between local and international sources and
 leaves the parent-versus-market choice where coordination dependence put it
@@ -456,9 +485,16 @@ Tensions from `docs/theory-framework.md`.
    parents limits determinism (`[CITE: Child 1972]`), which is why the
    hypotheses predict shares, not a single fitting configuration.
 2. Single-organization origin: the organizational-origin dimension is the
-   interorganizational element. A unit with two parents has two internal
-   sources and a market, and H3 exists only because of that.
-3. Contingencies and bargaining power: see the table above.
+   interorganizational element. Contingency reasoning has reached the IJV
+   for the partners' control systems (`groot2000control`), not for sources
+   of staff. A unit with two parents has two internal sources and a market,
+   and H3 exists only because of that.
+3. Contingencies and bargaining power: see the table above. The
+   power-based position has an explicit IJV precedent: case evidence holds
+   that partner power, not contingencies, decides HRM localization in IJVs
+   (`wilson2006dynamics`). The theory section answers it: power settles who
+   decides at the level of the IJV, whereas the hypotheses concern
+   differences between domains inside the same IJV-year.
 
 Definitional ambiguities flagged: the two readings of local parent-origin;
 "recruited locally" is the country of the prior position, not nationality;
