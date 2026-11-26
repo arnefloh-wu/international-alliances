@@ -389,3 +389,70 @@ Not found: a study that uses O\*NET elements as contingency scores for staffing,
 ### Records
 
 No rows were added to `screening.csv` and nothing was added to `references.bib` (run brief). The memo lists which candidates are already in the sheet (OA-S6-16, OA-S6-28, OA-S6-36, OA-S6-39, OA-S6-51, OA-S6-63) and which would be new S10 rows if the PI accepts them. No PRISMA counts above change.
+
+## Reference step for five [CITE] markers and the O\*NET precedent check (2026-11-26)
+
+Agent: reference-manager. Basis: the approved pre-analysis plan (`reviews/gate-5-pre-analysis-plan.md`), markers at lines 460, 481, 501, 507 and 512, and the open element check at lines 658 to 662. Results: `literature/zotero/verification-2026-11-26-cite.md` (markers) and `onet-precedent-elements-2026-11-26.md` (O\*NET elements). Not a protocol search; no rows were added to `screening.csv` and no PRISMA counts change.
+
+### Sources and access
+
+| Source | Access | Queries | Notes |
+|---|---|---|---|
+| Consensus | not available | 0 | `mcp__Consensus__search` not exposed in this session |
+| WebSearch | agent | 16 (R01-R16) | 10 results each |
+| OpenAlex API | agent | 13 searches (R17-R29) and about 20 DOI look-ups for abstracts | relevance ranked; top 3 to 8 screened per search |
+| Crossref API | agent | 11 title queries (R30-R40) and DOI checks of every candidate | generic User-Agent, no contact e-mail |
+| WebFetch | agent | 24 page checks (R41) | content and metadata checks, not searches; 9 failed (HTTP 403 or 404, redirects to login, empty PDF text) |
+| Full texts | agent | 4 | Oldenski working paper (UNT web archive raw capture), Dierdorff & Ellington (Appalachian State Figshare copy of the version of record), Bidwell & Keller accepted manuscript (Wharton faculty page), Konara & Mohr (University of Essex repository, CC BY). Read as text from the session scratchpad or the tool cache; no PDF saved in the repository |
+| Web of Science, EBSCO, Google Scholar | not run | 0 | no agent access |
+
+### Query log
+
+| id | Source | Marker or task | Query | Result used |
+|---|---|---|---|---|
+| R01 | WebSearch | O\*NET task | `Oldenski "Export versus FDI and the communication of complex information" pdf working paper` | Georgetown working paper (October 2011) in the UNT web archive |
+| R02 | WebSearch | O\*NET task | `Dierdorff Ellington 2008 "It's the nature of the work" work-family conflict pdf interdependence "responsibility for others" O*NET` | none (abstract only) |
+| R03 | WebSearch | O\*NET task | `"Dierdorff" "Ellington" "nature of the work" work-family conflict occupations filetype:pdf` | none; repository copy then found through OpenAlex and Unpaywall |
+| R04 | WebSearch | 1 | `Bidwell Keller 2014 "Within or without? How firms combine internal and external labor markets to fill jobs" Academy of Management Journal` | accepted manuscript on the Wharton faculty page |
+| R05 | WebSearch | 1 | `Lepak Snell 1999 "human resource architecture" human capital allocation uniqueness internal development external acquisition` | Lepak & Snell 1999 (abstract only; not added) |
+| R06 | WebSearch | 2 | `Makino Beamish 1998 "Performance and survival of joint ventures with non-conventional ownership structures" JIBS Japanese partners host country` | Makino & Beamish 1998 |
+| R07 | WebSearch | 1 | `"Lepak" "Snell" 1999 "The human resource architecture" pdf "human capital is generic" OR "low in uniqueness" acquisition "external labor market"` | none (no legitimate full text) |
+| R08 | WebSearch | 2 | `international joint ventures "both partners are foreign" OR "two foreign partners" OR "foreign-foreign" joint ventures host country journal article performance` | Konara & Mohr 2023 |
+| R09 | WebSearch | 4 | `Kren Lawless "How has Brexit changed EU-UK trade flows" European Economic Review abstract Trade and Cooperation Agreement non-tariff` | Kren & Lawless 2024 (not added: trade effects, not regulation) |
+| R10 | WebSearch | 4 | `UK in a Changing Europe "UK-EU regulatory divergence tracker" first edition 2021` | UKICE tracker editions; UKICE policy report 2022 |
+| R11 | WebSearch | 4 | `"Doing things differently? Policy after Brexit" UK in a Changing Europe report 2022` | UKICE report (publisher page found by URL check) |
+| R12 | WebSearch | 4 | `ukandeu.ac.uk "UK-EU regulatory divergence tracker" "first edition" October 2021 Reland Rutter` | tracker first edition on committees.parliament.uk (not added) |
+| R13 | WebSearch | 5 | `Chiswick Miller 2009 "The international transferability of immigrants' human capital" Economics of Education Review abstract occupation lawyers` | none (no occupation-level law result in the abstract) |
+| R14 | WebSearch | 5 | `lawyers "jurisdiction-specific" human capital legal knowledge not transferable across countries journal article economics labor` | Hadfield 2009 chapter |
+| R15 | WebSearch | 5 | `Hadfield "multijural" "legal human capital" international law firms harmonization working paper SSRN USC` | SSRN 959422 abstract (via repost) |
+| R16 | WebSearch | 5 | `journal article lawyers human capital "country-specific" legal knowledge immigrant lawyers earnings penalty law occupation non-transferable` | none |
+| R17 | OpenAlex | 1 | `Shenkar Zeira human resources management in international joint ventures directions for research` | none relevant |
+| R18 | OpenAlex | 2 | `joint ventures two foreign partners no local partner host country third-country` | none relevant |
+| R19 | OpenAlex | 3 | `workforce composition adjusts through hiring new hires rather than incumbents skill composition firm` | none relevant |
+| R20 | OpenAlex | 3 | `demographic metabolism of organizations turnover tenure distributions` | Haveman 1995 (not added) |
+| R21 | OpenAlex | 3 | `Abowd Corbel Kramarz entry and exit of workers and the growth of employment French establishments` | lead for Abowd et al. 1999 (confirmed on Crossref) |
+| R22 | OpenAlex | 3 | `Hershbein Kahn do recessions accelerate routine-biased technological change vacancy postings` | lead for Hershbein & Kahn 2018 |
+| R23 | OpenAlex | 3 | `Burgess Lane Stevens job flows worker flows and churning` | Burgess et al. 2000 (not added) |
+| R24 | OpenAlex | 5 | `country-specific human capital lawyers immigrants transferability legal occupations` | none |
+| R25 | OpenAlex | 5 | `international transferability of immigrants human capital occupation Chiswick Miller` | none |
+| R26 | OpenAlex | 5 | `Brexit legal profession lawyers qualification recognition solicitors Ireland` (articles only) | none |
+| R27 | OpenAlex | 5 | `foreign-trained lawyers licensing legal knowledge country-specific earnings` (articles only) | none |
+| R28 | OpenAlex | 5 | `local knowledge of laws and regulations host country nationals subsidiary staffing legal` (articles only) | none |
+| R29 | OpenAlex | 5 | `Morgan Quack institutional legacies and firm dynamics growth internationalization UK German law firms`; `Faulconbridge Muzio globalization law firms national legal jurisdiction professional` | Morgan & Quack 2005, Muzio & Faulconbridge 2013 (not added) |
+| R30-R40 | Crossref | 1 to 5 | title queries: Bidwell & Keller; Lepak & Snell; Abowd et al.; Hershbein & Kahn; Burgess et al.; Kren & Lawless; Freeman et al. (Brexit trade); "Brexit regulatory divergence ... after transition period"; Hadfield multijural (3 variants); Hadfield 2011 | DOIs and print dates for all candidates |
+| R41 | WebFetch | all | page checks: UNT archive, NC DOCKS and Figshare, Wharton PDF, Cornell eCommons, Springer, IDEAS (3), Ivey abstract compilation, ScienceDirect (2), UCL Discovery (2), UKICE publisher page, Taylor & Francis chapter page, SciSpace, SelectedWorks, International Law Reporter (2), SSRN, GOV.UK TCA page | see the verification file |
+
+Leads rechecked from `targeted-followup-2026-11-24.md`: OA-S3-68 (Makino & Beamish 1998), OA-S3-75 (Konara & Yang 2022), OA-S4-13 (Cestone et al.), OA-S4-21 (Bidwell 2011), OA-S4-09 (Belenzon & Tsolmon 2015), OA-S4-22 (DeVaro et al. 2019).
+
+### Results
+
+| Marker | Keys | Status |
+|---|---|---|
+| 1, line 460 | `williamson1975understanding`, `cestone2024exploiting`, `bidwell2014within` (framing only) | met for the specificity argument; "at lower cost" not supported |
+| 2, line 481 | `makino1998performance`, `konara2022institutional`, `konara2023cultural` (optional) | met for the existence and distinctness of such IJVs; no staffing study exists |
+| 3, line 501 | `abowd1999entry`, `hershbein2018do` | met |
+| 4, line 507 | `ukinachangingeurope2022doing`; `foreigncommonwealthdevelopmentoffice2021trade` (reused, optional) | met for separate customs, VAT and regulatory regimes; the source states that rule content did not diverge at once |
+| 5, line 512 | `hadfield2009role`, `ukinachangingeurope2022doing` | partly met; no journal article found |
+| O\*NET check | `dierdorff2008its`, `oldenski2012export` | Dierdorff & Ellington: 4.C.1.b.1.e, f and g as one interdependence score; Oldenski: importance of "working with the public" and "creative thinking" (working paper; published version not opened) |
+
+Ten entries were added to `references.bib` and created in the Zotero group library (collection "verified-import-2026-11-26 (agent)"); fallback import file `literature/zotero/import-2026-11-26-cite.ris`.
