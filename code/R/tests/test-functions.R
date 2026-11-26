@@ -54,3 +54,14 @@ w <- data.table(id = c("D1", "D2"), venture = c("Nova Co", "Gamma Ltd"), host = 
                 p3 = c(NA, ""), c3 = c(NA, ""))
 l <- wide_to_long(w, c(ext_id = "id", jv_name = "venture", jv_country = "host"), c("p1", "p2", "p3"), c("c1", "c2", "c3"))
 ok(nrow(l) == 4 && l[ext_id == "D1", .N] == 2, "wide export reshaped to one row per JV-parent pair")
+# Stage 6 helpers (code/R/functions/panel_build.R, measures.R)
+source("code/R/functions/panel_build.R")
+ok(identical(level_of(1:7, "a"), c("operational", "operational", "professional", "middle_management", "middle_management", "executive", "executive")),
+   "seniority-to-level mapping (a)")
+ok(identical(level_of(1:7, "b"), c("operational", "operational", "professional", "professional", "middle_management", "middle_management", "executive")),
+   "seniority-to-level mapping (b)")
+ok(identical(coord_role_of(c("executive", "middle_management", "professional", "operational")), c(1L, 1L, 0L, 0L)), "coord_role of the levels")
+cc <- data.table(n_local_parent = 2L, n_intl_parent = 1L, n_parent_na = 1L, n_local_indep = 5L, n_intl_indep = 3L, n_indep_na = 2L, n_hires = 20L)
+add_derived(cc)
+ok(cc$n_obs == 14L && cc$n_geo == 11L && cc$n_local == 7L && cc$n_parent == 4L && cc$n_not_obs_chk == 6L, "accounting identities of the staffing frame")
+ok(identical(is_occ(c("15-1252.00", "unknown", NA, "On Leave")), c(TRUE, FALSE, FALSE, FALSE)), "O*NET values unknown, On Leave and missing are not occupations")

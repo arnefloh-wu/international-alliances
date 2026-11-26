@@ -122,6 +122,11 @@ Rscript code/R/09_audit_parent_family_sample.R         # audit worksheet: 100 of
 Rscript code/R/10_rater_sheet.R                        # workbooks for the outside raters: 50 role_k50 groups with O*NET titles (taxonomy only, no staffing data)
 Rscript code/R/11_rater_icc.R                          # ICC(2,k) of the three returned rater workbooks per scale; rater means for scales with ICC >= 0.70
 Rscript code/R/12_rater_onet_comparison.R              # Spearman correlation of rater scores and O*NET scores at role_k50 (convergent validity)
+Rscript code/R/tests/check_panel_build.R               # stage 6 test: synthetic input with seeded failures, both build steps on it, checks (no data needed)
+Rscript code/R/02_build_panel.R                        # stage 6, step 1: hires, staffing frame (origin windows 1, 3, 5 years), entrants, employee stocks (about 30 minutes)
+Rscript code/R/03_measures.R                           # stage 6, step 2: cell-year panels, IJV and S13 variables, scores, sample-construction log
+Rscript code/R/tests/check_panel_build.R real          # schema of the real panels against the stage 7 helpers (reads column names only)
+Rscript code/R/tests/check_panel_recompute.R          # independent recomputation of the staffing frame for 150 random IJVs (agreement counts only)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -152,6 +157,11 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `10_rater_sheet.R` | step 14 (lookup) | `data/interim/rater-sheet-*.xlsx`, `rater-sheet-onet-only-*.xlsx` (gitignored; Revelio group labels in the first) |
 | `11_rater_icc.R` | returned workbooks in `data/raw/rater-ratings/` | `data/interim/rater-scores-*.csv`, `rater-icc-log-*.md` (gitignored; Revelio group labels) |
 | `12_rater_onet_comparison.R` | `11_rater_icc.R`, `07_contingency_scores.R` | `data/interim/rater-onet-groups-*.csv`, `rater-onet-comparison-*.md` (gitignored; Revelio group labels) |
+| `tests/synthetic_panel_build.R` | nothing | `data/synthetic/panel-build-synthetic-2026-11-26/` (simulated inputs of the panel build with seeded failures and their expected results) |
+| `02_build_panel.R [synthetic]` | steps 09, 14, 12 (education), 07; `06_shock_exposure.R` | `data/interim/panel-hires-v1.parquet`, `panel-stock-<grain>-v1.parquet`, `panel-staff-ijv-year-v1.parquet`, `panel-build-log-v1.csv` (person level, gitignored); with `synthetic`, the same in the synthetic folder |
+| `03_measures.R [synthetic]` | `02_build_panel.R`, steps 15 (parent industry), 11 (rater scores), the OEWS download | `data/processed/panel-ijv-{domain,domain-b,level,level-b,seniority,function,role50}-year-v1.parquet`, `panel-ijv-attributes-v1.parquet`, `panel-ijv-year-v1.parquet`, `sample-construction-log.md`; `data/interim/panel-structure-v1-2026-11-26.md` (structural counts) |
+| `tests/check_panel_build.R [real]` | nothing (synthetic); the real panels (`real`, schema only) | `data/synthetic/panel-build-test-synthetic-2026-11-26.md`; `data/interim/panel-schema-check-v1-2026-11-26.md` |
+| `tests/check_panel_recompute.R [n_ijv]` | `02_build_panel.R` | `data/interim/panel-recompute-check-v1-2026-11-26.md` (agreement counts) |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 
@@ -160,8 +170,9 @@ The sample table has one row per IJV. The columns to start with are `tier`
 (recommended analysis sample), `strategic`, `route`, `source` and
 `admitted_by`. Definitions are in `data/codebook.md`.
 
-`code/R/02_build_panel.R` to `05_robustness.R` are the scripts of stages 6
-and 7. They are run by `/panel-build` and `/estimate` after gates 5 and 6.
+`code/R/02_build_panel.R` and `03_measures.R` build the stage 6 panels (run
+order above); `04_estimate.R` and `05_robustness.R` are the scripts of stage 7,
+run by `/estimate` after gate 6.
 `04_estimate.R` already holds the models of the draft hypotheses (functions in
 `code/R/functions/estimation.R`) and runs now only on simulated panels; without
 the argument `synthetic` it stops until `reviews/gate-6-panel.md` is approved:
@@ -172,7 +183,7 @@ Rscript code/R/04_estimate.R synthetic                 # all models on the simul
 Rscript code/R/tests/check_estimate_recovery.R 500     # Monte Carlo: power, false-positive rates and bias over 500 draws (about 13 minutes)
 ```
 
-`02_build_panel.R`, `03_measures.R` and `05_robustness.R` are still skeletons.
+`05_robustness.R` is still a skeleton.
 
 ### How the scripts behave
 

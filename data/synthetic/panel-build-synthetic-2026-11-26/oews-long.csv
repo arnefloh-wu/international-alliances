@@ -1,0 +1,51 @@
+level,naics,title,occ_code,o_group,tot_emp,synthetic
+4d,331100,Synthetic Industry A,00-0000,total,26286,TRUE
+4d,331100,Synthetic Industry A,11-1000,minor,222,TRUE
+4d,331100,Synthetic Industry A,13-2000,minor,2281,TRUE
+4d,331100,Synthetic Industry A,15-1000,minor,,TRUE
+4d,331100,Synthetic Industry A,17-2000,minor,1361,TRUE
+4d,331100,Synthetic Industry A,23-1000,minor,1763,TRUE
+4d,331100,Synthetic Industry A,41-3000,minor,4172,TRUE
+4d,331100,Synthetic Industry A,43-4000,minor,1637,TRUE
+4d,331100,Synthetic Industry A,23-1011,detailed,882,TRUE
+4d,331100,Synthetic Industry A,13-2011,detailed,1140,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",00-0000,total,33256,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",11-1000,minor,891,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",13-2000,minor,3285,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",15-1000,minor,769,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",17-2000,minor,2379,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",23-1000,minor,4141,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",41-3000,minor,4777,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",43-4000,minor,386,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",23-1011,detailed,2070,TRUE
+4d,3250A1,"Synthetic Chemicals (3251, 3252 only)",13-2011,detailed,1642,TRUE
+3d,541000,Synthetic Services,00-0000,total,37782,TRUE
+3d,541000,Synthetic Services,11-1000,minor,846,TRUE
+3d,541000,Synthetic Services,13-2000,minor,4495,TRUE
+3d,541000,Synthetic Services,15-1000,minor,4791,TRUE
+3d,541000,Synthetic Services,17-2000,minor,3920,TRUE
+3d,541000,Synthetic Services,23-1000,minor,327,TRUE
+3d,541000,Synthetic Services,41-3000,minor,348,TRUE
+3d,541000,Synthetic Services,43-4000,minor,4164,TRUE
+3d,541000,Synthetic Services,23-1011,detailed,164,TRUE
+3d,541000,Synthetic Services,13-2011,detailed,2248,TRUE
+sector,31-33,Synthetic sector 1,00-0000,total,30030,TRUE
+sector,31-33,Synthetic sector 1,11-1000,minor,4919,TRUE
+sector,31-33,Synthetic sector 1,13-2000,minor,763,TRUE
+sector,31-33,Synthetic sector 1,15-1000,minor,3128,TRUE
+sector,31-33,Synthetic sector 1,17-2000,minor,1838,TRUE
+sector,31-33,Synthetic sector 1,23-1000,minor,3194,TRUE
+sector,31-33,Synthetic sector 1,41-3000,minor,998,TRUE
+sector,31-33,Synthetic sector 1,43-4000,minor,175,TRUE
+sector,31-33,Synthetic sector 1,23-1011,detailed,1597,TRUE
+sector,31-33,Synthetic sector 1,13-2011,detailed,382,TRUE
+sector,54,Synthetic sector 2,00-0000,total,47376,TRUE
+sector,54,Synthetic sector 2,11-1000,minor,4605,TRUE
+sector,54,Synthetic sector 2,13-2000,minor,4694,TRUE
+sector,54,Synthetic sector 2,15-1000,minor,4899,TRUE
+sector,54,Synthetic sector 2,17-2000,minor,3522,TRUE
+sector,54,Synthetic sector 2,23-1000,minor,3803,TRUE
+sector,54,Synthetic sector 2,41-3000,minor,1495,TRUE
+sector,54,Synthetic sector 2,43-4000,minor,670,TRUE
+sector,54,Synthetic sector 2,23-1011,detailed,1902,TRUE
+sector,54,Synthetic sector 2,13-2011,detailed,2347,TRUE
