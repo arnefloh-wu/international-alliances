@@ -1,0 +1,10 @@
+onet_code,onet_title,in_revelio,soc_minor,soc_broad,domain,regulatory_narrow,regulatory_broad,score_imputed,imputed_from,local_embeddedness,coord_dependence,local_embeddedness_broad,coord_dependence_broad,local_embeddedness_lv,coord_dependence_lv,law_gov_importance,job_zone
+15-1252.00,Synthetic occupation 1,TRUE,15-1,15-125,15-1,FALSE,FALSE,FALSE,rated,-0.341,-0.951,1.699,2.109,-1.324,-0.358,1.23,5
+11-1021.00,Synthetic occupation 2,TRUE,11-1,11-102,11-1,FALSE,FALSE,FALSE,rated,-0.119,-1.032,2.312,-0.135,0.768,-0.991,3.46,5
+23-1011.00,Synthetic occupation 3,TRUE,23-1,23-101,REG,TRUE,TRUE,FALSE,rated,-0.083,0.694,-0.272,1.2,0.003,-0.057,1.47,5
+13-2011.00,Synthetic occupation 4,TRUE,13-2,13-201,13-2,FALSE,TRUE,FALSE,rated,-0.094,-0.754,0.571,-0.555,1.457,-0.331,3.07,4
+13-2051.00,Synthetic occupation 5,TRUE,13-2,13-205,13-2,FALSE,FALSE,FALSE,rated,-0.669,2.094,-1.039,2.245,0.895,-1.216,4.89,3
+41-3091.00,Synthetic occupation 6,TRUE,41-3,41-309,41-3,FALSE,FALSE,FALSE,rated,-0.096,-0.828,0.969,-1.583,-0.519,0.28,4.51,3
+17-2141.00,Synthetic occupation 7,TRUE,17-2,17-214,17-2,FALSE,FALSE,FALSE,rated,1.018,-0.881,-0.407,2.467,0.084,0.083,2.12,2
+43-4051.00,Synthetic occupation 8,TRUE,43-4,43-405,43-4,FALSE,FALSE,FALSE,rated,-0.277,2.373,-0.529,0.765,-1.866,0.872,3.01,5
+55-1011.00,Synthetic occupation 9,TRUE,55-1,55-101,55-1,FALSE,FALSE,TRUE,overall mean,0,0,0,0,0,0,0,0

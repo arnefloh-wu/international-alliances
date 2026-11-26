@@ -7,51 +7,66 @@ the processed panels is listed here with source, construction and unit.
 
 | Variable | Level | Source | Definition |
 |---|---|---|---|
-| `ijv_id` | IJV | Orbis BvD ID | JV legal entity |
-| `rcid_ijv` | IJV | Revelio | matched company id |
-| `parent_a_id`, `parent_b_id` | IJV | Orbis BvD ID (GUO) | parent A is the parent with the larger equity share at formation; ties broken alphabetically by country code |
-| `dyad` | IJV | derived | ordered pair of parent HQ country codes |
-| `function` | cell | Revelio `job_category` mapped | one of: rd_engineering, operations_manufacturing, supply_chain_procurement, finance, hr, sales_marketing, it, general_management, other |
-| `level` | cell | Revelio seniority mapped | one of: executive, middle_management, professional, operational |
-| `year` | cell | derived | calendar year; an individual is in a cell-year if the position overlaps 30 June of that year |
+| `ijv_id` | IJV | Orbis BvD ID or Capital IQ id (`jv_bvdid` of the matched dataset) | JV legal entity; key of every stage 6 panel |
+| `rcid_ijv` (`rcid_jv` in the matched dataset) | IJV | Revelio | matched company id |
+| `parent_a_id`, `parent_b_id` | IJV | Orbis BvD ID or Capital IQ id of the direct parent | parent A is the parent with the larger current equity share, ties broken on country code (as in the matched dataset; the current share stands in for the share at formation) |
+| `dyad` | IJV | derived (stage 6) | clustering unit of the shock models: exposed IJVs keep their S13 exposure pair (`GB-X`); other IJVs take the host country plus the country of the foreign direct parent with the largest equity share (`host-parent`); IJVs without a foreign direct parent take the country of the largest-equity foreign ultimate owner (Orbis GUO); `host-none` if neither exists (pre-analysis plan B0.4; decisions of 2026-11-25, items 6 and 14) |
+| `domain` | cell | Revelio `onet_code` mapped | SOC minor group of the position's O\*NET-SOC 2019 code (`NN-N`), with the 16 narrow regulatory-facing codes as `REG` (98 domains); in the H4 panel the 22 broad-list codes form `REG_B` instead. Never a column named `function` |
+| `fn` | cell | Revelio `role_k10_v3` | Revelio's own function (grain robustness; see "Panels (stage 6)") |
+| `role_k50` | cell | Revelio `role_k50_v3` | Revelio occupation group (grain robustness, rater scores) |
+| `level` | cell | Revelio seniority mapped | mapping (a), primary: `executive` = 6-7, `middle_management` = 4-5, `professional` = 3, `operational` = 1-2; mapping (b) in the `level-b` panel: 7, 5-6, 3-4, 1-2 (PI, 2026-11-25) |
+| `seniority` | cell | Revelio `seniority` | integer 1 to 7 (robustness 18c) |
+| `year` | cell | derived | calendar year: the hire year for hiring flows; employees are counted if a position overlaps 30 June of that year |
 
-## Dependent variables (see `code/R/functions/measures.R`)
+## Dependent variables
 
-| Variable | Definition | Range |
-|---|---|---|
-| `n_emp` | employees observed in the cell-year | count |
-| `n_from_a`, `n_from_b`, `n_external` | employees whose most recent prior employer (or any prior employer within `origin_window` years) was parent A, parent B, neither | count |
-| `share_a`, `share_b` | `n_from_a / (n_from_a + n_from_b)`, likewise B; NA if no parent-origin employees | 0 to 1 |
-| `cross_parent_integration` | `2 * (1 - (share_a^2 + share_b^2))`, so 0 = one parent only, 1 = equal representation | 0 to 1 |
-| `parent_dominance` | `abs(share_a - share_b)` | 0 to 1 |
-| `parent_dominance_adj` | `abs((share_a - share_b) - (equity_a - equity_b))`, deviation of staffing asymmetry from equity asymmetry | 0 to 2 |
-| `localization` | `n_external / n_emp` | 0 to 1 |
-| `localization_host` | external employees whose prior position was in the host country / `n_emp` | 0 to 1 |
+The outcomes of the approved plan are hiring-flow counts per cell-year on the
+staffing frame (pre-analysis plan pap-v1.0, A2.2 and A3). Their definitions are
+in "Panels (stage 6)" below and in `code/R/functions/measures.R`. The
+cross-partner measures of the original idea (`n_from_a`, `n_from_b`,
+`share_a`, `share_b`, `cross_parent_integration`, `parent_dominance`,
+`parent_dominance_adj`, `localization`) were dropped at gate 4, decision 1;
+their functions are kept in `measures.R` as a labeled legacy section and enter
+no panel.
 
-## Domain characteristics (from the qualitative memo, finalized at G5)
+## Domain characteristics
 
-Under structural contingency theory these scores summarize four contingency families (task, coordination, environmental, resource; see `docs/theory-framework.md`). Gate 3 decides whether two summary scores suffice or a third, `resource_dependence`, is added.
+The scores of the domains come from O\*NET alone (section "Contingency
+scores"); the interview scores of 1 to 5 planned at the start were replaced on
+2026-11-24 and 2026-11-25 (`docs/decisions.md`). For levels, `coord_role` = 1
+for `executive` and `middle_management` and 0 otherwise, with
+`mintzberg1979structuring` as the source (gate 2, decision 10); it is used in
+the exploratory level part of H1 only. Rater scores per `role_k50` group
+(section "Rater scores") are a robustness check.
+
+## Shock (S13, Brexit; pre-analysis plan A2.5, B0.4)
 
 | Variable | Definition |
 |---|---|
-| `coord_dependence` | score 1 to 5 for the function's dependence on cross-partner coordination and knowledge exchange |
-| `local_embeddedness` | score 1 to 5 for the function's dependence on host-country institutions, labor markets, customers, regulators |
-| `coord_role` | for levels: 1 if the level carries alliance-wide coordination responsibility (executive, middle management), else 0 |
-
-## Shock (finalized at G5)
-
-| Variable | Definition |
-|---|---|
-| `shock` | 1 from the first year in which the dyad is exposed to the focal environmental change |
-| `event_time` | year minus first exposure year; NA for never exposed |
+| `exposed` | 1 for a UK-hosted IJV with a direct parent from the EU27, Iceland, Liechtenstein, Norway or Switzerland, or an IJV hosted there with a UK direct parent (S13 main variant of `code/R/06_shock_exposure.R`) |
+| `pair_exposure` | the exposed pair `GB-X`; for an IJV with several exposed pairs, the pair of its largest-equity parent among them (attributes table) |
+| `s13_control` | IJV hosted in the UK or the EU27, EEA or Switzerland, not exposed, not a third-country parent-parent pair, and not one of the controls without a foreign direct parent that have a UK-set link through their ultimate owner (`s13_owner_link_dropped`; PI, 2026-11-25, item 14) |
+| `s13_sample` | `exposed` or `s13_control` |
+| `s13_third_country` | IJV hosted outside the set whose parents form a UK-set pair (placebo; in neither group) |
+| `owner_level` | route `orbis_owner_level` (robustness: all dropped from the S13 models) |
+| `exposed_no_ie`, `exposed_guo` | exposure with Ireland excluded; exposure on the ultimate owner's country (Orbis-sourced IJVs only, else missing) |
+| `uk_host`, `gb_ie` | UK-hosted IJV; exposed IJV on the pair {GB, IE} |
+| `eu_stake_max`, `eu_stake_band` | UK-hosted exposed IJVs: largest direct stake of an EU, EEA or Swiss parent; band `below_50`, `exactly_50`, `above_50` (attributes table) |
+| `control_linked` | Rule C (part C, section 2): 1 for a UK-hosted exposed IJV whose largest EU, EEA or Swiss stake is above 50 percent (equity as the proxy for voting control; 50/50 coded 0), else 0 |
+| `linked`, `linked_alt` | Rule L: 1 for every UK-hosted exposed IJV; alternative with minority-held IJVs (stake below 50) coded as not linked |
+| `post`, `antic_yr`, `post16` | year from 2021; 2016 to 2020; from 2016 (announcement onset, robustness 15d) |
+| `shock`, `antic`, `shock16` | `exposed` times `post`, `antic_yr`, `post16` |
+| `event_time` | year minus 2021 for exposed IJVs; missing for others |
+| `reg`, `reg_b`, `treat_reg`, `exp_post_reg`, `exp_antic_reg` | domain panels: indicator of the regulatory domain (`REG` in the domain panel, `REG_B` in the domain-b panel, where `reg` equals `reg_b`); `exposed` x `reg`; `exposed` x `post` x `reg`; `exposed` x `antic_yr` x `reg` |
 
 ## Controls
 
-`ijv_age`, `ijv_size_log`, `equity_a`, `equity_b`, `equity_balance`
-(= 1 - |equity_a - equity_b|), `n_parents`, `parent_a_size_log`,
-`parent_b_size_log`, `parent_a_roa`, `parent_b_roa`, `industry`,
-`host_country`, `dist_a_host`, `dist_b_host`, `inst_dist_a_host`,
-`inst_dist_b_host`, `host_gdp_growth`, `host_wgi`.
+The approved plan uses fixed effects in place of IJV controls. The draft list of
+the research idea (`ijv_age`, `ijv_size_log`, equity balance, parent size and
+profitability, distances, host indicators) is not built at stage 6. Robustness
+controls that are built: `coverage_ratio` (IJV-year, from 2015 on),
+`share_unmapped` (cell), the domain `job_zone`, and the resource-dependence
+variables `rd_core` and `rd_ratio`.
 
 ## Sample frame from Orbis ownership (Stage 4 pilot, 2026-10-08)
 
@@ -144,7 +159,7 @@ Built by `code/R/wrds/09_build_matched_dataset.R` for the `core_main` IJVs, in `
 | `ijv-parents-<run>.csv` | one row per IJV-parent pair | `jv_bvdid`, `parent_rank`, `parent_label` (A larger equity share, B second, then 3, 4), `parent_bvdid`, `parent_name`, `parent_country`, `parent_entity_type`, `equity_share_current`, `parent_guo`, `guo_name`, `guo_country`, `parent_in_revelio`, `revelio_family_size` |
 | `ijv-employee-spells-<run>.parquet` | one row per Revelio position at the matched JV entity | `jv_bvdid`, `rcid`, `user_id`, `position_id`, `start_date`, `end_date`, `ongoing`, `first_reference_year`, `last_reference_year`, `n_reference_dates`, `country`, `seniority`, `role_k17000_v3`, `function_role_k10`, `role_k50_v3` |
 
-A position is a spell only if it covers at least one 30 June from the formation year (or its start, if later) to 2026; `n_reference_dates` counts them. Parent A is the parent with the larger current equity share, ties broken on country code. `formation_year` is the incorporation year (Orbis) or founding year (Capital IQ; 1990 where missing, flagged by `formation_year_missing`), so for many IJVs the first observed year is later than the venture's real start. Career histories of the spell users are in `data/raw/revelio-histories-full-2026-10-09/` and link on `user_id`. Function and seniority are Revelio's own codes; the mapping to the project's nine functions and levels is set at gate 5. Version 3 of the 2026-10-09 run: 7,460 IJVs, 17,015 parent rows, 4,973,926 spells for 3,760,920 people.
+A position is a spell only if it covers at least one 30 June from the formation year (or its start, if later) to 2026; `n_reference_dates` counts them. Parent A is the parent with the larger current equity share, ties broken on country code. `formation_year` is the incorporation year (Orbis) or founding year (Capital IQ; 1990 where missing, flagged by `formation_year_missing`), so for many IJVs the first observed year is later than the venture's real start. Career histories of the spell users are in `data/raw/revelio-histories-full-2026-10-09/` and link on `user_id`. Function and seniority are Revelio's own codes; the mapping to the project's nine functions and levels is set at gate 5. Version 3 of the 2026-10-09 run: 7,460 IJVs, 17,015 parent rows, 4,973,926 spells for 3,760,920 people. Missing `jv_website` and `jv_lei` are stored as quoted empty strings (`""`), which `fread` keeps as text; treat them as missing (found at the audit preparation, 2026-11-26).
 
 ## Staffing tabulations (2026-11-23)
 
@@ -257,7 +272,7 @@ Flags from `code/R/functions/quality_flags.R`, reported by `code/R/wrds/13_quali
 
 Synthetic tables in `data/synthetic/` (tracked in Git), written by `code/R/tests/synthetic_matched.R` with a fixed seed: `ijv-matched`, `ijv-parents`, `parent-groups`, `ijv-employee-spells`, `revelio-histories` and `orbis-jv-headcounts`, each as `<table>-synthetic-2026-11-23.parquet` with the columns of the real table plus `synthetic = TRUE`. Every value is simulated; no real row is read. Ids start with `SYN`, `exposure_group` is empty, and names are placeholders. `function_cells_5` and `seniority_cells_5` are simplified there (categories with five or more people over all years). `seeded-failures-synthetic-2026-11-23.csv` lists the failures built into the tables and their numbers. The extractions and the synthetic data are logged in `data/data-log.md`.
 
-## Draft panel columns for estimation (simulated, 2026-11-23)
+## Draft panel columns for estimation (simulated, 2026-11-23; superseded by "Panels (stage 6)")
 
 The simulated panels of `code/R/tests/synthetic_panel.R` use these columns. They are a draft for the gate-5 measurement specification, not decided names; the real panels of `/panel-build` follow the plan. One row per IJV x function x year (`fn`) or IJV x level x year (`level`), counting hires in the year (flows).
 
@@ -280,12 +295,18 @@ Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).
 | Item | Assumption |
 |---|---|
 | Company | `rcid` from `company_mapping`; `ultimate_parent_rcid` defines the Revelio company group |
-| Function | `role_k10_v3` from `individual_role_lookup_v3` (Sales and Marketing, Public Service and Education, Technician, Project and IT Specialist, Engineer, Finance, Service Worker, Healthcare Provider, Operations, Software Engineer), with `role_k50_v3` kept for remapping to the project's nine functions at gate 5 |
-| Seniority | integer 1 to 7 in `individual_positions.seniority`; mapping to executive, middle management, professional, operational is set at gate 5 |
-| Prior employer | most recent position at another `rcid` that started before the JV spell and was still held within `origin_window` years before it; an ongoing parent position counts as parent origin (secondment) |
-| Overlapping positions | each position counts; an individual is in a cell-year if a position overlaps 30 June |
-| Duplicates | positions are de-duplicated on `position_id` |
-| Cell-years | only years from the JV's formation (incorporation) year onward; earlier spells at the matched entity are counted separately as `person_years_pre_formation` |
+| Parent group | the Revelio entities matched to the direct parent and to its Orbis GUO (50 percent definition), extended to every company under their `ultimate_parent_rcid` (`full-parent-groups-<run>.csv`); state GUOs define no family; an entity in two parents' families goes to the parent with the larger equity share; the IJV's own matched entity is removed from the family for that IJV |
+| Occupation and domain | position-level `onet_code` (O\*NET-SOC 2019) from `revelio-jv-positions-onet-2026-11-25`; positions not in that extract (spell positions no longer in `individual_positions`, and first positions at the JV that cover no 30 June and so were never queried) take the code of their `role_k17000_v3` in the role lookup (`onet_source` = `lookup`); `unknown`, `Retired`, `On Leave` and empty values are missing, without a fallback; domain from `contingency-scores-occupation-v1-2026-11-25.csv` |
+| Function | Revelio `role_k10_v3` (`job_category` of the JV position for hires, `function_role_k10` of the spell for employees); `unknown` is missing, `Miscellaneous` is kept as a value; the project's nine functions were never mapped (see `reviews/gate-6-panel.md`) |
+| Seniority | integer 1 to 7 in `individual_positions.seniority` (a model score; labels entry, junior, associate, manager, director, executive, senior executive per the Revelio data dictionary), mapped to the four levels as under "Identifiers"; missing seniority means no level |
+| Hire | a person's first dated position at the matched JV entity (`revelio-jv-positions-full-2026-10-09.parquet`), for people with at least one spell (one 30 June at the JV from the formation year on); ties on the start date broken by `position_id`; hire years from the formation year to 2025 |
+| Prior employer | a position at another `rcid` (or an unmapped employer) that started before the hire date and was ongoing or ended at most `origin_window` x 365 days before it (3 years primary, 1 and 5 robustness); an ongoing parent position counts (secondment); positions without a start date or ending before they start are ignored; parent-origin if any prior position in the window is in a parent family, the most recent one giving the location and the parent; otherwise the most recent prior position gives the location |
+| Location | country of the prior position (Revelio country names to ISO 2 with `countrycode`), against the IJV's host country; not nationality |
+| Entrant | history not observed, no earlier position at another employer, and the last education that ended by the year after joining ended at most 1, 3 (primary) or 5 years before the hire year; the place of that education gives `local`, `intl` or `na` |
+| Overlapping positions | employees: each position counts, a person is counted once per cell-year (a person in two domains in one year counts in both) |
+| Duplicates | positions are de-duplicated on `position_id` in the spells, the JV positions and the histories |
+| Cell-years | only years from the JV's formation (incorporation) year onward, to 2025 |
+| Missing values | `ijv-matched-v3` stores missing `jv_website` and `jv_lei` as quoted empty strings, which `fread` does not read as missing; treat `""` as missing (`pb_blank()`); the panels use neither column |
 
 ## Entity matching tiers (Stage 4 pilot)
 
@@ -312,3 +333,131 @@ Built by `code/R/11_rater_icc.R` from the three returned rater workbooks in `dat
 ## Rater and O\*NET scores per group (`data/interim/rater-onet-groups-2026-11-26.csv`)
 
 Built by `code/R/12_rater_onet_comparison.R`. The rows and columns of `rater-scores-2026-11-26.csv` plus, per `role_k50` group: `n_codes` (O\*NET codes in the group), `n_entries` (taxonomy entries, the weights), `share_imputed` (share of the weight on occupations with imputed scores), `coord_dependence_onet` and `local_embeddedness_onet` (weighted means of the occupation scores of `07_contingency_scores.R`, standardized units). Correlations in `data/interim/rater-onet-comparison-2026-11-26.md`.
+
+## Panels (stage 6, 2026-11-26)
+
+Built by `code/R/02_build_panel.R` (hire-level staffing frame and employee
+stocks) and `code/R/03_measures.R` (cell-year panels) under the approved
+pre-analysis plan pap-v1.0 (`reviews/gate-5-pre-analysis-plan.md`, A2 to A4,
+B0, B5), helpers in `code/R/functions/panel_build.R`, `measures.R`,
+`panel_ijv.R` and `resource_dependence.R`. Licensed, in `data/processed/`
+(gitignored). Counts at every step: `data/processed/sample-construction-log.md`.
+
+| File | Unit (key) | Use in the plan |
+|---|---|---|
+| `panel-ijv-domain-year-v1.parquet` | IJV x domain x year (`ijv_id`, `domain`, `year`); 98 domains, narrow `REG` carved out | H1, H2, H3; H4 with the narrow list (robustness) |
+| `panel-ijv-domain-b-year-v1.parquet` | IJV x domain x year; domains with the 22 broad-list codes carved out as `REG_B` | H4a, H4b (confirmatory measure since the feasibility rule of 2026-11-25) |
+| `panel-ijv-level-year-v1.parquet` | IJV x level x year (`level`, mapping a) | C1; levels part of H1 (exploratory) |
+| `panel-ijv-level-b-year-v1.parquet` | IJV x level x year (`level`, mapping b) | robustness 18b |
+| `panel-ijv-seniority-year-v1.parquet` | IJV x seniority (1 to 7) x year | robustness 18c (linear term) |
+| `panel-ijv-function-year-v1.parquet` | IJV x `fn` x year (Revelio `role_k10_v3`) | grain robustness 5 (stands in for the nine functions; see the gate 6 file) |
+| `panel-ijv-role50-year-v1.parquet` | IJV x `role_k50` x year | grain robustness 5; rater scores (robustness 6) |
+| `panel-ijv-attributes-v1.parquet` | IJV (`ijv_id`) | every IJV-level variable below, incl. those not repeated in the panels |
+| `panel-ijv-year-v1.parquet` | IJV x year | `staff_revelio`, `headcount_orbis_u`, `coverage_ratio` |
+
+Rows: every cell-year with at least one employee on 30 June or at least one
+hire, from the IJV's formation year to 2025. `main_period` = 1 marks hire years
+2010 to 2025 (main sample); earlier rows serve the full-period check
+(robustness 12). Hires without a value of the grain (no usable O\*NET code, no
+seniority, no Revelio function or group) are left out of that panel only; their
+numbers are in the log. Counts are integers; shares are missing where the
+denominator is zero. Indicators are integers 0/1.
+
+### Cell counts (hiring flows; unit: hires in the cell-year)
+
+| Variable | Construction |
+|---|---|
+| `n_emp` | employees on 30 June of the year in the cell (unique people; cell rule only) |
+| `n_emp_xi`, `n_emp_xl` | the same without positions in occupations with imputed scores, and without positions coded through the role lookup (domain panels) |
+| `n_hires` | hires (first dated position at the JV entity) with hire year = `year` |
+| `n_local_parent`, `n_intl_parent`, `n_parent_na` | parent-origin hires (a prior position in the three-year window in a parent's Revelio family): the most recent such position in the host country, abroad, without a country |
+| `n_local_indep`, `n_intl_indep`, `n_indep_na` | independent hires (prior positions in the window, none in a parent family; unmapped employers included): the most recent prior position in the host country, abroad, without a country |
+| `n_not_obs` | history not observed: no prior position in the window |
+| `n_parent`, `n_indep`, `n_obs` | sums of the three parent-origin categories, of the three independent categories, and of all six |
+| `n_local`, `n_intl`, `n_geo` | `n_local_parent + n_local_indep`; `n_intl_parent + n_intl_indep`; `n_local + n_intl` (= `n_obs - n_parent_na - n_indep_na`) |
+| `n_entrant` | labor market entrants among `n_not_obs` (education window three years); `n_entrant_local`, `n_entrant_intl`, `n_entrant_na` by place of education |
+| `n_entrant_e1`, `n_entrant_e5` | entrants with education windows of one and five years (robustness 10) |
+| `n_unknown`, `n_unknown_e1`, `n_unknown_e5` | `n_not_obs` minus the entrants of the respective window |
+| `n_local_parent_hcp` | local parent-origin hires whose parent is a host-country parent (direct shareholder country; robustness 13c) |
+| `n_intl_parent_home` | international parent-origin hires whose prior position was in the home country of one of the IJV's foreign direct parents (C1 parts b and c) |
+| `n_obs_unmapped` | hires with an observed history whose deciding prior employer is not mapped to a Revelio company (robustness 12) |
+| `*_ow1`, `*_ow5` | `n_obs`, the six categories, `n_parent`, `n_indep`, `n_local`, `n_intl`, `n_geo`, `n_not_obs` and `n_unknown` with origin windows of one and five years (robustness 17) |
+| `*_xi`, `*_xl` | `n_hires`, the six categories and their sums (`n_obs`, `n_parent`, `n_indep`, `n_local`, `n_intl`, `n_geo`, `n_not_obs`) without hires in occupations with imputed scores (`xi`) and without hires coded through the role lookup (`xl`) (robustness 7) |
+
+Identities checked on every row (`check_identities()`): `n_hires = n_obs +
+n_not_obs`; `n_not_obs = n_entrant + n_unknown`; `n_obs` = the six categories;
+`n_geo = n_obs - n_parent_na - n_indep_na`; the same for the window variants.
+
+### Shares (estimands only; plan A3)
+
+| Variable | Definition |
+|---|---|
+| `share_parent` | `n_parent / n_obs` (H1) |
+| `share_local` | `n_local / n_geo` (H2, H4a; A3 denominator) |
+| `share_parent_local` | `n_local_parent / n_local` (H3, H4b ii) |
+| `share_not_obs`, `share_entrant`, `share_unknown` | `n_not_obs`, `n_entrant`, `n_unknown` over `n_hires` |
+| `share_unmapped` | `n_obs_unmapped / n_obs` |
+
+### Cell rules
+
+`cell_emp5` (`n_emp >= 5`, primary), `cell_emp3`, `cell_emp10` (robustness 4),
+`cell_hires5` (`n_hires >= 5`, sensitivity rule).
+
+### IJV variables (repeated on every panel row; the attributes table holds them all)
+
+| Variable | Definition |
+|---|---|
+| `host_country`, `formation_year`, `source`, `route`, `n_parents`, `strategic` | from the matched dataset (`strategic` as 0/1) |
+| `parent_in_revelio`, `all_parents_in_revelio` | at least one parent, every parent has a Revelio entity (gate 4, decision 8a) |
+| `host_parent` | a direct parent from the host country (A2.3) |
+| `host_parent_guo` | owner basis: a parent whose Orbis GUO country is the host country; Orbis-sourced IJVs with every GUO known, else missing |
+| `host_parent_in_revelio` | the host-country parent itself has a Revelio entity (H3 robustness) |
+| `h3_sample` | `host_parent` and `parent_in_revelio` (H3 sample) |
+| `flag_jv_in_parent_family` | matched entity in a parent's Revelio family (831 IJVs; kept in the main sample, audit of 2026-11-26; dropping them is robustness 11) |
+| `flag_listed` | listed JV (gate 4, decision 2): Orbis status `Listed` for Orbis-sourced IJVs; an ISIN on record for Capital IQ-sourced IJVs (`listed_basis` in the attributes table). The frame holds no ISIN for any Capital IQ-sourced IJV, so in the 2026-11-26 build only Orbis-sourced IJVs are flagged |
+| `usable_30` | Revelio headcount of the matched entity at least 30 (robustness 13e) |
+| S13 variables | as in "Shock" above; `dyad` and `dyad_all` (host plus all foreign direct parent countries, robustness 3) |
+| `formed_pre2016`, `formed_from2021` | formation year before 2016 (robustness 15f); from 2021 |
+| `coverage_ratio` | IJV-year: Revelio staff on 30 June over the unconsolidated Orbis headcount of the closing year (U1, U2; twelve-month accounts first, then the latest closing date), from 2015 on (robustness 14) |
+
+Attributes table only: `region`, `industry`, `formation_year_missing`,
+`admitted_by`, `match_tier`, `ijv_n_emp`, `jv_employees_orbis`,
+`n_parents_in_revelio`, `flag_shared_family_entity`, `flag_pre_formation_10y`,
+`flag_holding_vehicle`, `flag_size_mismatch`, `listed_basis`, `pair_exposure`,
+`eu_stake_max`, `eu_stake_band`, `s13_frame_control`, `no_foreign_direct`,
+`guo_uk_link`, `s13_owner_link_dropped`, `dyad_source`.
+
+### Year variables
+
+`post`, `antic_yr`, `post16`, `shock`, `antic`, `shock16`, `event_time` (see
+"Shock"), `main_period`.
+
+### Regressors by grain
+
+| Panel | Variables | Source and construction |
+|---|---|---|
+| domain, domain-b | `local_embeddedness`, `coord_dependence`, `*_broad`, `*_lv`, `law_gov_importance`, `job_zone`; `score_imputed_domain` (no rated occupation in the domain) | domain panel: `contingency-scores-domain-v1-2026-11-25.csv`; domain-b panel: the same rule (unweighted mean of the domain's rated occupations) applied by `domain_b_scores()` to the occupation table with the broad list carved out. Standardized units (occupation SD) |
+| domain, domain-b | `reg`, `reg_list` (`narrow`/`broad`), `reg_b` (domain-b), `treat_reg`, `exp_post_reg`, `exp_antic_reg`, `cd_host`, `cd_nohost` (`coord_dependence` x `host_parent`, x `1 - host_parent`) | derived |
+| domain, domain-b | `rd_core`, `rd_ratio` | robustness 19, available case: 1 if the domain's employment share in the industry of any parent with an OEWS-matched code is at least twice its share across all industries; largest log ratio over those parents (missing where a parent industry has no employment in the domain). BLS OEWS May 2021; parent industry rule v2; OEWS match exact 4-digit, combined industry, 3-digit. The regulatory domain's share sums its SOC detailed codes, which are subtracted from their minor groups; suppressed cells count as zero |
+| domain, domain-b | `rd_core_hcp`, `rd_ratio_hcp` | the same for the host-country parent (the largest-equity one among host-country parents with a matched code; H3) |
+| domain, domain-b | `rd_code_missing`, `rd_all_coded`, `rd_any_coded` | some parent / every parent / at least one parent with a matched code (IJV level) |
+| level, level-b, seniority | `coord_role` | 1 for `executive` and `middle_management` (`mintzberg1979structuring`); the seniority panel also carries `level` and `level_b` |
+| function, role50 | the eight scores, `n_codes`, `share_imputed`, `cd_host`, `cd_nohost` | occupation scores averaged over the O\*NET codes of the group, weighted by the number of `role_k17000_v3` entries per code (rule of the rater comparison of 2026-11-25); a group or function without O\*NET-coded taxonomy entries (for example `Miscellaneous`) has no score |
+| role50 | `coord_dependence_rater`, `local_embeddedness_rater` | rater means per `role_k50` group (`rater-scores-2026-11-26.csv`; 1 to 5; both scales passed ICC(2,k) >= 0.70) |
+
+Interim files of `02_build_panel.R` (person level, gitignored):
+`data/interim/panel-hires-v1.parquet` (one row per hire with its
+classification), `panel-stock-<grain>-v1.parquet`, `panel-staff-ijv-year-v1.parquet`,
+`panel-families-v1.rds`, `panel-build-log-v1.csv`.
+
+### Synthetic twin (2026-11-26)
+
+`code/R/tests/synthetic_panel_build.R` (seed 20261126) writes made-up input
+tables with the columns of every real input to
+`data/synthetic/panel-build-synthetic-2026-11-26/` (12 IJVs, about 560 JV
+positions, 20 seeded people with known expected results in
+`seeded-cases.csv`); `02_build_panel.R synthetic` and `03_measures.R synthetic`
+write their outputs to its `build/` folder. `code/R/tests/check_panel_build.R`
+runs all three and checks the seeded cases, the identities, the cell sums and
+the schema against the stage 5 simulated panel
+(`data/synthetic/panel-build-test-synthetic-2026-11-26.md`).

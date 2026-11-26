@@ -1,0 +1,33 @@
+part,step,n,unit,removed,rule
+1 IJVs,matched frame (core_main of frame v3),12,IJVs,"",ijv-matched table; one row per IJV
+1 IJVs,"IJVs whose matched entity lies in a parent's Revelio family (flag_jv_in_parent_family; kept, audit of 2026-11-26)",1,IJVs,"",entity removed from the parent family for that IJV only
+1 IJVs,IJVs with an entity in two parents' families (flag_shared_family_entity),1,IJVs,"",entity assigned to the parent with the larger equity share
+2 Spells,positions in the spell table,567,positions,"",""
+2 Spells,after removing repeated position_id,564,positions,3,copies after the first dropped
+2 Spells,filed under an IJV of the frame,564,positions,0,stray entities dropped
+2 Spells,with valid 30 June reference years,564,positions,0,positions without a reference year dropped
+2 Spells,IJVs with at least one spell,12,IJVs,"",""
+2 Spells,people with spells at two or more IJVs (each person-IJV pair counted at its IJV),1,people,"",""
+3 Hires,"positions at the matched JV entities (all, incl. stays without a 30 June)",565,positions,1,repeated position_id dropped
+3 Hires,person-IJV pairs in the spell table,563,pairs,"",""
+3 Hires,pairs without any position record at the JV entity,0,pairs,"",dropped
+3 Hires,pairs with a dated first position (hires),562,hires,1,pairs whose positions at the JV all lack a start date dropped
+3 Hires,hire year from the formation year on,561,hires,1,hired before the formation (incorporation) year
+3 Hires,hire year up to 2025,560,hires,1,hired in 2026 (Revelio data end 2026-09)
+3 Hires,"of these, hire year 2010 to 2025 (main period)",453,hires,"",earlier hires kept for the full-period check (main_period = 0)
+3 Hires,hires whose first position covers no 30 June (not in the spell table; occupation from the role lookup),1,hires,"",""
+3 Hires,people hired by two or more IJVs (a hire at each),1,people,"",""
+3 Hires,hires coded through the role lookup (onet_source = lookup),2,hires,"",""
+3 Hires,"hires without a usable O*NET code (unknown, Retired, On Leave, missing): no domain",1,hires,"",""
+3 Hires,hires in occupations with imputed scores (score_imputed),7,hires,"",""
+3 Hires,hires without a Revelio seniority: no level,1,hires,"",""
+4 Histories,history positions read,"1,197",positions,"",""
+4 Histories,after removing repeated position_id,"1,195",positions,2,copies after the first dropped
+4 Histories,positions of hired people,"1,192",positions,"",""
+4 Histories,hired people without any history position,0,people,"",""
+4 Histories,with a start date,"1,190",positions,2,positions without a start date cannot precede a hire; dropped
+4 Histories,end date not before start date,"1,189",positions,1,positions ending before they start dropped
+4 Histories,open-ended positions (no end date; treated as held until today),215,positions,"",""
+4 Histories,positions at employers not mapped to a Revelio company (count as independent),141,positions,"",""
+4 Histories,positions without a country that converts to ISO 2,24,positions,"",""
+5 Frame,hires classified (all years from formation to 2025),560,hires,"",""

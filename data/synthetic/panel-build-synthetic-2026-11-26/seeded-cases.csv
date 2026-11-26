@@ -1,0 +1,38 @@
+case,user_id,jv_bvdid,what,value
+S01 repeated position ids,1,SYN00004,n_hires_person,1
+S01 repeated position ids,1,SYN00004,cat_w3,local_parent
+S02 undated only position,2,SYN00004,n_hires_person,0
+S03 undated plus dated,3,SYN00004,year,2015
+S04 history start missing,4,SYN00001,cat_w3,not_obs
+S05 open-ended parent position,5,SYN00001,cat_w1,local_parent
+S05 open-ended parent position,5,SYN00001,cat_w3,local_parent
+S06 open-ended JV position,6,SYN00002,in_stock_2025,TRUE
+S07 person at two IJVs,7,SYN00004,year,2012
+S07 person at two IJVs,7,SYN00008,year,2017
+S07 person at two IJVs,7,SYN00008,cat_w3,intl_indep
+S08 hire 2008,81,SYN00001,year,2008
+S08 hire 2026,82,SYN00001,n_hires_person,0
+S08 hire before formation,83,SYN00011,n_hires_person,0
+S09 parent's own entity as IJV,9,SYN00010,cat_w3,local_parent
+S10 origin windows,10,SYN00002,cat_w1,not_obs
+S10 origin windows,10,SYN00002,cat_w3,local_indep
+S10 origin windows,10,SYN00002,cat_w5,intl_parent
+S11 entrant,11,SYN00003,entrant_e1,FALSE
+S11 entrant,11,SYN00003,entrant_e3,TRUE
+S11 entrant,11,SYN00003,entrant_place,local
+S12 unmapped employer,12,SYN00003,cat_w3,intl_indep
+S12 unmapped employer,12,SYN00003,employer_mapped,FALSE
+S13 country missing,13,SYN00012,cat_w3,parent_na
+S14 shared family entity,14,SYN00004,cat_w3,local_parent
+S14 shared family entity,14,SYN00004,p_host,TRUE
+S15 home-country parent hire,15,SYN00001,cat_w3,intl_parent
+S15 home-country parent hire,15,SYN00001,home_country,TRUE
+S16 invalid O*NET value,16,SYN00002,domain,
+S16 invalid O*NET value,16,SYN00002,level,middle_management
+S17 lookup-coded position,17,SYN00002,onet_source,lookup
+S17 lookup-coded position,17,SYN00002,domain_b,REG_B
+S18 seniority missing,18,SYN00001,level,
+S19 end before start,19,SYN00012,cat_w3,not_obs
+S20 first position without 30 June,20,SYN00003,year,2014
+S20 first position without 30 June,20,SYN00003,hire_in_spells,FALSE
+S20 first position without 30 June,20,SYN00003,onet_source,lookup

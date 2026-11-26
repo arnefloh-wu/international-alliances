@@ -1,0 +1,13 @@
+jv_bvdid,jv_listed,jv_isin,source,synthetic
+SYN00001,Listed,"",orbis,TRUE
+SYN00002,Unlisted,"",orbis,TRUE
+SYN00003,Unlisted,"",orbis,TRUE
+SYN00004,Unlisted,"",orbis,TRUE
+SYN00005,Unlisted,"",orbis,TRUE
+SYN00006,Unlisted,"",orbis,TRUE
+SYN00007,Unlisted,"",orbis,TRUE
+SYN00008,Unlisted,"",orbis,TRUE
+SYN00009,Unlisted,"",orbis,TRUE
+SYN00010,Unlisted,"",orbis,TRUE
+SYN00011,"",SYNISIN0011,ciq,TRUE
+SYN00012,Delisted,"",orbis,TRUE

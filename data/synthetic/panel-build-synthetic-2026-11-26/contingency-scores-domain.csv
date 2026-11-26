@@ -1,0 +1,9 @@
+domain,local_embeddedness,coord_dependence,local_embeddedness_broad,coord_dependence_broad,local_embeddedness_lv,coord_dependence_lv,law_gov_importance,job_zone,n_occupations,n_rated,n_in_revelio,all_imputed
+15-1,-0.341,-0.951,1.699,2.109,-1.324,-0.358,1.23,5,1,1,1,FALSE
+11-1,-0.119,-1.032,2.312,-0.135,0.768,-0.991,3.46,5,1,1,1,FALSE
+REG,-0.083,0.694,-0.272,1.2,0.003,-0.057,1.47,5,1,1,1,FALSE
+13-2,-0.3815,0.67,-0.234,0.845,1.176,-0.7735,3.98,3.5,2,2,2,FALSE
+41-3,-0.096,-0.828,0.969,-1.583,-0.519,0.28,4.51,3,1,1,1,FALSE
+17-2,1.018,-0.881,-0.407,2.467,0.084,0.083,2.12,2,1,1,1,FALSE
+43-4,-0.277,2.373,-0.529,0.765,-1.866,0.872,3.01,5,1,1,1,FALSE
+55-1,0,0,0,0,0,0,0,0,1,0,1,TRUE

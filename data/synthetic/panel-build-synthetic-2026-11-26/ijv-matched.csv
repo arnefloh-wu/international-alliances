@@ -1,0 +1,13 @@
+jv_bvdid,jv_name,jv_country,region,industry,formation_year,formation_year_missing,source,route,admitted_by,exposure_group,n_parents,rcid_jv,match_tier,match_method,match_score,manual_by,n_emp,n_years,function_cells_5,seniority_cells_5,jv_employees_orbis,operating_parents,strategic,flag_pre_formation_10y,flag_holding_vehicle,jv_website,jv_lei
+SYN00001,Synthetic Venture 01,GB,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900001,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00002,Synthetic Venture 02,DE,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900002,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00003,Synthetic Venture 03,GB,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900003,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00004,Synthetic Venture 04,FR,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900004,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00005,Synthetic Venture 05,FR,synthetic,manufacturing,2005,FALSE,orbis,orbis_owner_level,guo_country,,2,900005,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00006,Synthetic Venture 06,IT,synthetic,manufacturing,2005,FALSE,orbis,orbis_owner_level,guo_country,,2,900006,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00007,Synthetic Venture 07,US,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900007,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00008,Synthetic Venture 08,CN,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900008,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00009,Synthetic Venture 09,NA,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900009,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00010,Synthetic Venture 10,DE,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900010,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00011,Synthetic Venture 11,IN,synthetic,manufacturing,2012,FALSE,ciq,capital_iq_current,ciq,,2,900011,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""
+SYN00012,Synthetic Venture 12,GB,synthetic,manufacturing,2005,FALSE,orbis,orbis_base,base,,2,900012,auto,exact,1,,60,15,3,3,50,2,TRUE,FALSE,FALSE,"",""

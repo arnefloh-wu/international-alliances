@@ -28,8 +28,11 @@ to the Dropbox path; `code/R/00_setup.R` reads it.
 | `interviews/transcripts/<code>.txt` | existing interview study | PI | see `interviews/README.md` |
 | `interim/pilot-matches.csv` | `01_pilot_matching.R` | agent | all candidate matches with method and score |
 | `interim/pilot-match-review.csv` | `01_pilot_matching.R` | agent | ambiguous matches for PI review |
-| `processed/panel-ijv-function-year.parquet` | `02_build_panel.R`, `03_measures.R` | agent | primary panel |
-| `processed/panel-ijv-level-year.parquet` | same | agent | hierarchy panel |
+| `processed/panel-ijv-domain-year-v1.parquet` | `02_build_panel.R`, `03_measures.R` | agent | primary panel (IJV x domain x year; H1 to H3) |
+| `processed/panel-ijv-domain-b-year-v1.parquet` | same | agent | H4 grain (broad regulatory domain `REG_B`) |
+| `processed/panel-ijv-level-year-v1.parquet` | same | agent | hierarchy panel (C1; levels part of H1); `-level-b-` and `-seniority-` for robustness 18 |
+| `processed/panel-ijv-function-year-v1.parquet`, `panel-ijv-role50-year-v1.parquet` | same | agent | grain robustness (Revelio function, `role_k50`) |
+| `processed/panel-ijv-attributes-v1.parquet`, `panel-ijv-year-v1.parquet` | same | agent | IJV-level and IJV-year variables |
 | `processed/sample-construction-log.md` | same | agent | counts at every exclusion step |
 
 ## Licence reminder

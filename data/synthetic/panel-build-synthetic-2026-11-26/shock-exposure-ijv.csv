@@ -1,0 +1,13 @@
+shock,variant,jv_bvdid,pair,onset
+S13,"main: EU27+EEA+CH, parent-host pairs, onset 2021",SYN00001,GB-DE,2021
+S13,"main: EU27+EEA+CH, parent-host pairs, onset 2021",SYN00002,GB-DE,2021
+S13,"main: EU27+EEA+CH, parent-host pairs, onset 2021",SYN00003,GB-IE,2021
+S13,"main: EU27+EEA+CH, parent-host pairs, onset 2021",SYN00012,GB-FR,2021
+S13,Ireland excluded (Common Travel Area),SYN00001,GB-DE,2021
+S13,Ireland excluded (Common Travel Area),SYN00002,GB-DE,2021
+S13,Ireland excluded (Common Travel Area),SYN00012,GB-FR,2021
+S13,parent-parent pairs hosted in third countries,SYN00007,GB-DE,2021
+S13,"Orbis-sourced, owner (GUO) country",SYN00001,GB-DE,2021
+S13,"Orbis-sourced, owner (GUO) country",SYN00002,GB-DE,2021
+S13,"Orbis-sourced, owner (GUO) country",SYN00003,GB-IE,2021
+S13,"Orbis-sourced, owner (GUO) country",SYN00012,GB-FR,2021
