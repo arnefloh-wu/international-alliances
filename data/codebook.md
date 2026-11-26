@@ -297,3 +297,18 @@ Source: WRDS `revelio` library (data through 2026-09, checked 2026-10-08).
 
 Review-tier rules (`review_tier_candidates()` in `code/R/functions/matching.R`): host country only; no parent entity or member of a parent's Revelio family; no candidate whose name resembles one of the JV's own parents; a route that returns more than one company for a JV gives no pick.
 | Country | Revelio country names converted to ISO 2 with the `countrycode` package |
+
+## Rater scores (`data/interim/rater-scores-2026-11-26.csv`)
+
+Built by `code/R/11_rater_icc.R` from the three returned rater workbooks in `data/raw/rater-ratings/` (gitignored). One row per Revelio `role_k50` group (50 rows). Used only as a robustness and convergent-validity check of the O\*NET contingency scores (pre-analysis plan, robustness set item 6), never as the primary measure. Run log: `data/interim/rater-icc-log-2026-11-26.md`.
+
+| Variable | Content | Unit |
+|---|---|---|
+| `group_id` | rater sheet id, G01 to G50 (order shuffled with a fixed seed in `10_rater_sheet.R`) | id |
+| `group_label` | Revelio `role_k50_v3` label (licensed) | text |
+| `coord_dependence_rater` | mean of the three raters on the scale "dependence on coordination with the parents"; written only because ICC(2,k) >= 0.70 | 1 to 5 |
+| `local_embeddedness_rater` | mean of the three raters on the scale "dependence on the host country"; written only because ICC(2,k) >= 0.70 | 1 to 5 |
+
+## Rater and O\*NET scores per group (`data/interim/rater-onet-groups-2026-11-26.csv`)
+
+Built by `code/R/12_rater_onet_comparison.R`. The rows and columns of `rater-scores-2026-11-26.csv` plus, per `role_k50` group: `n_codes` (O\*NET codes in the group), `n_entries` (taxonomy entries, the weights), `share_imputed` (share of the weight on occupations with imputed scores), `coord_dependence_onet` and `local_embeddedness_onet` (weighted means of the occupation scores of `07_contingency_scores.R`, standardized units). Correlations in `data/interim/rater-onet-comparison-2026-11-26.md`.
