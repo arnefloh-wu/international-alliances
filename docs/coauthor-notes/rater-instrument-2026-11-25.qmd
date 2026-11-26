@@ -106,6 +106,8 @@ The confidence item uses three steps:
 
 Please rate every group. If you are unsure, give your best judgment and enter 1 for confidence. You may go back and change your own earlier ratings. Rate the groups in the order given. It helps to reread the definitions after the first ten groups.
 
+Source of the occupation titles: O\*NET 31.0 Database, U.S. Department of Labor, Employment and Training Administration (USDOL/ETA), used under the CC BY 4.0 license. USDOL/ETA has not approved, endorsed or tested this use.
+
 When you are done, save the workbook under the name you were given and return it to the person who sent it to you.
 
 Thank you for your help.
