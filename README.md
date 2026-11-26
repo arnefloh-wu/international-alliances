@@ -120,6 +120,8 @@ Rscript code/R/07_contingency_scores.R                 # contingency scores and 
 Rscript code/R/08_feasibility_reg_cells.R              # stage 5 feasibility count for H4: REG cells by exposure group, structural counts only
 Rscript code/R/09_audit_parent_family_sample.R         # audit worksheet: 100 of the IJVs filed in a parent's Revelio family (seed 20261125; never overwrites a coded sheet)
 Rscript code/R/10_rater_sheet.R                        # workbooks for the outside raters: 50 role_k50 groups with O*NET titles (taxonomy only, no staffing data)
+Rscript code/R/11_rater_icc.R                          # ICC(2,k) of the three returned rater workbooks per scale; rater means for scales with ICC >= 0.70
+Rscript code/R/12_rater_onet_comparison.R              # Spearman correlation of rater scores and O*NET scores at role_k50 (convergent validity)
 Rscript code/R/wrds/06_ingest_external_jvs.R           # optional: add external deal lists (frame v4)
 Rscript code/R/wrds/03_wrds_full_sample.R v4           # optional: match the external additions
 Rscript code/R/tests/test-functions.R                  # function checks, all should print PASS
@@ -148,6 +150,8 @@ Rscript code/R/tests/test-functions.R                  # function checks, all sh
 | `08_feasibility_reg_cells.R` | steps 07 and 14, `06_shock_exposure.R` | `data/interim/feasibility-reg-cells-*.md` (aggregate counts) |
 | `09_audit_parent_family_sample.R [overwrite]` | steps 03 and 09 | `data/interim/audit-parent-family-worksheet-*.xlsx` and `.csv` (licensed, gitignored); coding guide `docs/coauthor-notes/audit-parent-family-guide-*.qmd` |
 | `10_rater_sheet.R` | step 14 (lookup) | `data/interim/rater-sheet-*.xlsx`, `rater-sheet-onet-only-*.xlsx` (gitignored; Revelio group labels in the first) |
+| `11_rater_icc.R` | returned workbooks in `data/raw/rater-ratings/` | `data/interim/rater-scores-*.csv`, `rater-icc-log-*.md` (gitignored; Revelio group labels) |
+| `12_rater_onet_comparison.R` | `11_rater_icc.R`, `07_contingency_scores.R` | `data/interim/rater-onet-groups-*.csv`, `rater-onet-comparison-*.md` (gitignored; Revelio group labels) |
 | `06_ingest_external_jvs.R` | frame v3 and files in `data/raw/external/` | `data/interim/wrds-ijv-frame-v4-*.csv` |
 | `04_wrds_route_sizing.R` | WRDS | `data/interim/route-sizing-*.csv` (a one-off sizing exercise) |
 
