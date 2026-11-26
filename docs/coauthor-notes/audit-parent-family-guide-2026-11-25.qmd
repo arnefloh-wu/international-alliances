@@ -1,6 +1,6 @@
 ---
 title: "Audit of IJVs filed inside a parent's Revelio family: coding guide"
-subtitle: "100 sampled cases, worksheet of 2026-11-25"
+subtitle: "100 sampled cases, worksheet of 2026-11-25 (coder and checker updated 2026-11-26)"
 date: 2026-11-25
 format:
   docx: default
@@ -8,7 +8,7 @@ format:
 
 ## Purpose
 
-Each IJV in the main sample (`core_main`, 7,460 IJVs) is matched to one Revelio company, and its staff are the people Revelio records at that company. For 831 IJVs the matched Revelio company sits inside the Revelio family (the corporate group) of one of the IJV's parents. That can be correct: Revelio often files a joint venture under one of its owners. It can also be a wrong match, where the company we picked is the parent's own subsidiary, branch or division rather than the joint venture. In that case we would count parent employees as IJV employees. This audit estimates how often the second case occurs. A script drew 100 of the 831 IJVs at random with a fixed seed (`code/R/09_audit_parent_family_sample.R`, seed 20261125), and you code each of them.
+Each IJV in the main sample (`core_main`, 7,460 IJVs) is matched to one Revelio company, and its staff are the people Revelio records at that company. For 831 IJVs the matched Revelio company sits inside the Revelio family (the corporate group) of one of the IJV's parents. That can be correct: Revelio often files a joint venture under one of its owners. It can also be a wrong match, where the company we picked is the parent's own subsidiary, branch or division rather than the joint venture. In that case we would count parent employees as IJV employees. This audit estimates how often the second case occurs. A script drew 100 of the 831 IJVs at random with a fixed seed (`code/R/09_audit_parent_family_sample.R`, seed 20261125). Arne Floh (PI) codes all 100 (decided 2026-11-25), and Alexander Mohr checks ten of them (decided 2026-11-26).
 
 ## The rule fixed before the audit
 
@@ -43,10 +43,10 @@ In `evidence`, write one or two sentences on what you checked and what decided t
 
 ## PI check
 
-Ten rows carry `pi_check_case = TRUE`; the same script drew them with the same seed. Code them like every other row. After you hand the worksheet back, the PI reviews your verdict and evidence for those ten rows and enters in `pi_check` either "agree" or his own verdict with a short reason.
+Ten rows carry `pi_check_case = TRUE`; the same script drew them with the same seed. The coder codes them like every other row. Because the PI codes the audit, the check is done by Alexander Mohr: once all 100 rows are coded, he reviews the coder's verdict and evidence for those ten rows, using the same sources and the same restrictions, and enters in `pi_check` either "agree" or his own verdict with a short reason (the column keeps its name). The 20-of-100 rule is applied to the coder's verdicts; disagreements are reported to the PI alongside the count.
 
 ## Where the worksheet is and how to hand it back
 
 The worksheet is `data/interim/audit-parent-family-worksheet-2026-11-25.xlsx` in the project's Dropbox folder, with a CSV copy of the same name. It holds licensed Orbis, Capital IQ and Revelio data. It must stay inside the project folder: do not email it outside the author team, do not upload it to any website, cloud tool or AI service, and do not copy it to another repository. The folder is excluded from Git, so it never reaches GitHub.
 
-Work on a copy saved in the same folder as `audit-parent-family-worksheet-2026-11-25-<your initials>.xlsx`, and leave the original untouched. When all 100 rows are coded, tell the PI that the file is in place. The PI then checks the ten marked cases, and the agent counts the verdicts and applies the 20-of-100 rule.
+Work on a copy saved in the same folder as `audit-parent-family-worksheet-2026-11-25-<your initials>.xlsx`, and leave the original untouched. When all 100 rows are coded, the coder tells Alexander Mohr that the file is in place. He checks the ten marked cases in the same copy, and then the agent counts the verdicts and applies the 20-of-100 rule.
